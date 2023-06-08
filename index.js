@@ -4,7 +4,8 @@ import 'dotenv/config'
 import {login} from "masto";
 import {unescape} from "html-escaper"
 import {parse} from 'node-html-parser';
-
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url)
 // Configuration
 const MASTODON_ACCESS_TOKEN = process.env.MASTODON_ACCESS_TOKEN || '';
 const MASTODON_DOMAIN = process.env.MASTODON_DOMAIN || '';
@@ -16,11 +17,19 @@ const DRY_RUN = false;
 
 let mastodonClient;
 let cache;
+
+// Tooling
 const loggerTwitter = ora({color: "cyan"}).start();
+const pm2Client = require('@pm2/io');
+const syncedTweets = pm2Client.metric({
+    name: 'Synced tweets',
+});
 
 const updateCacheFile = async (data) => {
+    const d = data ?? {};
     try {
-        await fs.promises.writeFile(CACHE_PATH, JSON.stringify(data ?? {}));
+        await fs.promises.writeFile(CACHE_PATH, JSON.stringify(d));
+        syncedTweets.set(Object.keys(d).length)
     } catch (err) {
         console.error('Error updating cache file:', err);
     }
@@ -43,7 +52,9 @@ const createCacheFile = async () => {
 const getCache = async () => {
     try {
         const fileContent = await fs.promises.readFile(CACHE_PATH, 'utf-8');
-        return JSON.parse(fileContent);
+        const data = JSON.parse(fileContent);
+        syncedTweets.set(Object.keys(data).length)
+        return data;
     } catch (err) {
         console.error('Error reading cache.json file:', err);
         return null;
@@ -58,13 +69,7 @@ const getCache = async () => {
 const getOrCreateCache = async () => {
     loggerTwitter.text = 'Caching init'
     await createCacheFile();
-    try {
-        const fileContent = await fs.promises.readFile(CACHE_PATH, 'utf-8');
-        return JSON.parse(fileContent);
-    } catch (err) {
-        console.error('Error reading cache.json file:', err);
-        return null;
-    }
+    return await getCache();
 };
 
 const getTweetIdFromPermalink = (url) => url.match(/\d+$/)[0];
