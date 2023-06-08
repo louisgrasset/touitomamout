@@ -1,0 +1,21 @@
+{
+  "name": "twitter-to-mastodon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sync": "node --no-warnings ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cli-spinners": "^2.9.0",
+    "dotenv": "^16.1.4",
+    "html-escaper": "^3.0.3",
+    "masto": "^5.11.3",
+    "node-html-parser": "^6.1.5",
+    "ora": "^6.3.1"
+  }
+}
