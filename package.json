@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pm2/io": "^5.0.0",
     "cli-spinners": "^2.9.0",
     "dotenv": "^16.1.4",
     "html-escaper": "^3.0.3",
