@@ -147,7 +147,7 @@ const getConversationAncestorId = tweet => {
     const url = `https://${VORTEX_DOMAIN}/twitter/user/${TWITTER_USERNAME}/`
         // params
         .concat("addLinkForPics=0")
-        .concat("showSymbolForRetweetAndReply=0")
+        .concat("&showSymbolForRetweetAndReply=0")
         .concat("&includeRts=0")
         .concat("&excludeReplies=1")
         .concat("&readable=0")
