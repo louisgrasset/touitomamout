@@ -1,11 +1,13 @@
 {
-  "name": "twitter-to-mastodon",
+  "name": "touitomamout",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sync": "node --no-warnings ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --no-warnings ./index.js",
+    "predeploy": "npm ci",
+    "deploy": "pm2 start ./index.js --name touitomamout --no-autorestart --cron '*/2 * * * *'",
+    "deploy:update": "pm2 del touitomamout && npm run deploy"
   },
   "type": "module",
   "author": "",
