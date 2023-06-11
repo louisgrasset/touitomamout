@@ -33,5 +33,6 @@ export const mediaAttachmentsHandler = async (medias: TweetMedia[], mastodonClie
                 });
         }
     }
+    log.stop();
     return mediaAttachments;
 };
