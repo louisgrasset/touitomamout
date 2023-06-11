@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import ora from 'ora';
 import {createRequire} from 'module';
 import {login} from 'masto';
 import {mediaAttachmentsHandler, tweetsGetter} from './handlers/index.js';
