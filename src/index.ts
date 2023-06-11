@@ -35,7 +35,7 @@ const metric = require('@pm2/io').metric({
             })
             .catch(err => console.error(`Failed to get data/n ${err}`))
             .finally(async () => {
-                console.log('\n🦤→ 🦣');
+                console.log('\n🦤 → 🦣');
                 console.log('Touitomamout sync');
                 console.log(`| ${metric.val().toString().padStart(5, '0')}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ʰᵉʳᵉ`);
                 console.log(`| ${Object.keys(await getCache()).length.toString().padStart(5, '0')}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ˢᵒ ᶠᵃʳ`);
