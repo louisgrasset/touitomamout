@@ -1,7 +1,7 @@
 {
   "name": "touitomamout",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tweets to Toot synchronizer",
   "scripts": {
     "start": "node --no-warnings --no-deprecation ./index.js",
     "lint": "eslint src/ --ext .ts --fix",
@@ -11,7 +11,8 @@
     "deploy:update": "pm2 del touitomamout && npm run deploy"
   },
   "type": "module",
-  "author": "",
+  "author": "Louis Grasset",
+  "homepage": "https://github.com/louisgrasset/touitomamout",
   "license": "ISC",
   "dependencies": {
     "@pm2/io": "^5.0.0",
