@@ -19,8 +19,12 @@ Touitomamout relies on two APIs:
 
 ### Mastodon configuration
 In order to communicate with the mastodon instance, you'll have to generate an API Token. It's totally free.
-1. Go to your account's application page: `https://{yourinstance.com}/settings/applications/new`
-2. 
+1. Go to your account's application page: `https://{yourinstance.tld}/settings/applications/new`
+2. Create a new application with the following scopes:
+- `read:accounts`: get your mastodon account username
+- `write:media`: post medias
+- `write:statuses`: post toots
+3. See [Environment](#Environment) section to set your `access token`
 
 ### RSSHub configuration
 You can rely on the public instance `rsshub.app` but you can also [self-host](https://docs.rsshub.app/en/install) your own.
