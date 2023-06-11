@@ -2,11 +2,12 @@
   "name": "touitomamout",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "node --no-warnings ./index.js",
-    "predeploy": "npm ci",
-    "deploy": "pm2 start ./index.js --name touitomamout --no-autorestart --cron '*/2 * * * *'",
+    "start": "node --no-warnings --no-deprecation ./index.js",
+    "lint": "eslint src/ --ext .ts --fix",
+    "build": "tsc",
+    "predeploy": "npm ci && npm run build",
+    "deploy": "pm2 start ./dist/index.js --name touitomamout --no-autorestart --cron '*/2 * * * *'",
     "deploy:update": "pm2 del touitomamout && npm run deploy"
   },
   "type": "module",
@@ -20,5 +21,12 @@
     "masto": "^5.11.3",
     "node-html-parser": "^6.1.5",
     "ora": "^6.3.1"
+  },
+  "devDependencies": {
+    "@types/html-escaper": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
+    "eslint": "^8.42.0",
+    "typescript": "^5.1.3"
   }
 }
