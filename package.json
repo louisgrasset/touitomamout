@@ -13,7 +13,7 @@
   "type": "module",
   "author": "Louis Grasset",
   "homepage": "https://github.com/louisgrasset/touitomamout",
-  "license": "ISC",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@pm2/io": "^5.0.0",
     "cli-spinners": "^2.9.0",
