@@ -1,5 +1,5 @@
 import ora  from 'ora';
-import {TWITTER_USERNAME, VORTEX_DOMAIN} from '../constants.js';
+import {TWITTER_USERNAME, RSSHUB_INSTANCE} from '../constants.js';
 import {APIResponse} from '../types/index.js';
 import {tweetParser} from './tweet-parser.js';
 import {getCache} from '../helpers/cache/index.js';
@@ -10,7 +10,7 @@ export const tweetsGetter = async () => {
     log.text = 'fetching';
 
     const cache = await getCache();
-    const url = `https://${VORTEX_DOMAIN}/twitter/user/${TWITTER_USERNAME}/`
+    const url = `https://${RSSHUB_INSTANCE}/twitter/user/${TWITTER_USERNAME}/`
         // Set query parameters
         .concat('addLinkForPics=0')
         .concat('&showSymbolForRetweetAndReply=0')
