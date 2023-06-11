@@ -31,7 +31,7 @@ const metric = require('@pm2/io').metric({
                 metric.set(Object.keys(await getCache()).length);
             }
         })
-        .catch(err => console.error(`Failed to get data/n ${err}`))
+        .catch(err => console.error(`Failed to get data\n${err}`))
         .finally(async () => {
             console.log('\n🦤 → 🦣');
             console.log('Touitomamout sync');

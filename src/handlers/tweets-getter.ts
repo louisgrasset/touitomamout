@@ -53,5 +53,9 @@ export const tweetsGetter = async () => {
             log.succeed('sorted');
             log.stop();
             return res;
+        })
+        .catch((err) => {
+            log.stop();
+            return err;
         });
 };
