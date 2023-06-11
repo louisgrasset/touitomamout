@@ -1,4 +1,4 @@
-import ora, {Ora} from 'ora';
+import ora  from 'ora';
 import {TWITTER_USERNAME, VORTEX_DOMAIN} from '../constants.js';
 import {APIResponse} from '../types/index.js';
 import {tweetParser} from './tweet-parser.js';

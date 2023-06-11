@@ -7,7 +7,7 @@
     "lint": "eslint src/ --ext .ts --fix",
     "build": "tsc",
     "predeploy": "npm ci && npm run build",
-    "deploy": "pm2 start ./dist/index.js --name touitomamout --no-autorestart --cron '*/2 * * * *'",
+    "deploy": "pm2 start ./dist/index.js --name touitomamout --no-autorestart --cron '*/7 * * * *'",
     "deploy:update": "pm2 del touitomamout && npm run deploy"
   },
   "type": "module",
