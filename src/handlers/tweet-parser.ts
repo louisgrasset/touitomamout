@@ -5,8 +5,7 @@ import {isTweetReplying, getConversationAncestorId, isTweetSelfQuoting, getQuote
 import {Ora} from 'ora';
 
 export const tweetParser = (tweet: TweetMetadata, log: Ora): Tweet => {
-    log.color ='gray';
-    log.text = 'parsing media';
+    log.text = 'parsing medias';
 
     const richContent = tweet.content_html.match(/.+?(?=<div class="rsshub-quote">|https:\/\/t\.co\/\w+<br>)/)?.[0];
     const content = unescape((richContent ?? tweet.content_html).trim())
@@ -20,8 +19,6 @@ export const tweetParser = (tweet: TweetMetadata, log: Ora): Tweet => {
         .map(media => unescape(media.getAttribute('src') ?? ''));
     const videos = Array.from(root.querySelectorAll('video[src]'))
         .map(media => unescape(media.getAttribute('src') ?? ''));
-
-    log.succeed('media parsed');
 
     log.text = 'parsing metadata';
 
@@ -37,9 +34,6 @@ export const tweetParser = (tweet: TweetMetadata, log: Ora): Tweet => {
             type: TweetMediaType.video
         }))
     ];
-
-    log.succeed('metadata parsed successfully');
-    log.color ='cyan';
 
     return {
         ...tweet,
