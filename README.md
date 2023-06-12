@@ -50,8 +50,8 @@ npm run deploy
 ```
 
 #### Update your instance after a git pull
-Your instance will be remove and will be generated again with the latest codebase.
-Your `cache.json` file is kept so you won't have duplicated toots.
+Your instance will be removed and will be generated again with the latest codebase.
+Your `cache.json` file is kept, so you won't have duplicated toots.
 ```bash
 npm run deploy:update
 ```
