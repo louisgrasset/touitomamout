@@ -24,6 +24,7 @@ In order to communicate with the mastodon instance, you'll have to generate an A
 - `read:accounts`: get your mastodon account username
 - `write:media`: post medias
 - `write:statuses`: post toots
+- `write:accounts`: update your profile
 3. See [Environment](#Environment) section to set your `access token`
 
 ### RSSHub configuration
