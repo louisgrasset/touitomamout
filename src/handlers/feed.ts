@@ -11,13 +11,21 @@ export const feedHandler = async () => {
     log.text = 'fetching';
 
     const url = `https://${RSSHUB_INSTANCE}/twitter/user/${TWITTER_USERNAME}/`
+        /**
+         * Reminder:
+         * The `count` param requests the API a specific number of tweets (includings rt & replies).
+         * Thus, on a total of 50 tweets including 10 replies & 10 RTs, you'll get 30 tweets with this query.
+         **/
+    
         // Set query parameters
-        .concat('addLinkForPics=0')
+        .concat('count=50')
+        .concat('&addLinkForPics=0')
         .concat('&showSymbolForRetweetAndReply=0')
         .concat('&includeRts=0')
         .concat('&excludeReplies=1')
         .concat('&readable=0')
         .concat('&forceWebApi=1')
+    
         // Define response format
         .concat('.json');
 
