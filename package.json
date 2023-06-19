@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "Tweets to Toot synchronizer",
   "scripts": {
-    "start": "node --no-warnings --no-deprecation ./index.js",
     "lint": "eslint src/ --ext .ts --fix",
     "build": "tsc",
     "predeploy": "npm ci && npm run build",
-    "deploy": "pm2 start ./dist/index.js --name touitomamout --no-autorestart --cron '*/7 * * * *'",
-    "deploy:update": "pm2 del touitomamout && npm run deploy"
+    "deploy": "bash ./deployment/deploy.sh",
+    "deploy:update": "bash ./deployment/deploy.sh --update"
   },
   "type": "module",
   "author": "Louis Grasset",
