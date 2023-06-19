@@ -1,23 +1,22 @@
-import 'dotenv/config';
 import {configuration} from './configuration.js';
-import {getCache} from './helpers/cache/index.js';
 import {feedHandler} from './handlers/index.js';
 import {contentSync} from './synchronizers/content-sync.js';
 import {profileSync} from './synchronizers/profile-sync.js';
 
+const {
+    mastodonClient,
+    metric
+} = await configuration();
 
 /**
  * Let the magic happens 💫
  */
 (async () => {
-    const {
-        mastodonClient,
-        metric
-    } = await configuration();
 
     if (!mastodonClient) {
         return;
     }
+
 
     const feed = await feedHandler();
     await profileSync(feed, mastodonClient);
