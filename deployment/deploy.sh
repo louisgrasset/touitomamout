@@ -20,6 +20,7 @@ echo     execution
         pm2 del touitomamout-"$name"
       fi
       pm2 start "$touitomamout" --name touitomamout-"$name" --no-autorestart --cron '*/7 * * * *' -- "$env"
+      pm2 save
     else
       echo "Missing execution settings.\n | Please check your '$env' file.\n | EXECUTION value found: '$execution'"
     fi
