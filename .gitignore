@@ -11,4 +11,4 @@ dist/
 !.env.example
 
 # Cache file
-cache.json
+cache*.json
