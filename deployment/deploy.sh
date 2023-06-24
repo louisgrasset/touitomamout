@@ -11,8 +11,7 @@ for env in .env*; do
     # Extract the variable from the env file
     name=$(grep "INSTANCE_ID=" "$env" | cut -d '=' -f 2)
     execution=$(grep "EXECUTION=" "$env" | cut -d '=' -f 2)
-echo name
-echo     execution
+
     if [[ $execution == "manual" ]]; then
       node $touitomamout "$env"
     elif [[ $execution == "pm2" ]]; then
