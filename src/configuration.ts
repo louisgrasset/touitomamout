@@ -10,10 +10,34 @@ export const configuration = async (): Promise<{
     synchronizedPostsCountThisRun: Counter.default;
     mastodonClient: mastodon.Client | void
 }> => {
-    await createCacheFile();
+    // Error handling
+    [
+        {
+            name: "TWITTER_USERNAME",
+            value: TWITTER_USERNAME,
+            message: "Twitter username is missing."
+        },
+        {
+            name: "MASTODON_INSTANCE",
+            value: MASTODON_INSTANCE,
+            message: "Mastodon instance is missing."
+        },
+        {
+            name: "MASTODON_ACCESS_TOKEN",
+            value: MASTODON_ACCESS_TOKEN,
+            message: `Mastodon access token is missing.\n| Please go to https://${MASTODON_INSTANCE}/settings/applications/new to generate one.`
+        },
+    ].forEach(({name, value, message}) => {
+        if(!value || value === "") {
+            throw new Error(`${message}\n| Please check '${name}' your .env settings.`);
+        }
+    })
 
+    // Init configuration
     const require = createRequire(import.meta.url);
     const pm2 = require('@pm2/io');
+
+    await createCacheFile();
 
     const synchronizedPostsCountThisRun = pm2.counter({
         name: 'Synced posts this run',
