@@ -4,6 +4,7 @@ import {createCacheFile, getCache} from './helpers/cache/index.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
 import {MASTODON_ACCESS_TOKEN, MASTODON_INSTANCE, TWITTER_USERNAME} from './constants.js';
+import {TouitomamoutError} from './helpers/error.js';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
@@ -13,25 +14,28 @@ export const configuration = async (): Promise<{
     // Error handling
     [
         {
-            name: "TWITTER_USERNAME",
+            name: 'TWITTER_USERNAME',
             value: TWITTER_USERNAME,
-            message: "Twitter username is missing."
+            message: 'Twitter username is missing.',
+            details: []
         },
         {
-            name: "MASTODON_INSTANCE",
+            name: 'MASTODON_INSTANCE',
             value: MASTODON_INSTANCE,
-            message: "Mastodon instance is missing."
+            message: 'Mastodon instance is missing.',
+            details: []
         },
         {
-            name: "MASTODON_ACCESS_TOKEN",
+            name: 'MASTODON_ACCESS_TOKEN',
             value: MASTODON_ACCESS_TOKEN,
-            message: `Mastodon access token is missing.\n| Please go to https://${MASTODON_INSTANCE}/settings/applications/new to generate one.`
+            message: 'Mastodon access token is missing.',
+            details: [`Please go to https://${MASTODON_INSTANCE}/settings/applications/new to generate one.`]
         },
-    ].forEach(({name, value, message}) => {
-        if(!value || value === "") {
-            throw new Error(`${message}\n| Please check '${name}' your .env settings.`);
+    ].forEach(({name, value, message, details}) => {
+        if(!value || value === '') {
+            throw new  Error(TouitomamoutError(message, [...details, `Please check '${name}' in your .env settings.`]));
         }
-    })
+    });
 
     // Init configuration
     const require = createRequire(import.meta.url);

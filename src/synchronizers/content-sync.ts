@@ -16,7 +16,8 @@ export const contentSync = async (feed: APIResponse, mastodonClient: mastodon.Cl
             log.text = 'filtering';
 
             const mediaAttachments = await mediaAttachmentsHandler(tweet.medias, mastodonClient, log);
-            await tootSendingHandler(mastodonClient, tweet, mediaAttachments, log).then(() => synchronizedPostsCountThisRun.inc());
+            await tootSendingHandler(mastodonClient, tweet, mediaAttachments, log);
+            synchronizedPostsCountThisRun.inc();
         }
 
         return {
