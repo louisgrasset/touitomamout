@@ -38,6 +38,8 @@ export const configuration = async (): Promise<{
     });
 
     // Init configuration
+    process.env.TZ = 'UTC';
+
     const require = createRequire(import.meta.url);
     const pm2 = require('@pm2/io');
 
