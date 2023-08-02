@@ -1,6 +1,6 @@
 import {APIResponse, Tweet} from '../types/index.js';
 import {getCache} from '../helpers/cache/index.js';
-import {getTweetIdFromPermalink, isTweetQuotingAnotherUser} from '../helpers/tweet/index.js';
+import {getTweetIdFromPermalink, isTweetQuotingAnotherUser, isTweetRecent} from '../helpers/tweet/index.js';
 import {tweetParser} from '../handlers/index.js';
 import ora from 'ora';
 import {oraPrefixer} from '../helpers/ora-prefixer.js';
@@ -12,6 +12,7 @@ export const contentMapper = async (feed: APIResponse): Promise<Tweet[]> => {
 
     try {
         const content = feed.items
+            .filter(item => isTweetRecent(item))
             .filter(item => !isTweetQuotingAnotherUser(item))
             .map(item => ({...item, id: getTweetIdFromPermalink(item.url)}))
             .filter(t => !cache[t.id])
