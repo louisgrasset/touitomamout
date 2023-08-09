@@ -1,4 +1,4 @@
-import {APIResponse, SynchronizerResponse} from '../types/index.js';
+import {SynchronizerResponse} from '../types/index.js';
 import {mastodon} from 'masto';
 import {downloadMedia} from '../handlers/download-media.js';
 import {
@@ -8,36 +8,30 @@ import {
     SYNC_PROFILE_HEADER,
     TWITTER_USERNAME
 } from '../constants.js';
-import {parse} from 'node-html-parser';
 import ora from 'ora';
-import {oraPrefixer} from '../helpers/ora-prefixer.js';
+import {oraPrefixer} from '../utils/ora-prefixer.js';
+import {Scraper} from '@the-convocation/twitter-scraper';
 import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
 
-export const profileSync = async (feed: APIResponse, mastodonClient: mastodon.Client): Promise<SynchronizerResponse> => {
+export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client): Promise<SynchronizerResponse> => {
     const log = ora({color: 'cyan', prefixText: oraPrefixer('profile-sync')}).start();
     log.text = 'parsing';
 
-    const profileDescription = await shortenedUrlsReplacer(feed.description.match(/(.*)(?: - Made with love by RSSHub\(https:\/\/github\.com\/DIYgod\/RSSHub\))$/)?.[1] ?? '');
-    const profileDisplayName = feed.title.match(/^(?:Twitter @)(.*)/)?.[1];
-    const profilePicture = await downloadMedia(feed.icon);
-    const profileHeader = await fetch(`https://nitter.net/${TWITTER_USERNAME}`)
-        .then(response => response.text())
-        .then(rawHtml => parse(rawHtml).querySelector('.profile-banner img')?.getAttribute('src')?.match(/(?:\/pic\/)(.*)$/)?.[1])
-        .then(url => decodeURIComponent(url ?? ''))
-        .then(downloadMedia)
-        .catch(err => console.error(err));
+    const profile = await twitterClient.getProfile(TWITTER_USERNAME);
+    const profilePicture = profile.avatar ? await downloadMedia(profile.avatar) : null;
+    const profileHeader = profile.banner ? await downloadMedia(profile.banner) : null;
 
     // Generate the profile update object based on .env
     const params = [
         {
             condition: SYNC_PROFILE_DESCRIPTION,
             property: 'note',
-            value: profileDescription,
+            value: await shortenedUrlsReplacer(profile.biography || ''),
         },
         {
             condition: SYNC_PROFILE_NAME,
             property: 'displayName',
-            value: profileDisplayName,
+            value: profile.name,
         },
         {
             condition: SYNC_PROFILE_PICTURE && profilePicture instanceof Blob,
@@ -59,6 +53,6 @@ export const profileSync = async (feed: APIResponse, mastodonClient: mastodon.Cl
     log.succeed('task finished');
 
     return {
-        feed, mastodonClient
+        twitterClient, mastodonClient
     };
 };

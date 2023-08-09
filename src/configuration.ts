@@ -1,15 +1,17 @@
-import {login, mastodon} from 'masto';
+import {createRestAPIClient, mastodon} from 'masto';
 import {createRequire} from 'module';
 import {createCacheFile, getCache} from './helpers/cache/index.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
 import {MASTODON_ACCESS_TOKEN, MASTODON_INSTANCE, TWITTER_USERNAME} from './constants.js';
 import {TouitomamoutError} from './helpers/error.js';
+import {Scraper} from '@the-convocation/twitter-scraper';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
     synchronizedPostsCountThisRun: Counter.default;
-    mastodonClient: mastodon.Client | void
+    mastodonClient: mastodon.rest.Client | void
+    twitterClient: Scraper
 }> => {
     // Error handling
     [
@@ -38,8 +40,6 @@ export const configuration = async (): Promise<{
     });
 
     // Init configuration
-    process.env.TZ = 'UTC';
-
     const require = createRequire(import.meta.url);
     const pm2 = require('@pm2/io');
 
@@ -62,13 +62,36 @@ export const configuration = async (): Promise<{
     });
     synchronizedHandle.set(`@${TWITTER_USERNAME}`);
 
-    const mastodonClient = await login({
+    const mastodonClient = createRestAPIClient({
         url: `https://${MASTODON_INSTANCE}`,
         accessToken: MASTODON_ACCESS_TOKEN,
-    }).catch(err => console.error(`Failed while connecting to Mastodon instance [${MASTODON_INSTANCE}]\n${err}`));
+    });
+
+    const twitterClient = new Scraper({
+        transform: {
+            request(input: RequestInfo | URL, init?: RequestInit) {
+                // The arguments here are the same as the parameters to fetch(), and
+                // are kept as-is for flexibility of both the library and applications.
+                if (input instanceof URL) {
+                    const proxy =
+                        'https://corsproxy.io/?' +
+                        encodeURIComponent(input.toString());
+                    return [proxy, init];
+                } else if (typeof input === 'string') {
+                    const proxy =
+                        'https://corsproxy.io/?' + encodeURIComponent(input);
+                    return [proxy, init];
+                } else {
+                    // Omitting handling for example
+                    throw new Error('Unexpected request input type');
+                }
+            },
+        },
+    });
 
     return {
         mastodonClient,
+        twitterClient,
         synchronizedPostsCountAllTime,
         synchronizedPostsCountThisRun
     };

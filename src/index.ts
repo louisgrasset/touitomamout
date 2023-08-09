@@ -1,9 +1,9 @@
 import {configuration} from './configuration.js';
-import {feedHandler} from './handlers/index.js';
 import {contentSync} from './synchronizers/content-sync.js';
 import {profileSync} from './synchronizers/profile-sync.js';
 
 const {
+    twitterClient,
     mastodonClient,
     synchronizedPostsCountAllTime,
     synchronizedPostsCountThisRun,
@@ -13,13 +13,12 @@ const {
  * Let the magic happens 💫
  */
 const touitomamout = async () => {
-    if (!mastodonClient) {
+    if (!mastodonClient || !twitterClient) {
         return;
     }
 
-    const feed = await feedHandler();
-    await profileSync(feed, mastodonClient);
-    await contentSync(feed, mastodonClient, synchronizedPostsCountThisRun)
+    await profileSync(twitterClient, mastodonClient);
+    await contentSync(twitterClient, mastodonClient, synchronizedPostsCountThisRun)
         .then(response => {
             synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
 
