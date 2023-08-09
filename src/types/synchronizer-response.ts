@@ -1,7 +1,7 @@
-import {APIResponse} from './api-response.js';
 import {mastodon} from 'masto';
+import {Scraper} from '@the-convocation/twitter-scraper';
 
 export type SynchronizerResponse = {
-    feed: APIResponse,
-    mastodonClient: mastodon.Client
+    twitterClient: Scraper,
+    mastodonClient: mastodon.rest.Client
 }

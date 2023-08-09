@@ -1,10 +1,9 @@
-import {TweetMetadata} from '../../types/index.js';
 import {TWITTER_USERNAME} from '../../constants.js';
+import {Tweet} from '@the-convocation/twitter-scraper';
 
-export const isTweetQuotingAnotherUser = (tweet: TweetMetadata) => {
-    const link = tweet?._extra?.links.find(link => link.type === 'quote');
-    if (!link) {
+export const isTweetQuotingAnotherUser = (tweet: Tweet) => {
+    if (!tweet.quotedStatus) {
         return false;
     }
-    return link.url.match(/(\w+)\/status\/\d+/)?.[1] !== TWITTER_USERNAME;
+    return tweet?.quotedStatus?.username !== TWITTER_USERNAME;
 };

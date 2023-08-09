@@ -15,7 +15,7 @@ npm run ci && npm run build
 ## Configuration
 Touitomamout relies on two APIs:
 - [Mastodon](https://docs.joinmastodon.org/client/intro/)
-- [RSSHub](https://github.com/DIYgod/RSSHub)
+- [Twitter-Scrapper](https://github.com/@the-convocation/twitter-scraper)
 
 ### Mastodon configuration
 In order to communicate with the mastodon instance, you'll have to generate an API Token. It's totally free. Reminder: your application name will be publicly visible. 
@@ -26,9 +26,6 @@ In order to communicate with the mastodon instance, you'll have to generate an A
 - `write:statuses`: post toots
 - `write:accounts`: update your profile
 3. Populate the [Environment](#Environment) section with your `access token`.
-
-### RSSHub configuration
-You can rely on the public instance `rsshub.app` but you can also [self-host](https://docs.rsshub.app/en/install) your own. The public instance can sometimes be out of sync because of the number of requests made on this one.
 
 ### Environment
 First things first, please copy the [`.env.example`](https://github.com/louisgrasset/touitomamout/blob/main/.env.example) file to `.env`.
@@ -45,7 +42,7 @@ Then, please fill each variable.
 ### Multiple instances
 This project supports a multiple instances mode. To do so, simply provide multiple `.env` files such as `.env.instance1` and `.env.instance2`.
 
-The deploy & deploy:update scripts will handle them properly.
+`deploy` & `deploy:update` scripts will handle them properly.
 
 ## Run it
 
