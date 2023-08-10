@@ -9,17 +9,12 @@ import {savePostToCache} from '../../helpers/cache/save-post-to-cache.js';
 import {mediaBlobParser} from '../../helpers/medias/media-blob-parser.js';
 import {ComAtprotoRepoUploadBlob} from '@atproto/api';
 import {getCache} from '../../helpers/cache/index.js';
-import {Cache} from '../../types/index.js';
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
-export const blueskySender = async (client: BskyAgent, post: BlueskyPost, medias: Media[], log: Ora) => {
-    async function waitTwoSeconds(): Promise<void> {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, 2000); // 2000 milliseconds = 2 seconds
-        });
+export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost | null, medias: Media[], log: Ora) => {
+    if(!client || !post) {
+        return;
     }
 
     // Medias
@@ -123,6 +118,5 @@ export const blueskySender = async (client: BskyAgent, post: BlueskyPost, medias
             cid: createdPost.cid,
             rkey: createdPost.uri.match(/\/(?<rkey>\w+)$/)?.groups?.['rkey'] || ''
         }, Platform.BLUESKY);
-        await waitTwoSeconds();
     });
 };

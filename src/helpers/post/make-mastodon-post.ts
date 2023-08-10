@@ -1,6 +1,6 @@
 import {mastodon} from 'masto';
 import {Tweet} from '@the-convocation/twitter-scraper';
-import {Media, Platform} from '../../types/index.js';
+import { Platform} from '../../types/index.js';
 import {MastodonPost} from '../../types/post.js';
 import {parseTweetText} from '../tweet/parse-tweet-text.js';
 import {MASTODON_INSTANCE} from '../../constants.js';

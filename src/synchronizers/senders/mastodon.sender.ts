@@ -10,7 +10,11 @@ import {getCache} from '../../helpers/cache/index.js';
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
-export const mastodonSender = async (client: mastodon.rest.Client, post: MastodonPost, medias: Media[], log: Ora) => {
+export const mastodonSender = async (client: mastodon.rest.Client | null, post: MastodonPost | null, medias: Media[], log: Ora) => {
+    if(!client || !post) {
+        return;
+    }
+
     // Medias
     const mediaAttachments: mastodon.v1.MediaAttachment[] = [];
     for (const media of medias) {

@@ -8,16 +8,20 @@ import {makeMastodonPost} from './make-mastodon-post.js';
 import {BskyAgent} from '@atproto/api';
 import {makeBlueskyPost} from './make-bluesky-post.js';
 
-export const makePost = async (tweet: Tweet, mastodonClient: mastodon.rest.Client, blueskyClient: BskyAgent, log: Ora): Promise<Post> => {
+export const makePost = async (tweet: Tweet, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, log: Ora): Promise<Post> => {
     log.color = 'magenta';
     log.text = `post: → generating ${getPostExcerpt(tweet.text ?? VOID)}`;
 
     // Mastodon post
-    const mastodonPost = await makeMastodonPost(mastodonClient, tweet);
-
+    let mastodonPost = null;
+    if(mastodonClient) {
+        mastodonPost = await makeMastodonPost(mastodonClient, tweet);
+    }
     // Bluesky post
-    const blueskyPost = await makeBlueskyPost(blueskyClient, tweet);
-
+    let blueskyPost = null;
+    if(blueskyClient) {
+        blueskyPost = await makeBlueskyPost(blueskyClient, tweet);
+    }
     return {
         mastodon: mastodonPost,
         bluesky: blueskyPost

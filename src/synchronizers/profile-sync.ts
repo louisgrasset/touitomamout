@@ -14,7 +14,13 @@ import {
 import {oraPrefixer} from '../utils/ora-prefixer.js';
 import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
 
-export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client, blueskyClient: BskyAgent): Promise<SynchronizerResponse> => {
+export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
+    if(!mastodonClient) {
+        return {
+            twitterClient, mastodonClient, blueskyClient
+        };
+    }
+
     const log = ora({color: 'cyan', prefixText: oraPrefixer('profile-sync')}).start();
     log.text = 'parsing';
 
@@ -52,7 +58,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
         await mastodonClient.v1.accounts.updateCredentials(params);
     }
     log.succeed('task finished');
-
+    
     return {
         twitterClient, mastodonClient, blueskyClient
     };

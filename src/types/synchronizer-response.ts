@@ -4,6 +4,6 @@ import {BskyAgent} from '@atproto/api';
 
 export type SynchronizerResponse = {
     twitterClient: Scraper,
-    mastodonClient: mastodon.rest.Client,
-    blueskyClient: BskyAgent
+    mastodonClient: null | mastodon.rest.Client,
+    blueskyClient: null | BskyAgent
 }

@@ -1,6 +1,7 @@
 import {configuration} from './configuration.js';
 import {contentSync} from './synchronizers/content-sync.js';
 import {profileSync} from './synchronizers/profile-sync.js';
+import {SYNC_BLUESKY, SYNC_MASTODON} from './constants.js';
 
 const {
     twitterClient,
@@ -14,8 +15,14 @@ const {
  * Let the magic happens 💫
  */
 const touitomamout = async () => {
-    if (!mastodonClient || !twitterClient || !blueskyClient) {
-        throw new Error('Can\'t connect to some providers');
+    if (SYNC_MASTODON && !mastodonClient) {
+        throw new Error('Can\'t connect to Mastodon 🦣');
+    }
+    if (SYNC_BLUESKY && !blueskyClient) {
+        throw new Error('Can\'t connect to Bluesky ☁️');
+    }
+    if (!twitterClient) {
+        throw new Error('Can\'t connect to Twitter 🦤');
     }
 
     await profileSync(twitterClient, mastodonClient, blueskyClient);

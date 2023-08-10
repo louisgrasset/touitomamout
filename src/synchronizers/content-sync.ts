@@ -11,7 +11,7 @@ import {mastodonSender} from './senders/mastodon.sender.js';
 import {blueskySender} from './senders/bluesky.sender.js';
 import {makePost} from '../helpers/post/make-post.js';
 
-export const contentSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client, blueskyClient: BskyAgent, synchronizedPostsCountThisRun: Counter.default): Promise<SynchronizerResponse & {metrics: Metrics}> => {
+export const contentSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, synchronizedPostsCountThisRun: Counter.default): Promise<SynchronizerResponse & { metrics: Metrics }> => {
     const tweets = await contentGetter(twitterClient);
 
     try {
@@ -27,12 +27,14 @@ export const contentSync = async (twitterClient: Scraper, mastodonClient: mastod
             const {
                 mastodon: mastodonPost,
                 bluesky: blueskyPost
-            }= await makePost(tweet, mastodonClient, blueskyClient, log);
+            } = await makePost(tweet, mastodonClient, blueskyClient, log);
 
             await mastodonSender(mastodonClient, mastodonPost, medias, log);
             await blueskySender(blueskyClient, blueskyPost, medias, log);
 
-            synchronizedPostsCountThisRun.inc();
+            if (mastodonClient || blueskyPost) {
+                synchronizedPostsCountThisRun.inc();
+            }
         }
 
         return {

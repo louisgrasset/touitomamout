@@ -18,6 +18,6 @@ export type BlueskyPost = {
 }
 
 export type Post = {
-    mastodon: MastodonPost,
-    bluesky: BlueskyPost,
+    mastodon: null | MastodonPost,
+    bluesky: null | BlueskyPost,
 }

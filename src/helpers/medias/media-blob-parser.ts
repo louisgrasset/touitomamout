@@ -1,6 +1,3 @@
-import mime from 'mime';
-import {readFile} from 'fs';
-
 interface BlobInfo {
     mimeType: string;
     blobData: Uint8Array;
