@@ -11,6 +11,7 @@ export const getCache = async (): Promise<Cache> => {
         return JSON.parse(fileContent)[INSTANCE_ID];
     } catch (err) {
         console.error('Error reading cache.json file:', err);
+
         return {};
     }
 };
@@ -18,7 +19,7 @@ export const getCache = async (): Promise<Cache> => {
 /**
  * A method to get the cache.
  */
-export const getCompleteCache = async (): Promise<CompleteCache> => {
+export const getCompleteCache = async (): Promise<  CompleteCache> => {
     try {
         const fileContent = await fs.promises.readFile(CACHE_PATH, 'utf-8');
         return JSON.parse(fileContent);
