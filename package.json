@@ -18,18 +18,21 @@
     "url": "https://github.com/louisgrasset/touitomamout.git"
   },
   "dependencies": {
+    "@atproto/api": "^0.6.1",
     "@pm2/io": "^5.0.0",
     "@the-convocation/twitter-scraper": "^0.5.0",
     "@types/node": "^20.4.9",
     "cli-spinners": "^2.9.0",
     "dotenv": "^16.3.1",
     "html-escaper": "^3.0.3",
-    "masto": "^6.0.5",
+    "masto": "^6.0.6",
+    "mime": "^3.0.0",
     "node-html-parser": "^6.1.5",
     "ora": "^7.0.1"
   },
   "devDependencies": {
     "@types/html-escaper": "^3.0.0",
+    "@types/mime": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.46.0",

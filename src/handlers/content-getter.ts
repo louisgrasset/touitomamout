@@ -1,10 +1,10 @@
 import ora from 'ora';
 import {Scraper, Tweet} from '@the-convocation/twitter-scraper';
+import {getTweetIdFromPermalink, isTweetQuotingAnotherUser, isTweetRecent} from '../helpers/tweet/index.js';
 import {getCache} from '../helpers/cache/index.js';
-import {isTweetQuotingAnotherUser, isTweetRecent} from '../helpers/tweet/index.js';
+import {isTweetCached} from '../helpers/tweet/is-tweet-cached.js';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
 import {TWITTER_USERNAME} from '../constants.js';
-import {isTweetCached} from '../helpers/tweet/is-tweet-cached.js';
 
 export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> => {
     const cache = await getCache();
@@ -13,12 +13,12 @@ export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> =>
 
     // Get tweets from API
     const tweets: Tweet[] = [];
-    const tweetsIds = twitterClient.getTweets(TWITTER_USERNAME, 3);
-
+    const tweetsIds = twitterClient.getTweets(TWITTER_USERNAME, 50);
     for await(const tweet of tweetsIds) {
         if (tweet) {
             tweets.unshift({
                 ...tweet,
+                id: getTweetIdFromPermalink(tweet.id || ''),
                 timestamp: (tweet.timestamp ?? 0) * 1000
             });
         }

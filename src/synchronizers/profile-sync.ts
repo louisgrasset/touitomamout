@@ -1,6 +1,9 @@
-import {SynchronizerResponse} from '../types/index.js';
 import {mastodon} from 'masto';
-import {downloadMedia} from '../handlers/download-media.js';
+import ora from 'ora';
+import {Scraper} from '@the-convocation/twitter-scraper';
+import {BskyAgent} from '@atproto/api';
+import {SynchronizerResponse} from '../types/index.js';
+import {downloadMedia} from '../handlers/index.js';
 import {
     SYNC_PROFILE_DESCRIPTION,
     SYNC_PROFILE_NAME,
@@ -8,12 +11,10 @@ import {
     SYNC_PROFILE_HEADER,
     TWITTER_USERNAME
 } from '../constants.js';
-import ora from 'ora';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
-import {Scraper} from '@the-convocation/twitter-scraper';
 import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
 
-export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client): Promise<SynchronizerResponse> => {
+export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client, blueskyClient: BskyAgent): Promise<SynchronizerResponse> => {
     const log = ora({color: 'cyan', prefixText: oraPrefixer('profile-sync')}).start();
     log.text = 'parsing';
 
@@ -53,6 +54,6 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
     log.succeed('task finished');
 
     return {
-        twitterClient, mastodonClient
+        twitterClient, mastodonClient, blueskyClient
     };
 };

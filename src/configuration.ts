@@ -3,15 +3,17 @@ import {createRequire} from 'module';
 import {createCacheFile, getCache} from './helpers/cache/index.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
-import {MASTODON_ACCESS_TOKEN, MASTODON_INSTANCE, TWITTER_USERNAME} from './constants.js';
+import {MASTODON_ACCESS_TOKEN, MASTODON_INSTANCE, TWITTER_USERNAME, BLUESKY_INSTANCE, BLUESKY_IDENTIFIER, BLUESKY_PASSWORD} from './constants.js';
 import {TouitomamoutError} from './helpers/error.js';
 import {Scraper} from '@the-convocation/twitter-scraper';
+import {BskyAgent} from '@atproto/api';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
     synchronizedPostsCountThisRun: Counter.default;
     mastodonClient: mastodon.rest.Client | void
     twitterClient: Scraper
+    blueskyClient: BskyAgent
 }> => {
     // Error handling
     [
@@ -33,6 +35,24 @@ export const configuration = async (): Promise<{
             message: 'Mastodon access token is missing.',
             details: [`Please go to https://${MASTODON_INSTANCE}/settings/applications/new to generate one.`]
         },
+        {
+            name: 'BLUESKY_INSTANCE',
+            value: BLUESKY_INSTANCE,
+            message: 'Bluesky Protocol instance is missing.',
+            details: []
+        },
+        {
+            name: 'BLUESKY_IDENTIFIER',
+            value: BLUESKY_IDENTIFIER,
+            message: 'Bluesky Protocol identifier is missing.',
+            details: []
+        },
+        {
+            name: 'BLUESKY_PASSWORD',
+            value: BLUESKY_PASSWORD,
+            message: 'Bluesky Protocol password is missing.',
+            details: []
+        }
     ].forEach(({name, value, message, details}) => {
         if(!value || value === '') {
             throw new  Error(TouitomamoutError(message, [...details, `Please check '${name}' in your .env settings.`]));
@@ -42,6 +62,7 @@ export const configuration = async (): Promise<{
     // Init configuration
     const require = createRequire(import.meta.url);
     const pm2 = require('@pm2/io');
+    const bsky = require('@atproto/api');
 
     await createCacheFile();
 
@@ -62,10 +83,7 @@ export const configuration = async (): Promise<{
     });
     synchronizedHandle.set(`@${TWITTER_USERNAME}`);
 
-    const mastodonClient = createRestAPIClient({
-        url: `https://${MASTODON_INSTANCE}`,
-        accessToken: MASTODON_ACCESS_TOKEN,
-    });
+
 
     const twitterClient = new Scraper({
         transform: {
@@ -88,10 +106,22 @@ export const configuration = async (): Promise<{
             },
         },
     });
+    console.log('🦤 client: ✔ connected');
+
+    const mastodonClient = createRestAPIClient({
+        url: `https://${MASTODON_INSTANCE}`,
+        accessToken: MASTODON_ACCESS_TOKEN,
+    });
+    console.log('🦣 client: ✔ connected');
+
+    const blueskyClient = new bsky.BskyAgent({ service: `https://${BLUESKY_INSTANCE}` });
+    await blueskyClient.login({identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD});
+    console.log('☁️ client: ✔ connected');
 
     return {
         mastodonClient,
         twitterClient,
+        blueskyClient,
         synchronizedPostsCountAllTime,
         synchronizedPostsCountThisRun
     };

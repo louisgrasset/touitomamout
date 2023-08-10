@@ -4,7 +4,7 @@ import {Tweet} from '@the-convocation/twitter-scraper';
  * Filter results to only keep the most recent ones.
  * Helps when the API returns only the most popular tweets.
  */
-const RECENT_THRESHOLD_HOURS = 1400;
+const RECENT_THRESHOLD_HOURS = 24 * 7;
 
 export const isTweetRecent = (tweet: Tweet) => {
     const publicationUTCDate = new Date(tweet.timestamp ?? 0);
