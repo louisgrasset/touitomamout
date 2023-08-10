@@ -3,7 +3,6 @@ import {Tweet} from '@the-convocation/twitter-scraper';
 import {createRequire} from 'module';
 import {Platform} from '../../types/index.js';
 import {BlueskyPost} from '../../types/post.js';
-import {parseTweetText} from '../tweet/parse-tweet-text.js';
 import {BLUESKY_IDENTIFIER} from '../../constants.js';
 import {getCache} from '../cache/index.js';
 
@@ -11,7 +10,6 @@ export const makeBlueskyPost = async (client: BskyAgent, tweet: Tweet): Promise<
     const cache = await getCache();
 
     const username = await client.getProfile({actor: BLUESKY_IDENTIFIER}).then(account => account.data.handle);
-    const text = parseTweetText(tweet.text || '');
 
     // Reply to post
     const replyData = (tweet.isSelfThread && tweet.inReplyToStatusId) ? cache[tweet.inReplyToStatusId]?.[Platform.BLUESKY] : undefined;
@@ -34,7 +32,7 @@ export const makeBlueskyPost = async (client: BskyAgent, tweet: Tweet): Promise<
     const require = createRequire(import.meta.url);
     const bsky = require('@atproto/api');
 
-    const post = new bsky.RichText({text});
+    const post = new bsky.RichText({text: tweet.text!});
     await post.detectFacets(client); // automatically detects mentions and links
 
     return {

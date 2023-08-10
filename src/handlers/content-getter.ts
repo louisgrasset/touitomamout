@@ -5,6 +5,7 @@ import {getCache} from '../helpers/cache/index.js';
 import {isTweetCached} from '../helpers/tweet/is-tweet-cached.js';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
 import {TWITTER_USERNAME} from '../constants.js';
+import {formatTweetText} from '../helpers/tweet/format-tweet-text.js';
 
 export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> => {
     const cache = await getCache();
@@ -19,7 +20,8 @@ export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> =>
             tweets.unshift({
                 ...tweet,
                 id: getTweetIdFromPermalink(tweet.id || ''),
-                timestamp: (tweet.timestamp ?? 0) * 1000
+                timestamp: (tweet.timestamp ?? 0) * 1000,
+                text: formatTweetText(tweet)
             });
         }
     }
