@@ -10,11 +10,12 @@ import {
     BLUESKY_INSTANCE,
     BLUESKY_IDENTIFIER,
     BLUESKY_PASSWORD,
-    SYNC_MASTODON, SYNC_BLUESKY, TWITTER_PASSWORD, TWITTER_USERNAME
+    SYNC_MASTODON, SYNC_BLUESKY
 } from './constants.js';
 import {TouitomamoutError} from './helpers/error.js';
 import {Scraper} from '@the-convocation/twitter-scraper';
 import {BskyAgent} from '@atproto/api';
+import {handleTwitterAuth} from './helpers/auth/auth.js';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
@@ -121,12 +122,7 @@ export const configuration = async (): Promise<{
         },
     });
 
-    if(TWITTER_USERNAME && TWITTER_PASSWORD) {
-        await twitterClient.login(TWITTER_USERNAME, TWITTER_PASSWORD);
-        console.log('🦤 client: ✔ connected');
-    } else {
-        console.log('🦤 client: ✔ connected as guest | replies will not be synced');
-    }
+    await handleTwitterAuth(twitterClient);
 
     let mastodonClient = null;
     if(SYNC_MASTODON) {

@@ -10,5 +10,6 @@ dist/
 .env*
 !.env.example
 
-# Cache file
+# Temporary files
 cache*.json
+cookies*.json

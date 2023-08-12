@@ -26,6 +26,7 @@ export const BLUESKY_IDENTIFIER = process.env.BLUESKY_IDENTIFIER || '';
 export const BLUESKY_PASSWORD = process.env.BLUESKY_PASSWORD || '';
 export const INSTANCE_ID = process.env.INSTANCE_ID ?? 'instance';
 export const CACHE_PATH = `./cache.${INSTANCE_ID.toLowerCase().trim().replaceAll(' ', '_')}.json`;
+export const COOKIES_PATH = `./cookies.${INSTANCE_ID.toLowerCase().trim().replaceAll(' ', '_')}.json`;
 export const SYNC_MASTODON = (process.env.SYNC_MASTODON || 'false') === 'true';
 export const SYNC_BLUESKY = (process.env.SYNC_BLUESKY || 'false') === 'true';
 export const SYNC_PROFILE_DESCRIPTION = (process.env.SYNC_PROFILE_DESCRIPTION || 'false') === 'true';
