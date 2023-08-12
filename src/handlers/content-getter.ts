@@ -4,7 +4,7 @@ import {getTweetIdFromPermalink} from '../helpers/tweet/index.js';
 import {getCache} from '../helpers/cache/index.js';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
 import {TWITTER_HANDLE} from '../constants.js';
-import {formatTweetText} from '../helpers/tweet/format-tweet-text.js';
+import {formatTweetText} from '../helpers/tweet/index.js';
 import {getEligibleTweet} from './get-eligible-tweet.js';
 
 const pullContentStats = (tweets: Tweet[], title: string) => {

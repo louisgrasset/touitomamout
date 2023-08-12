@@ -1,8 +1,8 @@
 import {Scraper} from '@the-convocation/twitter-scraper';
 import {TWITTER_PASSWORD, TWITTER_USERNAME} from '../../constants.js';
-import {getCookies} from './get-cookies.js';
+import {getCookies} from '../cookies/get-cookies.js';
 import {TouitomamoutError} from '../error.js';
-import {saveCookies} from './save-cookies.js';
+import {saveCookies} from '../cookies/save-cookies.js';
 
 const restorePreviousSession = async (client: Scraper): Promise<void> => {
     try {
