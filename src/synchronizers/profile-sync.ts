@@ -1,18 +1,19 @@
+import {BskyAgent} from '@atproto/api';
+import {Scraper} from '@the-convocation/twitter-scraper';
 import {mastodon} from 'masto';
 import ora from 'ora';
-import {Scraper} from '@the-convocation/twitter-scraper';
-import {BskyAgent} from '@atproto/api';
-import {SynchronizerResponse} from '../types/index.js';
-import {downloadMedia} from '../handlers/index.js';
+
 import {
     SYNC_PROFILE_DESCRIPTION,
+    SYNC_PROFILE_HEADER,
     SYNC_PROFILE_NAME,
     SYNC_PROFILE_PICTURE,
-    SYNC_PROFILE_HEADER,
     TWITTER_HANDLE
 } from '../constants.js';
-import {oraPrefixer} from '../utils/ora-prefixer.js';
+import {downloadMedia} from '../handlers/index.js';
 import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
+import {SynchronizerResponse} from '../types/index.js';
+import {oraPrefixer} from '../utils/ora-prefixer.js';
 
 export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
     if(!mastodonClient) {

@@ -1,6 +1,6 @@
-import {join} from 'path';
-import fs from 'fs';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import {join} from 'path';
 
 const envFilename = process.argv[2] ?? '.env';
 const envPath = join(process.cwd(), envFilename);

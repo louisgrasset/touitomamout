@@ -1,8 +1,9 @@
 import { Tweet} from '@the-convocation/twitter-scraper';
-import {Cache} from '../types/index.js';
-import {keepRecentTweets, isTweetCached, keepSelfQuotes, keepSelfReplies} from '../helpers/tweet/index.js';
-import {getPostExcerpt} from '../helpers/post/get-post-excerpt.js';
+
 import {DEBUG} from '../constants.js';
+import {getPostExcerpt} from '../helpers/post/get-post-excerpt.js';
+import {isTweetCached, keepRecentTweets, keepSelfQuotes, keepSelfReplies} from '../helpers/tweet/index.js';
+import {Cache} from '../types/index.js';
 
 export const getEligibleTweet = async (tweet: Tweet, cache: Cache): Promise<Tweet | undefined> => {
     const notCached = !isTweetCached(tweet, cache);

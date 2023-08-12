@@ -1,4 +1,5 @@
 import {Tweet} from '@the-convocation/twitter-scraper';
+
 import {TWITTER_HANDLE} from '../../constants.js';
 
 export const keepSelfReplies = async (tweet: Tweet) => {

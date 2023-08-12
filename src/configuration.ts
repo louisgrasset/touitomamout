@@ -1,22 +1,21 @@
-import {createRestAPIClient, mastodon} from 'masto';
-import {createCacheFile, getCache} from './helpers/cache/index.js';
-import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
+import bsky, {BskyAgent} from '@atproto/api';
+import pm2 from'@pm2/io';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
+import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
+import {Scraper} from '@the-convocation/twitter-scraper';
+import {createRestAPIClient, mastodon} from 'masto';
+
 import {
+    BLUESKY_IDENTIFIER,
+    BLUESKY_INSTANCE,
+    BLUESKY_PASSWORD,
     MASTODON_ACCESS_TOKEN,
     MASTODON_INSTANCE,
-    TWITTER_HANDLE,
-    BLUESKY_INSTANCE,
-    BLUESKY_IDENTIFIER,
-    BLUESKY_PASSWORD,
-    SYNC_MASTODON, SYNC_BLUESKY
-} from './constants.js';
-import {TouitomamoutError} from './helpers/error.js';
-import {Scraper} from '@the-convocation/twitter-scraper';
-import {BskyAgent} from '@atproto/api';
+    SYNC_BLUESKY,
+    SYNC_MASTODON,     TWITTER_HANDLE} from './constants.js';
 import {handleTwitterAuth} from './helpers/auth/auth.js';
-import pm2 from'@pm2/io';
-import bsky from'@atproto/api';
+import {createCacheFile, getCache} from './helpers/cache/index.js';
+import {TouitomamoutError} from './helpers/error.js';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;

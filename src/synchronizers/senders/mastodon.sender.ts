@@ -1,12 +1,13 @@
 import {mastodon} from 'masto';
-import {downloadMedia} from '../../handlers/index.js';
-import {Media, Platform} from '../../types/index.js';
 import {Ora} from 'ora';
-import {getPostExcerpt} from '../../helpers/post/get-post-excerpt.js';
-import {MastodonPost} from '../../types/post.js';
+
 import {VOID} from '../../constants.js';
-import {savePostToCache} from '../../helpers/cache/save-post-to-cache.js';
+import {downloadMedia} from '../../handlers/index.js';
 import {getCache} from '../../helpers/cache/index.js';
+import {savePostToCache} from '../../helpers/cache/save-post-to-cache.js';
+import {getPostExcerpt} from '../../helpers/post/get-post-excerpt.js';
+import {Media, Platform} from '../../types/index.js';
+import {MastodonPost} from '../../types/post.js';
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 

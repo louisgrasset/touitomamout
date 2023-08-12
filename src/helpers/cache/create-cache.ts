@@ -1,7 +1,8 @@
 import fs from 'fs';
+
 import {CACHE_PATH, INSTANCE_ID} from '../../constants.js';
-import {updateCacheFile} from './update-cache.js';
 import {getCompleteCache} from './get-cache.js';
+import {updateCacheFile} from './update-cache.js';
 
 export const createCacheFile = async () => {
     try {

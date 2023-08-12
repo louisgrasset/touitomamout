@@ -1,6 +1,7 @@
-import {Cache} from '../../types/index.js';
 import fs from 'fs';
+
 import {CACHE_PATH, INSTANCE_ID} from '../../constants.js';
+import {Cache} from '../../types/index.js';
 import {getCompleteCache} from './get-cache.js';
 
 export const updateCacheFile = async (data: Cache | null) => {

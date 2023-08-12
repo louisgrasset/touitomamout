@@ -1,7 +1,7 @@
 import {configuration} from './configuration.js';
+import {SYNC_BLUESKY, SYNC_MASTODON} from './constants.js';
 import {contentSync} from './synchronizers/content-sync.js';
 import {profileSync} from './synchronizers/profile-sync.js';
-import {SYNC_BLUESKY, SYNC_MASTODON} from './constants.js';
 
 const {
     twitterClient,

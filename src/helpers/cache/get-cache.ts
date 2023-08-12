@@ -1,6 +1,7 @@
-import {Cache, CompleteCache} from '../../types/index.js';
 import fs from 'fs';
+
 import {CACHE_PATH, INSTANCE_ID} from '../../constants.js';
+import {Cache, CompleteCache} from '../../types/index.js';
 
 /**
  * A method to get the cache for the current instanceId.

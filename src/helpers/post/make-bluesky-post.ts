@@ -1,10 +1,10 @@
-import {BskyAgent} from '@atproto/api';
+import bsky, {BskyAgent} from '@atproto/api';
 import {Tweet} from '@the-convocation/twitter-scraper';
+
+import {BLUESKY_IDENTIFIER} from '../../constants.js';
 import {Platform} from '../../types/index.js';
 import {BlueskyPost} from '../../types/post.js';
-import {BLUESKY_IDENTIFIER} from '../../constants.js';
 import {getCache} from '../cache/index.js';
-import bsky from'@atproto/api';
 
 export const makeBlueskyPost = async (client: BskyAgent, tweet: Tweet): Promise<BlueskyPost> => {
     const cache = await getCache();
