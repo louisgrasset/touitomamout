@@ -1,5 +1,4 @@
 import {createRestAPIClient, mastodon} from 'masto';
-import {createRequire} from 'module';
 import {createCacheFile, getCache} from './helpers/cache/index.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
@@ -16,6 +15,8 @@ import {TouitomamoutError} from './helpers/error.js';
 import {Scraper} from '@the-convocation/twitter-scraper';
 import {BskyAgent} from '@atproto/api';
 import {handleTwitterAuth} from './helpers/auth/auth.js';
+import pm2 from'@pm2/io';
+import bsky from'@atproto/api';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
@@ -77,10 +78,6 @@ export const configuration = async (): Promise<{
     });
 
     // Init configuration
-    const require = createRequire(import.meta.url);
-    const pm2 = require('@pm2/io');
-    const bsky = require('@atproto/api');
-
     await createCacheFile();
 
     const synchronizedPostsCountThisRun = pm2.counter({
