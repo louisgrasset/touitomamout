@@ -1,13 +1,13 @@
-import {BskyAgent} from '@atproto/api';
-import {Tweet} from '@the-convocation/twitter-scraper';
-import {mastodon} from 'masto';
-import {Ora} from 'ora';
+import { BskyAgent } from '@atproto/api';
+import { Tweet } from '@the-convocation/twitter-scraper';
+import { mastodon } from 'masto';
+import { Ora } from 'ora';
 
-import {VOID} from '../../constants.js';
-import {Post} from '../../types/post.js';
-import {getPostExcerpt} from './get-post-excerpt.js';
-import {makeBlueskyPost} from './make-bluesky-post.js';
-import {makeMastodonPost} from './make-mastodon-post.js';
+import { VOID } from '../../constants.js';
+import { Post } from '../../types/post.js';
+import { getPostExcerpt } from './get-post-excerpt.js';
+import { makeBlueskyPost } from './make-bluesky-post.js';
+import { makeMastodonPost } from './make-mastodon-post.js';
 
 export const makePost = async (tweet: Tweet, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, log: Ora): Promise<Post> => {
     log.color = 'magenta';

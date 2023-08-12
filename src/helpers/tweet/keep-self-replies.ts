@@ -1,6 +1,6 @@
-import {Tweet} from '@the-convocation/twitter-scraper';
+import { Tweet } from '@the-convocation/twitter-scraper';
 
-import {TWITTER_HANDLE} from '../../constants.js';
+import { TWITTER_HANDLE } from '../../constants.js';
 
 export const keepSelfReplies = async (tweet: Tweet) => {
     if (tweet.inReplyToStatus) {

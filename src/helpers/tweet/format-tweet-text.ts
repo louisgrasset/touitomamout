@@ -1,4 +1,4 @@
-import {Tweet} from '@the-convocation/twitter-scraper';
+import { Tweet } from '@the-convocation/twitter-scraper';
 
 export const formatTweetText = (tweet: Tweet): string => {
     let text = tweet.text || '';

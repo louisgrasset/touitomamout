@@ -1,10 +1,10 @@
-import {Tweet} from '@the-convocation/twitter-scraper';
-import {mastodon} from 'masto';
+import { Tweet } from '@the-convocation/twitter-scraper';
+import { mastodon } from 'masto';
 
-import {MASTODON_INSTANCE} from '../../constants.js';
-import {Platform} from '../../types/index.js';
-import {MastodonPost} from '../../types/post.js';
-import {getCache} from '../cache/index.js';
+import { MASTODON_INSTANCE } from '../../constants.js';
+import { Platform } from '../../types/index.js';
+import { MastodonPost } from '../../types/post.js';
+import { getCache } from '../cache/index.js';
 
 export const makeMastodonPost= async (client: mastodon.rest.Client, tweet: Tweet) : Promise<MastodonPost> => {
     const cache = await getCache();
@@ -20,7 +20,7 @@ export const makeMastodonPost= async (client: mastodon.rest.Client, tweet: Tweet
     // Get in reply post references
     let inReplyToId = undefined;
     if(tweet.inReplyToStatus) {
-        inReplyToId =  cache[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
+        inReplyToId = cache[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
     }
 
     return {

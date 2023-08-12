@@ -1,7 +1,7 @@
 import fs from 'fs';
 
-import {CACHE_PATH, INSTANCE_ID} from '../../constants.js';
-import {Cache, CompleteCache} from '../../types/index.js';
+import { CACHE_PATH, INSTANCE_ID } from '../../constants.js';
+import { Cache, CompleteCache } from '../../types/index.js';
 
 /**
  * A method to get the cache for the current instanceId.
@@ -20,7 +20,7 @@ export const getCache = async (): Promise<Cache> => {
 /**
  * A method to get the cache.
  */
-export const getCompleteCache = async (): Promise<  CompleteCache> => {
+export const getCompleteCache = async (): Promise< CompleteCache> => {
     try {
         const fileContent = await fs.promises.readFile(CACHE_PATH, 'utf-8');
         return JSON.parse(fileContent);

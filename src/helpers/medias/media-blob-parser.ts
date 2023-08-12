@@ -4,7 +4,7 @@ interface BlobInfo {
 }
 
 export const mediaBlobParser = async (blob: Blob): Promise<BlobInfo> => {
-    return new Promise<BlobInfo>( (resolve, reject) => {
+    return new Promise<BlobInfo>((resolve, reject) => {
         const allowedMimeTypes = ['image/jpeg', 'image/png'];
         const mimeType = blob.type;
 

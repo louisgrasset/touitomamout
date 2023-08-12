@@ -1,4 +1,4 @@
-import {Tweet} from '@the-convocation/twitter-scraper';
+import { Tweet } from '@the-convocation/twitter-scraper';
 
 /**
  * Filter results to only keep the most recent ones.

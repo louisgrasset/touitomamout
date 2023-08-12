@@ -1,6 +1,6 @@
-import {BskyAgent} from '@atproto/api';
-import {Scraper} from '@the-convocation/twitter-scraper';
-import {mastodon} from 'masto';
+import { BskyAgent } from '@atproto/api';
+import { Scraper } from '@the-convocation/twitter-scraper';
+import { mastodon } from 'masto';
 import ora from 'ora';
 
 import {
@@ -10,10 +10,10 @@ import {
     SYNC_PROFILE_PICTURE,
     TWITTER_HANDLE
 } from '../constants.js';
-import {downloadMedia} from '../handlers/index.js';
-import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
-import {SynchronizerResponse} from '../types/index.js';
-import {oraPrefixer} from '../utils/ora-prefixer.js';
+import { downloadMedia } from '../handlers/index.js';
+import { shortenedUrlsReplacer } from '../helpers/url/shortened-urls-replacer.js';
+import { SynchronizerResponse } from '../types/index.js';
+import { oraPrefixer } from '../utils/ora-prefixer.js';
 
 export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
     if(!mastodonClient) {
@@ -22,7 +22,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
         };
     }
 
-    const log = ora({color: 'cyan', prefixText: oraPrefixer('profile-sync')}).start();
+    const log = ora({ color: 'cyan', prefixText: oraPrefixer('profile-sync') }).start();
     log.text = 'parsing';
 
     const profile = await twitterClient.getProfile(TWITTER_HANDLE);
@@ -51,7 +51,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
             property: 'header',
             value: profileHeader,
         }
-    ].reduce((acc, {condition, property, value}) => condition ? {...acc, [property]: value} : acc, {});
+    ].reduce((acc, { condition, property, value }) => condition ? { ...acc, [property]: value } : acc, {});
 
     // Post updates if any
     if (Object.keys(params).length) {
@@ -59,7 +59,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
         await mastodonClient.v1.accounts.updateCredentials(params);
     }
     log.succeed('task finished');
-    
+
     return {
         twitterClient, mastodonClient, blueskyClient
     };

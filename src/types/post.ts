@@ -1,5 +1,5 @@
-import {AppBskyFeedPost, Facet} from '@atproto/api';
-import {Tweet} from '@the-convocation/twitter-scraper';
+import { AppBskyFeedPost, Facet } from '@atproto/api';
+import { Tweet } from '@the-convocation/twitter-scraper';
 
 export type MastodonPost = {
     tweet: Tweet,

@@ -1,4 +1,4 @@
-import {Platform} from './platform.js';
+import { Platform } from './platform.js';
 
 export type Cache = Record<string, {
     [Platform.MASTODON]?: MastodonCache,

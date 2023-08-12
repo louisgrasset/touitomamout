@@ -1,9 +1,9 @@
-import bsky, {BskyAgent} from '@atproto/api';
+import bsky, { BskyAgent } from '@atproto/api';
 import pm2 from'@pm2/io';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
-import {Scraper} from '@the-convocation/twitter-scraper';
-import {createRestAPIClient, mastodon} from 'masto';
+import { Scraper } from '@the-convocation/twitter-scraper';
+import { createRestAPIClient, mastodon } from 'masto';
 
 import {
     BLUESKY_IDENTIFIER,
@@ -12,10 +12,10 @@ import {
     MASTODON_ACCESS_TOKEN,
     MASTODON_INSTANCE,
     SYNC_BLUESKY,
-    SYNC_MASTODON,     TWITTER_HANDLE} from './constants.js';
-import {handleTwitterAuth} from './helpers/auth/auth.js';
-import {createCacheFile, getCache} from './helpers/cache/index.js';
-import {TouitomamoutError} from './helpers/error.js';
+    SYNC_MASTODON, TWITTER_HANDLE } from './constants.js';
+import { handleTwitterAuth } from './helpers/auth/auth.js';
+import { createCacheFile, getCache } from './helpers/cache/index.js';
+import { TouitomamoutError } from './helpers/error.js';
 
 export const configuration = async (): Promise<{
     synchronizedPostsCountAllTime: Gauge.default;
@@ -68,10 +68,10 @@ export const configuration = async (): Promise<{
             message: 'Bluesky Protocol password is missing.',
             details: []
         }
-    ].forEach(({name, value, message, details, platformEnabled}) => {
+    ].forEach(({ name, value, message, details, platformEnabled }) => {
         if(platformEnabled) {
             if(!value || value === '') {
-                throw new  Error(TouitomamoutError(message, [...details, `Please check '${name}' in your .env settings.`]));
+                throw new Error(TouitomamoutError(message, [...details, `Please check '${name}' in your .env settings.`]));
             }
         }
     });
@@ -132,7 +132,7 @@ export const configuration = async (): Promise<{
     let blueskyClient = null;
     if(SYNC_BLUESKY) {
         blueskyClient = new bsky.BskyAgent({ service: `https://${BLUESKY_INSTANCE}` });
-        await blueskyClient.login({identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD});
+        await blueskyClient.login({ identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD });
         console.log('☁️ client: ✔ connected');
     }
 

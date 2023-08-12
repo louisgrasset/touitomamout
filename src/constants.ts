@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
-import {join} from 'path';
+import { join } from 'path';
 
 const envFilename = process.argv[2] ?? '.env';
 const envPath = join(process.cwd(), envFilename);
@@ -14,7 +14,7 @@ if(!envAvailable) {
     throw new Error('No suitable .env file found.');
 }
 
-dotenv.config({path: join(process.cwd(), envFilename)});
+dotenv.config({ path: join(process.cwd(), envFilename) });
 
 export const TWITTER_HANDLE = process.env.TWITTER_HANDLE || '';
 export const TWITTER_USERNAME = process.env.TWITTER_USERNAME || '';
@@ -32,6 +32,6 @@ export const SYNC_BLUESKY = (process.env.SYNC_BLUESKY || 'false') === 'true';
 export const SYNC_PROFILE_DESCRIPTION = (process.env.SYNC_PROFILE_DESCRIPTION || 'false') === 'true';
 export const SYNC_PROFILE_PICTURE = (process.env.SYNC_PROFILE_PICTURE || 'false') === 'true';
 export const SYNC_PROFILE_NAME = (process.env.SYNC_PROFILE_NAME || 'false') === 'true';
-export const SYNC_PROFILE_HEADER = (process.env.SYNC_PROFILE_HEADER  || 'false') === 'true';
+export const SYNC_PROFILE_HEADER = (process.env.SYNC_PROFILE_HEADER || 'false') === 'true';
 export const DEBUG = (process.env.TOUITOMAMOUT_DEBUG || 'false') === 'true';
 export const VOID = '∅';

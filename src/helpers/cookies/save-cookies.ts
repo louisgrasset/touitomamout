@@ -1,7 +1,7 @@
 import fs from 'fs';
-import {Cookie} from 'tough-cookie';
+import { Cookie } from 'tough-cookie';
 
-import {COOKIES_PATH} from '../../constants.js';
+import { COOKIES_PATH } from '../../constants.js';
 
 export const saveCookies = async (cookies: Cookie[]): Promise<void> => {
     try {

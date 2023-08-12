@@ -1,14 +1,14 @@
-import {AppBskyEmbedRecord, BskyAgent,ComAtprotoRepoUploadBlob} from '@atproto/api';
-import {Ora} from 'ora';
+import { AppBskyEmbedRecord, BskyAgent,ComAtprotoRepoUploadBlob } from '@atproto/api';
+import { Ora } from 'ora';
 
-import {VOID} from '../../constants.js';
-import {downloadMedia} from '../../handlers/index.js';
-import {getCache} from '../../helpers/cache/index.js';
-import {savePostToCache} from '../../helpers/cache/save-post-to-cache.js';
-import {mediaBlobParser} from '../../helpers/medias/media-blob-parser.js';
-import {getPostExcerpt} from '../../helpers/post/get-post-excerpt.js';
-import {Media, Platform} from '../../types/index.js';
-import {BlueskyPost} from '../../types/post.js';
+import { VOID } from '../../constants.js';
+import { downloadMedia } from '../../handlers/index.js';
+import { getCache } from '../../helpers/cache/index.js';
+import { savePostToCache } from '../../helpers/cache/save-post-to-cache.js';
+import { mediaBlobParser } from '../../helpers/medias/media-blob-parser.js';
+import { getPostExcerpt } from '../../helpers/post/get-post-excerpt.js';
+import { Media, Platform } from '../../types/index.js';
+import { BlueskyPost } from '../../types/post.js';
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
@@ -37,9 +37,9 @@ export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost 
 
             // Upload
             log.text = `medias: ↑ (${mediaAttachments.length + 1}/${medias.length}) uploading`;
-            const {mimeType, blobData} = await mediaBlobParser(mediaBlob);
+            const { mimeType, blobData } = await mediaBlobParser(mediaBlob);
 
-            await client.uploadBlob(blobData, {encoding: mimeType})
+            await client.uploadBlob(blobData, { encoding: mimeType })
                 .then(async mediaSent => {
                     mediaAttachments.push(mediaSent);
 
@@ -67,7 +67,7 @@ export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost 
                 $type: 'app.bsky.embed.recordWithMedia',
                 media: {
                     $type: 'app.bsky.embed.images',
-                    images: mediaAttachments.length ? mediaAttachments.map(i => ({alt: '', image: i.data.blob.original})) : undefined
+                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: '', image: i.data.blob.original })) : undefined
                 },
                 record: {
                     $type: 'app.bsky.embed.record',
@@ -103,7 +103,7 @@ export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost 
         if (mediaAttachments.length) {
             data.embed = {
                 $type: 'app.bsky.embed.images',
-                images: mediaAttachments.length ? mediaAttachments.map(i => ({alt: '', image: i.data.blob.original})) : undefined
+                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: '', image: i.data.blob.original })) : undefined
             };
         }
     }
@@ -111,7 +111,7 @@ export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost 
     log.text = `☁️ | post sending: ${getPostExcerpt(post.tweet.text ?? VOID)}`;
 
     // Post
-    await client.post({...data}).then(async (createdPost) => {
+    await client.post({ ...data }).then(async (createdPost) => {
         log.succeed(`☁️ | post sent: ${getPostExcerpt(post.tweet.text ?? VOID)}`);
         const cache = await getCache();
         await savePostToCache(cache, post.tweet.id, {

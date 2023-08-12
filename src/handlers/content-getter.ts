@@ -1,11 +1,11 @@
-import {Scraper, SearchMode, Tweet} from '@the-convocation/twitter-scraper';
+import { Scraper, SearchMode, Tweet } from '@the-convocation/twitter-scraper';
 import ora from 'ora';
 
-import {TWITTER_HANDLE} from '../constants.js';
-import {getCache} from '../helpers/cache/index.js';
-import {formatTweetText,getTweetIdFromPermalink} from '../helpers/tweet/index.js';
-import {oraPrefixer} from '../utils/ora-prefixer.js';
-import {getEligibleTweet} from './get-eligible-tweet.js';
+import { TWITTER_HANDLE } from '../constants.js';
+import { getCache } from '../helpers/cache/index.js';
+import { formatTweetText,getTweetIdFromPermalink } from '../helpers/tweet/index.js';
+import { oraPrefixer } from '../utils/ora-prefixer.js';
+import { getEligibleTweet } from './get-eligible-tweet.js';
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
     const stats = {
@@ -20,7 +20,7 @@ const pullContentStats = (tweets: Tweet[], title: string) => {
 
 export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> => {
     const cache = await getCache();
-    const log = ora({color: 'cyan', prefixText: oraPrefixer('content-mapper')}).start();
+    const log = ora({ color: 'cyan', prefixText: oraPrefixer('content-mapper') }).start();
     log.text = '...';
 
     // Get tweets from API
