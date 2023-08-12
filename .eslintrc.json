@@ -40,6 +40,11 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "no-multi-spaces": ["error"],
+        "no-multiple-empty-lines": ["error"],
+        "space-in-parens": ["error"],
+        "no-trailing-spaces": "error",
+        "object-curly-spacing": [ "error", "always" ]
     }
 }
