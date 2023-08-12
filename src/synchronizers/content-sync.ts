@@ -1,6 +1,6 @@
 import {Media, Metrics, SynchronizerResponse} from '../types/index.js';
 import ora from 'ora';
-import {contentGetter} from '../handlers/content-getter.js';
+import {contentGetter} from '../handlers/index.js';
 import {getCache} from '../helpers/cache/index.js';
 import {mastodon} from 'masto';
 import {oraPrefixer} from '../utils/ora-prefixer.js';

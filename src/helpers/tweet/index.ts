@@ -1,3 +1,3 @@
 export * from './get-tweet-from-permalink.js';
-export * from './is-tweet-quoting-another-user.js';
-export * from './is-tweet-recent.js';
+export * from './keep-self-quotes.js';
+export * from './keep-recent-tweets.js';

@@ -1,4 +1,3 @@
-
 const ERROR_NEW_LINE = '\n               └─ ';
 export const TouitomamoutError = (error: string, details: string[]) => {
     const formattedDetails = details.reduce((formatted, detail) => {

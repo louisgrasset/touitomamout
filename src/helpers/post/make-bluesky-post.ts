@@ -11,23 +11,28 @@ export const makeBlueskyPost = async (client: BskyAgent, tweet: Tweet): Promise<
 
     const username = await client.getProfile({actor: BLUESKY_IDENTIFIER}).then(account => account.data.handle);
 
-    // Reply to post
-    const replyData = (tweet.isSelfThread && tweet.inReplyToStatusId) ? cache[tweet.inReplyToStatusId]?.[Platform.BLUESKY] : undefined;
-    const replyPost = replyData ? await client.getPost({
-        cid: replyData.cid,
-        rkey: replyData.rkey,
-        repo: username
-    }).then(p => p).catch(() => undefined)  : undefined;
+    // Get quoted post references
+    let quotePost = undefined;
+    if(tweet.quotedStatus) {
+        const quoteData = cache[tweet.quotedStatus.id!]?.[Platform.BLUESKY];
+        quotePost = quoteData ? await client.getPost({
+            cid: quoteData.cid,
+            rkey: quoteData.rkey,
+            repo: username,
+        }) : undefined;
 
+    }
 
-    // Quote context
-    const quoteData = tweet.quotedStatusId ? cache[tweet.quotedStatusId]?.[Platform.BLUESKY] : undefined;
-    const quotePost = quoteData ? await client.getPost({
-        cid: quoteData.cid,
-        rkey: quoteData.rkey,
-        repo: username,
-    }) : undefined;
-
+    // Get in reply post references
+    let replyPost = undefined;
+    if(tweet.inReplyToStatus) {
+        const replyData =  cache[tweet.inReplyToStatus.id!]?.[Platform.BLUESKY];
+        replyPost = replyData ? await client.getPost({
+            cid: replyData.cid,
+            rkey: replyData.rkey,
+            repo: username
+        }).then(p => p).catch(() => undefined)  : undefined;
+    }
 
     const require = createRequire(import.meta.url);
     const bsky = require('@atproto/api');
@@ -37,8 +42,8 @@ export const makeBlueskyPost = async (client: BskyAgent, tweet: Tweet): Promise<
 
     return {
         status: post.text,
-        username,
         facets: post.facets,
+        username,
         replyPost,
         quotePost,
         tweet

@@ -9,7 +9,7 @@ import {
     SYNC_PROFILE_NAME,
     SYNC_PROFILE_PICTURE,
     SYNC_PROFILE_HEADER,
-    TWITTER_USERNAME
+    TWITTER_HANDLE
 } from '../constants.js';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
 import {shortenedUrlsReplacer} from '../helpers/url/shortened-urls-replacer.js';
@@ -24,7 +24,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
     const log = ora({color: 'cyan', prefixText: oraPrefixer('profile-sync')}).start();
     log.text = 'parsing';
 
-    const profile = await twitterClient.getProfile(TWITTER_USERNAME);
+    const profile = await twitterClient.getProfile(TWITTER_HANDLE);
     const profilePicture = profile.avatar ? await downloadMedia(profile.avatar) : null;
     const profileHeader = profile.banner ? await downloadMedia(profile.banner) : null;
 

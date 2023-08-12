@@ -1,5 +1,5 @@
 import {mastodon} from 'masto';
-import {downloadMedia} from '../../handlers/download-media.js';
+import {downloadMedia} from '../../handlers/index.js';
 import {Media, Platform} from '../../types/index.js';
 import {Ora} from 'ora';
 import {getPostExcerpt} from '../../helpers/post/get-post-excerpt.js';

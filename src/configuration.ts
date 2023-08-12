@@ -6,11 +6,11 @@ import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
 import {
     MASTODON_ACCESS_TOKEN,
     MASTODON_INSTANCE,
-    TWITTER_USERNAME,
+    TWITTER_HANDLE,
     BLUESKY_INSTANCE,
     BLUESKY_IDENTIFIER,
     BLUESKY_PASSWORD,
-    SYNC_MASTODON, SYNC_BLUESKY
+    SYNC_MASTODON, SYNC_BLUESKY, TWITTER_PASSWORD, TWITTER_USERNAME
 } from './constants.js';
 import {TouitomamoutError} from './helpers/error.js';
 import {Scraper} from '@the-convocation/twitter-scraper';
@@ -26,8 +26,8 @@ export const configuration = async (): Promise<{
     // Error handling
     [
         {
-            name: 'TWITTER_USERNAME',
-            value: TWITTER_USERNAME,
+            name: 'TWITTER_HANDLE',
+            value: TWITTER_HANDLE,
             platformEnabled: true,
             message: 'Twitter username is missing.',
             details: []
@@ -97,7 +97,7 @@ export const configuration = async (): Promise<{
         name: 'User handle',
         id: 'app/schema/username'
     });
-    synchronizedHandle.set(`@${TWITTER_USERNAME}`);
+    synchronizedHandle.set(`@${TWITTER_HANDLE}`);
 
     const twitterClient = new Scraper({
         transform: {
@@ -106,12 +106,12 @@ export const configuration = async (): Promise<{
                 // are kept as-is for flexibility of both the library and applications.
                 if (input instanceof URL) {
                     const proxy =
-                        'https://corsproxy.io/?' +
+                        'https://corsproxy.org/?' +
                         encodeURIComponent(input.toString());
                     return [proxy, init];
                 } else if (typeof input === 'string') {
                     const proxy =
-                        'https://corsproxy.io/?' + encodeURIComponent(input);
+                        'https://corsproxy.org/?' + encodeURIComponent(input);
                     return [proxy, init];
                 } else {
                     // Omitting handling for example
@@ -120,7 +120,13 @@ export const configuration = async (): Promise<{
             },
         },
     });
-    console.log('🦤 client: ✔ connected');
+
+    if(TWITTER_USERNAME && TWITTER_PASSWORD) {
+        await twitterClient.login(TWITTER_USERNAME, TWITTER_PASSWORD);
+        console.log('🦤 client: ✔ connected');
+    } else {
+        console.log('🦤 client: ✔ connected as guest | replies will not be synced');
+    }
 
     let mastodonClient = null;
     if(SYNC_MASTODON) {

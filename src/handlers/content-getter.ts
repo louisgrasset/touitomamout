@@ -1,11 +1,23 @@
 import ora from 'ora';
-import {Scraper, Tweet} from '@the-convocation/twitter-scraper';
-import {getTweetIdFromPermalink, isTweetQuotingAnotherUser, isTweetRecent} from '../helpers/tweet/index.js';
+import {Scraper, SearchMode, Tweet} from '@the-convocation/twitter-scraper';
+import {getTweetIdFromPermalink} from '../helpers/tweet/index.js';
 import {getCache} from '../helpers/cache/index.js';
-import {isTweetCached} from '../helpers/tweet/is-tweet-cached.js';
 import {oraPrefixer} from '../utils/ora-prefixer.js';
-import {TWITTER_USERNAME} from '../constants.js';
+import {TWITTER_HANDLE} from '../constants.js';
 import {formatTweetText} from '../helpers/tweet/format-tweet-text.js';
+import {getEligibleTweet} from './get-eligible-tweet.js';
+import {getPostExcerpt} from '../helpers/post/get-post-excerpt.js';
+
+const pullContentStats = (tweets: Tweet[], title: string) => {
+    const stats = {
+        total: tweets.length,
+        retweets: tweets.filter(t => t.isRetweet).length,
+        replies: tweets.filter(t => t.isReply).length,
+        quotes: tweets.filter(t => t.isQuoted).length,
+    };
+
+    return `${title}:` + Object.entries(stats).reduce((s, [name, value]) => `${s} ${name}: ${value}`, '');
+};
 
 export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> => {
     const cache = await getCache();
@@ -14,39 +26,42 @@ export const contentGetter = async (twitterClient: Scraper): Promise<Tweet[]> =>
 
     // Get tweets from API
     const tweets: Tweet[] = [];
-    const tweetsIds = twitterClient.getTweets(TWITTER_USERNAME, 50);
+    const tweetsIds = twitterClient.searchTweets(`from:@${TWITTER_HANDLE}`, 50, SearchMode.Latest);
+
     for await(const tweet of tweetsIds) {
         if (tweet) {
-            tweets.unshift({
+            const t: Tweet = {
                 ...tweet,
                 id: getTweetIdFromPermalink(tweet.id || ''),
                 timestamp: (tweet.timestamp ?? 0) * 1000,
                 text: formatTweetText(tweet)
-            });
+            };
+
+            // Inject quoted tweet
+            if (tweet.quotedStatusId) {
+                const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
+                if (quotedStatus) {
+                    t.quotedStatus = quotedStatus;
+                }
+            }
+
+            // Inject in reply tweet
+            if (tweet.inReplyToStatusId) {
+                const inReplyStatus = await twitterClient.getTweet(tweet.inReplyToStatusId);
+                if (inReplyStatus) {
+                    t.inReplyToStatus = inReplyStatus;
+                }
+            }
+
+            const eligibleTweet = await getEligibleTweet(t, cache);
+            if (eligibleTweet) {
+                tweets.unshift(eligibleTweet);
+            }
         }
     }
 
-    /**
-     * Filter tweets based on:
-     * - not already synced
-     * - not being a retweet
-     * - not being a quote of a different user
-     * - being recent
-     */
-    try {
-        const content = tweets.filter(t =>
-            !isTweetCached(t, cache) &&
-            !t.isRetweet &&
-            !isTweetQuotingAnotherUser(t) &&
-            isTweetRecent(t)
-        );
-        log.succeed('task finished');
+    log.succeed(pullContentStats(tweets, 'tweets'));
+    log.succeed('task finished');
 
-        return content;
-    } catch (err) {
-        log.fail(typeof err === 'string' ? err : undefined);
-        console.error(`Unable to map content\n${err}`);
-
-        return [];
-    }
+    return tweets;
 };
