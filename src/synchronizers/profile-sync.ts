@@ -26,7 +26,7 @@ export const profileSync = async (twitterClient: Scraper, mastodonClient: mastod
     log.text = 'parsing';
 
     const profile = await twitterClient.getProfile(TWITTER_HANDLE);
-    const profilePicture = profile.avatar ? await downloadMedia(profile.avatar) : null;
+    const profilePicture = profile.avatar ? await downloadMedia(profile.avatar.replace('_normal', '')) : null;
     const profileHeader = profile.banner ? await downloadMedia(profile.banner) : null;
 
     // Generate the profile update object based on .env
