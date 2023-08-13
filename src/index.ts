@@ -25,15 +25,13 @@ const touitomamout = async () => {
     }
 
     await profileSynchronizerService(twitterClient, mastodonClient, blueskyClient);
-    await postsSynchronizerService(twitterClient, mastodonClient, blueskyClient, synchronizedPostsCountThisRun)
-        .then(response => {
-            synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
+    const response = await postsSynchronizerService(twitterClient, mastodonClient, blueskyClient, synchronizedPostsCountThisRun);
+    synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
 
-            console.log('\n🦤 → 🦣+☁️');
-            console.log('Touitomamout sync');
-            console.log(`| ${response.metrics.justSynced.toString().padStart(5, '0')}  ʲᵘˢᵗ ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ`);
-            console.log(`| ${response.metrics.totalSynced.toString().padStart(5, '0')}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ˢᵒ ᶠᵃʳ`);
-        });
+    console.log('\n🦤 → 🦣+☁️');
+    console.log('Touitomamout sync');
+    console.log(`| ${response.metrics.justSynced.toString().padStart(5, '0')}  ʲᵘˢᵗ ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ`);
+    console.log(`| ${response.metrics.totalSynced.toString().padStart(5, '0')}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ˢᵒ ᶠᵃʳ`);
 };
 
 await touitomamout();
