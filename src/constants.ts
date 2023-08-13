@@ -37,5 +37,3 @@ export const DEBUG = (process.env.TOUITOMAMOUT_DEBUG || 'false') === 'true';
 export const DAEMON = (process.env.DAEMON || 'false') === 'true';
 export const DAEMON_PERIOD_MIN = parseInt(process.env.DAEMON_PERIOD_MIN ?? '7'); // Default 7 min
 export const VOID = '∅';
-
-// LEmicro bug
