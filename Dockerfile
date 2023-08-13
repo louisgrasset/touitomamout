@@ -3,7 +3,7 @@ FROM node:lts
 WORKDIR /app
 
 COPY src/ /app/src
-COPY package.json package-lock.json tsconfig.json .eslintrc.json yarn.lock /app/
+COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
 
 RUN npm ci && npm run build
 
