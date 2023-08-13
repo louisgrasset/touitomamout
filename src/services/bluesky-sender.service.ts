@@ -1,18 +1,21 @@
 import { AppBskyEmbedRecord, BskyAgent,ComAtprotoRepoUploadBlob } from '@atproto/api';
 import { Ora } from 'ora';
 
-import { VOID } from '../../constants.js';
-import { downloadMedia } from '../../handlers/index.js';
-import { getCache } from '../../helpers/cache/index.js';
-import { savePostToCache } from '../../helpers/cache/save-post-to-cache.js';
-import { mediaBlobParser } from '../../helpers/medias/media-blob-parser.js';
-import { getPostExcerpt } from '../../helpers/post/get-post-excerpt.js';
-import { Media, Platform } from '../../types/index.js';
-import { BlueskyPost } from '../../types/post.js';
+import { VOID } from '../constants.js';
+import { getCache } from '../helpers/cache/index.js';
+import { savePostToCache } from '../helpers/cache/save-post-to-cache.js';
+import { parseBlobForBluesky } from '../helpers/medias/parse-blob-for-bluesky.js';
+import { getPostExcerpt } from '../helpers/post/get-post-excerpt.js';
+import { Media, Platform } from '../types/index.js';
+import { BlueskyPost } from '../types/post.js';
+import { mediaDownloaderService } from './index.js';
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
-export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost | null, medias: Media[], log: Ora) => {
+/**
+ * An async method in charge of handling Bluesky posts computation & uploading
+ */
+export const blueskySenderService = async (client: BskyAgent | null, post: BlueskyPost | null, medias: Media[], log: Ora) => {
     if(!client || !post) {
         return;
     }
@@ -30,14 +33,14 @@ export const blueskySender = async (client: BskyAgent | null, post: BlueskyPost 
 
             // Download
             log.text = `medias: ↓ (${mediaAttachments.length + 1}/${medias.length}) downloading`;
-            const mediaBlob = await downloadMedia(media.url);
+            const mediaBlob = await mediaDownloaderService(media.url);
             if (!mediaBlob) {
                 continue;
             }
 
             // Upload
             log.text = `medias: ↑ (${mediaAttachments.length + 1}/${medias.length}) uploading`;
-            const { mimeType, blobData } = await mediaBlobParser(mediaBlob);
+            const { mimeType, blobData } = await parseBlobForBluesky(mediaBlob);
 
             await client.uploadBlob(blobData, { encoding: mimeType })
                 .then(async mediaSent => {

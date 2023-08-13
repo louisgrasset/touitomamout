@@ -1,17 +1,20 @@
 import { mastodon } from 'masto';
 import { Ora } from 'ora';
 
-import { VOID } from '../../constants.js';
-import { downloadMedia } from '../../handlers/index.js';
-import { getCache } from '../../helpers/cache/index.js';
-import { savePostToCache } from '../../helpers/cache/save-post-to-cache.js';
-import { getPostExcerpt } from '../../helpers/post/get-post-excerpt.js';
-import { Media, Platform } from '../../types/index.js';
-import { MastodonPost } from '../../types/post.js';
+import { VOID } from '../constants.js';
+import { getCache } from '../helpers/cache/index.js';
+import { savePostToCache } from '../helpers/cache/save-post-to-cache.js';
+import { getPostExcerpt } from '../helpers/post/get-post-excerpt.js';
+import { Media, Platform } from '../types/index.js';
+import { MastodonPost } from '../types/post.js';
+import { mediaDownloaderService } from './index.js';
 
-const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
+const BLUESKY_MEDIA_IMAGES_MAX_COUNT = 4;
 
-export const mastodonSender = async (client: mastodon.rest.Client | null, post: MastodonPost | null, medias: Media[], log: Ora) => {
+/**
+ * An async method in charge of handling Mastodon posts computation & uploading
+ */
+export const mastodonSenderService = async (client: mastodon.rest.Client | null, post: MastodonPost | null, medias: Media[], log: Ora) => {
     if(!client || !post) {
         return;
     }
@@ -23,13 +26,13 @@ export const mastodonSender = async (client: mastodon.rest.Client | null, post: 
             continue;
         }
         if (
-            (media.type === 'image' && mediaAttachments.length < MASTODON_MEDIA_IMAGES_MAX_COUNT - 1) ||
+            (media.type === 'image' && mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT - 1) ||
             (media.type === 'video' && mediaAttachments.length === 0)
         ) {
 
             // Download
             log.text = `medias: ↓ (${mediaAttachments.length + 1}/${medias.length}) downloading`;
-            const mediaBlob = await downloadMedia(media.url);
+            const mediaBlob = await mediaDownloaderService(media.url);
 
             // Upload
             log.text = `medias: ↑ (${mediaAttachments.length + 1}/${medias.length}) uploading`;

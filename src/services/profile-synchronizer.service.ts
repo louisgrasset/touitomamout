@@ -10,23 +10,26 @@ import {
     SYNC_PROFILE_PICTURE,
     TWITTER_HANDLE
 } from '../constants.js';
-import { downloadMedia } from '../handlers/index.js';
-import { getBlueskyMediaRef } from '../helpers/medias/get-bluesky-media-ref.js';
+import { oraPrefixer } from '../helpers/logs/ora-prefixer.js';
+import { uploadBlueskyMedia } from '../helpers/medias/upload-bluesky-media.js';
 import { shortenedUrlsReplacer } from '../helpers/url/shortened-urls-replacer.js';
 import { Platform, SynchronizerResponse } from '../types/index.js';
-import { oraPrefixer } from '../utils/ora-prefixer.js';
+import { mediaDownloaderService } from './index.js';
 
-export const profileSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
+/**
+ * An async method in charge of dispatching profile synchronization tasks
+ */
+export const profileSynchronizerService = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
     const log = ora({ color: 'cyan', prefixText: oraPrefixer('profile-sync') }).start();
     log.text = 'parsing';
 
     const profile = await twitterClient.getProfile(TWITTER_HANDLE);
 
-    const profilePicture = profile.avatar ? await downloadMedia(profile.avatar.replace('_normal', '')) : null;
-    const profileHeader = profile.banner ? await downloadMedia(profile.banner) : null;
+    const profilePicture = profile.avatar ? await mediaDownloaderService(profile.avatar.replace('_normal', '')) : null;
+    const profileHeader = profile.banner ? await mediaDownloaderService(profile.banner) : null;
 
-    const blueskyProfilePicture = profilePicture ? await getBlueskyMediaRef(profilePicture, blueskyClient) : null;
-    const blueskyProfileHeader = profileHeader ? await getBlueskyMediaRef(profileHeader, blueskyClient) : null;
+    const blueskyProfilePicture = profilePicture ? await uploadBlueskyMedia(profilePicture, blueskyClient) : null;
+    const blueskyProfileHeader = profileHeader ? await uploadBlueskyMedia(profileHeader, blueskyClient) : null;
 
     // Generate the profile update object based on .env
     const params = [

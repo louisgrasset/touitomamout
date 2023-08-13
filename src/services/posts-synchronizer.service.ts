@@ -4,16 +4,19 @@ import { Scraper } from '@the-convocation/twitter-scraper';
 import { mastodon } from 'masto';
 import ora from 'ora';
 
-import { contentGetter } from '../handlers/index.js';
 import { getCache } from '../helpers/cache/index.js';
+import { oraPrefixer } from '../helpers/logs/ora-prefixer.js';
 import { makePost } from '../helpers/post/make-post.js';
 import { Media, Metrics, SynchronizerResponse } from '../types/index.js';
-import { oraPrefixer } from '../utils/ora-prefixer.js';
-import { blueskySender } from './senders/bluesky.sender.js';
-import { mastodonSender } from './senders/mastodon.sender.js';
+import { blueskySenderService } from './bluesky-sender.service.js';
+import { tweetsGetterService } from './index.js';
+import { mastodonSenderService } from './mastodon-sender.service.js';
 
-export const contentSync = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, synchronizedPostsCountThisRun: Counter.default): Promise<SynchronizerResponse & { metrics: Metrics }> => {
-    const tweets = await contentGetter(twitterClient);
+/**
+ * An async method in charge of dispatching posts synchronization tasks for each received tweets
+ */
+export const postsSynchronizerService = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, synchronizedPostsCountThisRun: Counter.default): Promise<SynchronizerResponse & { metrics: Metrics }> => {
+    const tweets = await tweetsGetterService(twitterClient);
 
     try {
         for (const tweet of tweets) {
@@ -30,8 +33,8 @@ export const contentSync = async (twitterClient: Scraper, mastodonClient: mastod
                 bluesky: blueskyPost
             } = await makePost(tweet, mastodonClient, blueskyClient, log);
 
-            await mastodonSender(mastodonClient, mastodonPost, medias, log);
-            await blueskySender(blueskyClient, blueskyPost, medias, log);
+            await mastodonSenderService(mastodonClient, mastodonPost, medias, log);
+            await blueskySenderService(blueskyClient, blueskyPost, medias, log);
 
             if (mastodonClient || blueskyPost) {
                 synchronizedPostsCountThisRun.inc();

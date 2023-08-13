@@ -1,7 +1,6 @@
-import { configuration } from './configuration.js';
+import { configuration } from './configuration/configuration.js';
 import { SYNC_BLUESKY, SYNC_MASTODON } from './constants.js';
-import { contentSync } from './synchronizers/content-sync.js';
-import { profileSync } from './synchronizers/profile-sync.js';
+import { postsSynchronizerService , profileSynchronizerService } from './services/index.js';
 
 const {
     twitterClient,
@@ -25,8 +24,8 @@ const touitomamout = async () => {
         throw new Error('Can\'t connect to Twitter 🦤');
     }
 
-    await profileSync(twitterClient, mastodonClient, blueskyClient);
-    await contentSync(twitterClient, mastodonClient, blueskyClient, synchronizedPostsCountThisRun)
+    await profileSynchronizerService(twitterClient, mastodonClient, blueskyClient);
+    await postsSynchronizerService(twitterClient, mastodonClient, blueskyClient, synchronizedPostsCountThisRun)
         .then(response => {
             synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
 

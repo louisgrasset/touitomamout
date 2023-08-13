@@ -1,10 +1,14 @@
-interface BlobInfo {
+interface BlueskyBlob {
     mimeType: string;
     blobData: Uint8Array;
 }
 
-export const mediaBlobParser = async (blob: Blob): Promise<BlobInfo> => {
-    return new Promise<BlobInfo>((resolve, reject) => {
+/**
+ * An async method to convert a Blob to an upload-compatible Bluesky Blob
+ * @returns BlueskyBlob
+ */
+export const parseBlobForBluesky = async (blob: Blob): Promise<BlueskyBlob> => {
+    return new Promise<BlueskyBlob>((resolve, reject) => {
         const allowedMimeTypes = ['image/jpeg', 'image/png'];
         const mimeType = blob.type;
 
