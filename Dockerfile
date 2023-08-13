@@ -1,0 +1,12 @@
+FROM node:lts
+
+WORKDIR /app
+
+COPY src/ /app/src
+COPY package.json package-lock.json tsconfig.json .eslintrc.json yarn.lock /app/
+
+RUN npm ci && npm run build
+
+RUN echo "" > .env
+
+CMD node /app/dist/index.js $ENV_FILE

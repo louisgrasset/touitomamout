@@ -1,5 +1,5 @@
 import { configuration } from './configuration/configuration.js';
-import { SYNC_BLUESKY, SYNC_MASTODON } from './constants.js';
+import { DAEMON, DAEMON_PERIOD_MIN, SYNC_BLUESKY, SYNC_MASTODON } from './constants.js';
 import { postsSynchronizerService , profileSynchronizerService } from './services/index.js';
 
 const {
@@ -35,3 +35,10 @@ const touitomamout = async () => {
 };
 
 await touitomamout();
+
+if(DAEMON){
+    console.log(`Run dameon every ${DAEMON_PERIOD_MIN}min`);
+    setInterval(async () => {
+        await touitomamout();
+    }, DAEMON_PERIOD_MIN * 60 * 1000);
+}
