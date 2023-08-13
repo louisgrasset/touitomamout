@@ -18,7 +18,7 @@ jobs:
         uses: loopwerk/tag-changelog@v1.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_types: other,doc
+          config_file: .github/tag-changelog.cjs
 
       - name: Create release
         uses: actions/create-release@latest
