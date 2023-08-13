@@ -27,6 +27,18 @@ In order to communicate with the mastodon instance, you'll have to generate an A
 - `write:accounts`: update your profile
 3. Populate the [Environment](#Environment) section with your `access token`.
 
+### Twitter configuration
+The tweets retreveal by itself can be done without Twitter credentials. But keep in mind that twitter currently blocks guests to access users' replies.
+Touitomamout is trying to restore the previous session so you'll not get spammed by the Twitter security team for each connection.
+
+
+> **Note**
+>
+> The configuration allows you to sync a first account and authenticate with a secondary account for two reasons:
+> 1. Currently, there is no simple way to authenticate with an account having 2FA enabled, so you may not want to lower your main account security.
+> 2. Because this project is running with a non-official API, you may not want put your account at risk.
+
+
 ### Environment
 First things first, please copy the [`.env.example`](https://github.com/louisgrasset/touitomamout/blob/main/.env.example) file to `.env`.
 Then, please fill each variable.
