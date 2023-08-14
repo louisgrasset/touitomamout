@@ -3,7 +3,8 @@
   "version": "0.1.1",
   "description": "Tweets to Toot synchronizer",
   "scripts": {
-    "lint": "eslint src/ --ext .ts --fix",
+    "lint": "eslint src/ --ext .ts",
+    "lint:fix": "eslint src/ --ext .ts --fix",
     "build": "tsc",
     "predeploy": "npm ci && npm run build",
     "deploy": "bash ./deployment/deploy.sh",
