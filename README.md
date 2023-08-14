@@ -87,3 +87,6 @@ npm ci &&
 npm run build &&
 npm run deploy:update
 ```
+
+### Docker
+You can alternatively rely on docker and use the `docker-compose.yml` file.
