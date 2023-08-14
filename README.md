@@ -10,7 +10,7 @@ git pull git@github.com:louisgrasset/touitomamout.git
 
 **Install** dependencies & build the project
 ```bash
-npm run ci && npm run build 
+npm ci && npm run build 
 ```
 ## Configuration
 Touitomamout relies on two APIs:
@@ -83,7 +83,7 @@ npm run deploy
 Your instance will be removed and will be generated again with the latest codebase.
 Your `cache.instance.json` file is kept, so you won't have duplicated toots.
 ```bash
-npm run ci &&
+npm ci &&
 npm run build &&
 npm run deploy:update
 ```
