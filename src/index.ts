@@ -41,4 +41,6 @@ if(DAEMON){
     setInterval(async () => {
         await touitomamout();
     }, DAEMON_PERIOD_MIN * 60 * 1000);
+}else {
+    process.exit(0);
 }
