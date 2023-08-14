@@ -1,6 +1,6 @@
 # touitomamout
-## 🦤 → 🦣
-An easy way to synchronize your Twitter's tweets to Mastodon's toots.
+## 🦤 → 🦣+☁️
+An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
 ## Installation
 **Pull** the project
@@ -28,7 +28,7 @@ In order to communicate with the mastodon instance, you'll have to generate an A
 3. Populate the [Environment](#Environment) section with your `access token`.
 
 ### Twitter configuration
-The tweets retreveal by itself can be done without Twitter credentials. But keep in mind that twitter currently blocks guests to access users' replies.
+The tweets retrieval by itself can be done without Twitter credentials. But keep in mind that twitter currently blocks guests to access users' replies.
 Touitomamout is trying to restore the previous session so you'll not get spammed by the Twitter security team for each connection.
 
 
