@@ -21,7 +21,6 @@ export const postsSynchronizerService = async (twitterClient: Scraper, mastodonC
     try {
         for (const tweet of tweets) {
             const log = ora({ color: 'cyan', prefixText: oraPrefixer('content-sync') }).start();
-            log.text = 'filtering';
 
             const medias = [
                 ...tweet.photos.map(i => ({ ...i, type: 'image' })),
@@ -39,6 +38,8 @@ export const postsSynchronizerService = async (twitterClient: Scraper, mastodonC
             if (mastodonClient || blueskyPost) {
                 synchronizedPostsCountThisRun.inc();
             }
+
+            log.stop();
         }
 
         return {

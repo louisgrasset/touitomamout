@@ -21,7 +21,7 @@ const pullContentStats = (tweets: Tweet[], title: string) => {
 export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet[]> => {
     const cache = await getCache();
     const log = ora({ color: 'cyan', prefixText: oraPrefixer('content-mapper') }).start();
-    log.text = '...';
+    log.text = 'filtering';
 
     // Get tweets from API
     const tweets: Tweet[] = [];
