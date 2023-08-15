@@ -74,16 +74,15 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
                 },
                 record: {
                     $type: 'app.bsky.embed.record',
-                    record: {
-                        cid: post.quotePost?.cid,
-                        uri: post.quotePost?.uri
-                    }
+                    cid: post.quotePost?.cid,
+                    uri: post.quotePost?.uri
                 }
             } as AppBskyEmbedRecord.View;
         } else {
             data.embed = {
                 $type: 'app.bsky.embed.record',
                 record: {
+                    $type: 'app.bsky.embed.record',
                     cid: post.quotePost?.cid,
                     uri: post.quotePost?.uri
                 }
