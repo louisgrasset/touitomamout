@@ -5,7 +5,7 @@ import { TWITTER_HANDLE } from '../constants.js';
 import { getCache } from '../helpers/cache/index.js';
 import { oraPrefixer } from '../helpers/logs/ora-prefixer.js';
 import { getEligibleTweet } from '../helpers/tweet/get-eligible-tweet.js';
-import { formatTweetText,getTweetIdFromPermalink } from '../helpers/tweet/index.js';
+import { formatTweetText, getTweetIdFromPermalink, isTweetCached } from '../helpers/tweet/index.js';
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
     const stats = {
@@ -28,7 +28,7 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
     const tweetsIds = twitterClient.searchTweets(`from:@${TWITTER_HANDLE}`, 50, SearchMode.Latest);
 
     for await(const tweet of tweetsIds) {
-        if (tweet) {
+        if (tweet && !isTweetCached(tweet, cache)) {
             const t: Tweet = {
                 ...tweet,
                 id: getTweetIdFromPermalink(tweet.id || ''),
@@ -52,7 +52,7 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
                 }
             }
 
-            const eligibleTweet = await getEligibleTweet(t, cache);
+            const eligibleTweet = await getEligibleTweet(t);
             if (eligibleTweet) {
                 tweets.unshift(eligibleTweet);
             }

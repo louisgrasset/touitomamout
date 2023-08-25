@@ -1,12 +1,10 @@
 import { Tweet } from '@the-convocation/twitter-scraper';
 
 import { DEBUG } from '../../constants.js';
-import { Cache } from '../../types/index.js';
 import { getPostExcerpt } from '../post/get-post-excerpt.js';
-import { isTweetCached, keepRecentTweets, keepSelfQuotes, keepSelfReplies } from './index.js';
+import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from './index.js';
 
-export const getEligibleTweet = async (tweet: Tweet, cache: Cache): Promise<Tweet | undefined> => {
-    const notCached = !isTweetCached(tweet, cache);
+export const getEligibleTweet = async (tweet: Tweet): Promise<Tweet | undefined> => {
     const notRetweet = !tweet.isRetweet;
 
     const isSelfReply = await keepSelfReplies(tweet);
@@ -14,7 +12,7 @@ export const getEligibleTweet = async (tweet: Tweet, cache: Cache): Promise<Twee
 
     const isRecentTweet = keepRecentTweets(tweet);
 
-    const keep = notCached && notRetweet && isSelfReply && isSelfQuote && isRecentTweet;
+    const keep = notRetweet && isSelfReply && isSelfQuote && isRecentTweet;
 
     // Remove quote & reply tweets data if not self-made
     const eligibleTweet = {
