@@ -1,5 +1,5 @@
 import { configuration } from './configuration/configuration.js';
-import { DAEMON, DAEMON_PERIOD_MIN, SYNC_BLUESKY, SYNC_MASTODON } from './constants.js';
+import { DAEMON, DAEMON_PERIOD_MIN, SYNC_BLUESKY, SYNC_MASTODON, TWITTER_HANDLE } from './constants.js';
 import { postsSynchronizerService , profileSynchronizerService } from './services/index.js';
 
 const {
@@ -30,6 +30,7 @@ const touitomamout = async () => {
 
     console.log('\n🦤 → 🦣+☁️');
     console.log('Touitomamout sync');
+    console.log(`| Twitter handle: @${TWITTER_HANDLE}`);
     console.log(`| ${response.metrics.justSynced.toString().padStart(5, '0')}  ʲᵘˢᵗ ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ`);
     console.log(`| ${response.metrics.totalSynced.toString().padStart(5, '0')}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ˢᵒ ᶠᵃʳ`);
 };
