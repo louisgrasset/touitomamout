@@ -1,4 +1,4 @@
-import { Scraper, SearchMode, Tweet } from '@the-convocation/twitter-scraper';
+import { Scraper, Tweet } from '@the-convocation/twitter-scraper';
 import ora from 'ora';
 
 import { TWITTER_HANDLE } from '../constants.js';
@@ -25,7 +25,7 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
 
     // Get tweets from API
     const tweets: Tweet[] = [];
-    const tweetsIds = twitterClient.searchTweets(`from:@${TWITTER_HANDLE}`, 50, SearchMode.Latest);
+    const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
     for await(const tweet of tweetsIds) {
         if (tweet && !isTweetCached(tweet, cache)) {
