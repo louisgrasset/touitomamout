@@ -2,6 +2,8 @@
 ## 🦤 → 🦣+☁️
 An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
+![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
+
 ## Installation
 **Pull** the project
 ```bash
