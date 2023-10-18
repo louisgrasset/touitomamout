@@ -17,7 +17,7 @@ npm ci && npm run build
 ## Configuration
 Touitomamout relies on two APIs:
 - [Mastodon](https://docs.joinmastodon.org/client/intro/)
-- [Twitter-Scrapper](https://github.com/the-convocation/twitter-scraper)
+- [Twitter-Scraper](https://github.com/the-convocation/twitter-scraper)
 
 ### Mastodon configuration
 In order to communicate with the mastodon instance, you'll have to generate an API Token. It's totally free. Reminder: your application name will be publicly visible. 
