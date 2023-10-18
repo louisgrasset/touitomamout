@@ -3,6 +3,7 @@
 An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
 ![Build](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/ci.yml)
+![Release](https://img.shields.io/github/package-json/v/louisgrasset/touitomamout/main?label=release&color=#4c1)
 ![License](https://img.shields.io/github/license/louisgrasset/touitomamout?color=#4c1)
 ![Contributors](https://img.shields.io/github/contributors/louisgrasset/touitomamout)
 ![Issues](https://img.shields.io/github/issues/louisgrasset/touitomamout)
