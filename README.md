@@ -5,9 +5,9 @@ An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
 ## Installation
-**Pull** the project
+**Clone** the project
 ```bash
-git pull git@github.com:louisgrasset/touitomamout.git
+git clone git@github.com:louisgrasset/touitomamout.git
 ```
 
 **Install** dependencies & build the project
