@@ -1,7 +1,7 @@
 import { Scraper, Tweet } from '@the-convocation/twitter-scraper';
 import ora from 'ora';
 
-import { TWITTER_HANDLE } from '../constants.js';
+import { API_RATE_LIMIT, TWITTER_HANDLE } from '../constants.js';
 import { getCache } from '../helpers/cache/index.js';
 import { oraPrefixer } from '../helpers/logs/ora-prefixer.js';
 import { getEligibleTweet } from '../helpers/tweet/get-eligible-tweet.js';
@@ -27,7 +27,12 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
     const tweets: Tweet[] = [];
     const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
+    let hasRateLimit = false;
     for await(const tweet of tweetsIds) {
+        const rateLimitTimeout = setTimeout(() => hasRateLimit = true,1000 * API_RATE_LIMIT);
+        if(hasRateLimit) {
+            continue;
+        }
         if (tweet && !isTweetCached(tweet, cache)) {
             const t: Tweet = {
                 ...tweet,
@@ -57,8 +62,12 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
                 tweets.unshift(eligibleTweet);
             }
         }
+        clearTimeout(rateLimitTimeout);
     }
 
+    if(hasRateLimit) {
+        log.warn(`rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`);
+    }
     log.succeed(pullContentStats(tweets, 'tweets'));
     log.succeed('task finished');
 
