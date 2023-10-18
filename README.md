@@ -2,12 +2,18 @@
 ## 🦤 → 🦣+☁️
 An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
+![Build](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/ci.yml)
+![License](https://img.shields.io/github/license/louisgrasset/touitomamout?color=#4c1)
+![Contributors](https://img.shields.io/github/contributors/louisgrasset/touitomamout)
+![Issues](https://img.shields.io/github/issues/louisgrasset/touitomamout)
+![Github Stars](https://img.shields.io/github/stars/louisgrasset/touitomamout)
+
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
 ## Installation
-**Pull** the project
+**Clone** the project
 ```bash
-git pull git@github.com:louisgrasset/touitomamout.git
+git clone git@github.com:louisgrasset/touitomamout.git
 ```
 
 **Install** dependencies & build the project
