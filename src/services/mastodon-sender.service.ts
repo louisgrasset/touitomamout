@@ -29,7 +29,6 @@ export const mastodonSenderService = async (client: mastodon.rest.Client | null,
             (media.type === 'image' && mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT - 1) ||
             (media.type === 'video' && mediaAttachments.length === 0)
         ) {
-
             // Download
             log.text = `medias: ↓ (${mediaAttachments.length + 1}/${medias.length}) downloading`;
             const mediaBlob = await mediaDownloaderService(media.url);
@@ -37,7 +36,8 @@ export const mastodonSenderService = async (client: mastodon.rest.Client | null,
             // Upload
             log.text = `medias: ↑ (${mediaAttachments.length + 1}/${medias.length}) uploading`;
             await client.v2.media.create({
-                file: mediaBlob
+                file: mediaBlob,
+                description: media.type === 'image' && media.alt_text ? media.alt_text : null
             })
                 .then(async mediaSent => {
                     mediaAttachments.push(mediaSent);
