@@ -21,7 +21,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
     }
 
     // Medias
-    const mediaAttachments: ComAtprotoRepoUploadBlob.Response[] = [];
+    const mediaAttachments: Array<ComAtprotoRepoUploadBlob.Response &{ alt_text: string | undefined}> = [];
     for (const media of medias) {
         if (!media.url) {
             continue;
@@ -44,8 +44,10 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
 
             await client.uploadBlob(blobData, { encoding: mimeType })
                 .then(async mediaSent => {
-                    mediaAttachments.push(mediaSent);
-
+                    mediaAttachments.push({
+                        ...mediaSent,
+                        ...{ alt_text: media.type === 'image' ? media.alt_text : '' }
+                    });
                 })
                 .catch(err => {
                     log.fail(err);
@@ -70,7 +72,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
                 $type: 'app.bsky.embed.recordWithMedia',
                 media: {
                     $type: 'app.bsky.embed.images',
-                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: '', image: i.data.blob.original })) : undefined
+                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text, image: i.data.blob.original })) : undefined
                 },
                 record: {
                     $type: 'app.bsky.embed.record',
@@ -105,7 +107,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
         if (mediaAttachments.length) {
             data.embed = {
                 $type: 'app.bsky.embed.images',
-                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: '', image: i.data.blob.original })) : undefined
+                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text, image: i.data.blob.original })) : undefined
             };
         }
     }
