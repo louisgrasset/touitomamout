@@ -3,7 +3,7 @@ name: Docker Release
 on:
   release:
     types:
-      - published
+      - created
 
 jobs:
   release-docker:
