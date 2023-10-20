@@ -1,16 +1,27 @@
 name: GitHub Release
 
 on:
-  push:
-    tags: [ 'v*.*.*' ]
+  workflow_dispatch
 
 jobs:
-  # Handle the GitHub release creation only on "main" branch
+  create-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Git tag
+        run: |
+          version=$(jq '.version' package.json)
+          git tag $version
+          git push origin $version
+
   github-release:
+    needs:
+      - create-tag
     name: "Create GitHub release"
     runs-on: ubuntu-latest
-    # Only run on "main" branch
-    if: ${{ endsWith(github.ref, 'main') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
