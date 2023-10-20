@@ -1,4 +1,4 @@
-# touitomamout
+# [touitomamout](https://github.com/louisgrasset/touitomamout)
 ## 🦤 → 🦣+☁️
 An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
@@ -7,7 +7,10 @@ An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 ![License](https://img.shields.io/github/license/louisgrasset/touitomamout?color=#4c1)
 ![Contributors](https://img.shields.io/github/contributors/louisgrasset/touitomamout)
 ![Issues](https://img.shields.io/github/issues/louisgrasset/touitomamout)
-![Github Stars](https://img.shields.io/github/stars/louisgrasset/touitomamout)
+![Github Stars](https://img.shields.io/github/stars/louisgrasset/touitomamout?color=ffe34e)
+![Docker Pulls](https://img.shields.io/docker/pulls/louisgrasset/touitomamout?color=086dd7)
+![Github Pulls](https://img.shields.io/github/downloads/louisgrasset/touitomamout/latest/total?label=ghrc%20pulls&color=086dd7)
+![Docker Hub](https://img.shields.io/static/v1.svg?color=086dd7&labelColor=555555&logoColor=ffffff&label=&message=docker%20hub&logo=Docker)
 
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
