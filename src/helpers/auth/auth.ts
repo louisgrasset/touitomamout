@@ -32,7 +32,7 @@ export const handleTwitterAuth = async (client: Scraper) => {
     } else {
         // Handle restoration failure
         await client.login(TWITTER_USERNAME, TWITTER_PASSWORD);
-        console.log('🦤 client: ✔ connected (using credentials))');
+        console.log('🦤 client: ✔ connected (using credentials)');
     }
 
     // Save session
