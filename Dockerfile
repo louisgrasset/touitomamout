@@ -5,7 +5,7 @@ WORKDIR /app
 COPY src/ /app/src
 COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
 
-RUN npm ci && npm run build
+RUN npm ci --ignore-scripts && npm run build
 
 RUN echo "" > .env
 
