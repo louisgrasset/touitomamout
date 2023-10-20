@@ -4,6 +4,8 @@ on:
   release:
     types:
       - published
+      - released
+      - created
 
 jobs:
   release-docker:
