@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish-docker:
-    name: "Build & Push docker image (latest)"
+    name: "Build & Push docker image (dev)"
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -42,8 +42,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:latest
+            ${{ github.repository }}:dev
+            ghcr.io/${{ github.repository }}:dev
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Update docker hub description
