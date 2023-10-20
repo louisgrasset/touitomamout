@@ -1,19 +1,21 @@
-name: Create Release
+name: GitHub Release
 
 on:
   push:
-    tags:
-      - '*'
+    tags: [ 'v*.*.*' ]
 
 jobs:
-  create-release:
+  # Handle the GitHub release creation only on "main" branch
+  github-release:
+    name: "Create GitHub release"
     runs-on: ubuntu-latest
-
+    # Only run on "main" branch
+    if: ${{ endsWith(github.ref, 'main') }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Create changelog text
+      - name: Create changelog
         id: changelog
         uses: loopwerk/tag-changelog@v1.1.1
         with:

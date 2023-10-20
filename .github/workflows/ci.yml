@@ -1,13 +1,13 @@
-name: CI
+name: Continuous Integration
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
 
 jobs:
   commitlint:
+    name: "Commitlint Validation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,8 +32,7 @@ jobs:
         run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
   eslint:
-    needs:
-      - commitlint
+    name: "Eslint Validation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +49,9 @@ jobs:
         run: npm run lint
 
   build:
+    name: "Build from source"
     needs:
+      - commitlint
       - eslint
     runs-on: ubuntu-latest
     strategy:
@@ -73,9 +74,12 @@ jobs:
         run: npm run build
 
   docker:
+    name: "Build docker image"
     needs:
       - build
     runs-on: ubuntu-latest
+    # Only run on PR. CD will handle build & deployment when pushing to "main"
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -88,8 +92,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}"
-          push: ${{ github.event_name != 'pull_request' }} # Don't push on PR
-          tags: ${{ steps.meta.outputs.tags }}
+          push: false
+          tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
