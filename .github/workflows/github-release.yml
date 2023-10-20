@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.create-tag.outputs.version }}
+      tag: ${{ steps.create-tag.outputs.tag }}
 
     steps:
       - name: Checkout code
@@ -17,10 +18,12 @@ jobs:
       - name: Create Git tag
         id: create-tag
         run: |
-          version="v$(jq -r '.version' package.json)"
-          git tag $version
-          git push origin $version
+          version="$(jq -r '.version' package.json)"
+          tag="v$version"
+          git tag $tag
+          git push origin $tag
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
 
   github-release:
@@ -40,17 +43,15 @@ jobs:
           config_file: .github/tag-changelog.cjs
 
       - name: Create release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{needs.create-tag.outputs.version}}
-          release_name: Release ${{needs.create-tag.outputs.version}}
+          tag_name: ${{needs.create-tag.outputs.tag}}
+          name: Release ${{needs.create-tag.outputs.tag}}
           body: ${{ steps.changelog.outputs.changes }}
 
   release-docker:
     needs:
-      - github-release
+      - create-tag
     name: "Build & Release docker image (tag)"
     runs-on: ubuntu-latest
     permissions:
@@ -81,17 +82,14 @@ jobs:
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest
+            type=semver,pattern={{version}},value=${{needs.create-tag.outputs.version}}
+            type=semver,pattern={{major}}.{{minor}},value=${{needs.create-tag.outputs.version}}
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: |
-            ${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:latest
-            ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
