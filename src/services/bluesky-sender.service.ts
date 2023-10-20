@@ -1,4 +1,4 @@
-import { AppBskyEmbedRecord, BskyAgent,ComAtprotoRepoUploadBlob } from '@atproto/api';
+import { AppBskyEmbedRecord, BskyAgent } from '@atproto/api';
 import { Ora } from 'ora';
 
 import { VOID } from '../constants.js';
@@ -6,7 +6,7 @@ import { getCache } from '../helpers/cache/index.js';
 import { savePostToCache } from '../helpers/cache/save-post-to-cache.js';
 import { parseBlobForBluesky } from '../helpers/medias/parse-blob-for-bluesky.js';
 import { getPostExcerpt } from '../helpers/post/get-post-excerpt.js';
-import { Media, Platform } from '../types/index.js';
+import { BlueskyMediaAttachment, Media, Platform } from '../types/index.js';
 import { BlueskyPost } from '../types/post.js';
 import { mediaDownloaderService } from './index.js';
 
@@ -21,7 +21,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
     }
 
     // Medias
-    const mediaAttachments: Array<ComAtprotoRepoUploadBlob.Response &{ alt_text: string | undefined}> = [];
+    const mediaAttachments: BlueskyMediaAttachment[] = [];
     for (const media of medias) {
         if (!media.url) {
             continue;
@@ -44,10 +44,11 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
 
             await client.uploadBlob(blobData, { encoding: mimeType })
                 .then(async mediaSent => {
-                    mediaAttachments.push({
-                        ...mediaSent,
-                        ...{ alt_text: media.type === 'image' ? media.alt_text : '' }
-                    });
+                    const m : BlueskyMediaAttachment = { ...mediaSent };
+                    if(media.type === 'image' && media.alt_text) {
+                        m.alt_text = media.alt_text;
+                    }
+                    mediaAttachments.push(m);
                 })
                 .catch(err => {
                     log.fail(err);
@@ -72,7 +73,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
                 $type: 'app.bsky.embed.recordWithMedia',
                 media: {
                     $type: 'app.bsky.embed.images',
-                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text, image: i.data.blob.original })) : undefined
+                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text ?? '', image: i.data.blob.original })) : undefined
                 },
                 record: {
                     $type: 'app.bsky.embed.record',
@@ -107,7 +108,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
         if (mediaAttachments.length) {
             data.embed = {
                 $type: 'app.bsky.embed.images',
-                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text, image: i.data.blob.original })) : undefined
+                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text ?? '', image: i.data.blob.original })) : undefined
             };
         }
     }
