@@ -8,6 +8,7 @@ on:
 
 jobs:
   commitlint:
+    name: "Commitlint Validation"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +33,7 @@ jobs:
         run: npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
   eslint:
+    name: "Eslint Validation"
     needs:
       - commitlint
     runs-on: ubuntu-latest
@@ -50,6 +52,7 @@ jobs:
         run: npm run lint
 
   build:
+    name: "Build from source"
     needs:
       - eslint
     runs-on: ubuntu-latest
@@ -73,6 +76,7 @@ jobs:
         run: npm run build
 
   docker:
+    name: "Build docker image (no push)"
     needs:
       - build
     runs-on: ubuntu-latest
