@@ -1,16 +1,33 @@
 name: GitHub Release
 
 on:
-  push:
-    tags: [ 'v*.*.*' ]
+  workflow_dispatch
 
 jobs:
-  # Handle the GitHub release creation only on "main" branch
+  create-tag:
+    name: "Create tag from package.json"
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.create-tag.outputs.version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Git tag
+        id: create-tag
+        run: |
+          version="v$(jq -r '.version' package.json)"
+          git tag $version
+          git push origin $version
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+
   github-release:
+    needs:
+      - create-tag
     name: "Create GitHub release"
     runs-on: ubuntu-latest
-    # Only run on "main" branch
-    if: ${{ endsWith(github.ref, 'main') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,6 +44,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{needs.create-tag.outputs.version}}
+          release_name: Release ${{needs.create-tag.outputs.version}}
           body: ${{ steps.changelog.outputs.changes }}
