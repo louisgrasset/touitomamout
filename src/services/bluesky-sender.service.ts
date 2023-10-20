@@ -57,6 +57,12 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
         }
     }
 
+    // When no compatible media has been found and no text is present, skip the post
+    if(!mediaAttachments.length && !post.tweet.text) {
+        log.warn(`☁️ | post skipped: no compatible media nor text to post (tweet: ${post.tweet.id})`);
+        return;
+    }
+
     // Data creation
     const data: {
         [x: string]: unknown

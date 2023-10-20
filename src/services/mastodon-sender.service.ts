@@ -49,6 +49,12 @@ export const mastodonSenderService = async (client: mastodon.rest.Client | null,
         }
     }
 
+    // When no compatible media has been found and no text is present, skip the post
+    if(!mediaAttachments.length && !post.tweet.text) {
+        log.warn(`🦣️ | post skipped: no compatible media nor text to post (tweet: ${post.tweet.id})`);
+        return;
+    }
+
     log.text = `🦣 | toot sending: ${getPostExcerpt(post.tweet.text ?? VOID)}`;
 
     // Post
