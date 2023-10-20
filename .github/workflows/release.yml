@@ -7,6 +7,7 @@ on:
 
 jobs:
   create-release:
+    name: "Create Github release"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,7 +30,7 @@ jobs:
           body: ${{ steps.changelog.outputs.changes }}
 
   publish-docker:
-    name: Push Docker image to multiple registries
+    name: "Build & Push docker image (tag)"
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -48,7 +49,7 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
@@ -64,5 +65,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ github.repository }}:latest
+            ${{ github.repository }}:${{ steps.meta.outputs.tags }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
