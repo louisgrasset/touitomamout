@@ -89,9 +89,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:latest
-            ${{ steps.meta.outputs.tags }}
-            ghcr.io/${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

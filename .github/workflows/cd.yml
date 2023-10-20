@@ -3,13 +3,9 @@ name: Continuous Delivery
 on:
   push:
     branches: [ "main" ]
-    # Prevent run if tag is present
 
 jobs:
-  # Release workflows will handle the docker image creation when tag is present
   publish-docker:
-    # Prevent run if tag is present
-    if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
     name: "Build & Push docker image (latest)"
     runs-on: ubuntu-latest
     permissions:
