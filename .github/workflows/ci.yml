@@ -88,8 +88,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}"
-          push: ${{ github.event_name != 'pull_request' }} # Don't push on PR
-          tags: ${{ steps.meta.outputs.tags }}
+          push: false
+          tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
