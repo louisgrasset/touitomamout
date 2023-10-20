@@ -1,33 +1,11 @@
-name: Release
+name: CI
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
 
 jobs:
-  create-release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Create changelog
-        id: changelog
-        uses: loopwerk/tag-changelog@v1.1.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config_file: .github/tag-changelog.cjs
-
-      - name: Create release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changes }}
-
   publish-docker:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
@@ -64,5 +42,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
