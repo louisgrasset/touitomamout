@@ -70,7 +70,7 @@ jobs:
           push: true
           tags: |
             ${{ github.repository }}:latest
-            ${{ github.repository }}:${{ steps.meta.outputs.tags }}
+            ${{ steps.meta.outputs.tags }}
             ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.tags }}
+            ghcr.io/${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
