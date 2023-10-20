@@ -4,9 +4,15 @@ on:
   push:
     tags:
       - "v*.*.*"
-
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 jobs:
   create-release:
+    # Trigger this job only when the release PR is merged
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     name: "Create Github release"
     runs-on: ubuntu-latest
     steps:
