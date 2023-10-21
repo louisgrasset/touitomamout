@@ -10,7 +10,7 @@ An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 ![Github Stars](https://img.shields.io/github/stars/louisgrasset/touitomamout?color=ffe34e)
 ![Docker Pulls](https://img.shields.io/docker/pulls/louisgrasset/touitomamout?color=086dd7)
 ![Github Pulls](https://img.shields.io/github/downloads/louisgrasset/touitomamout/latest/total?label=ghrc%20pulls&color=086dd7)
-![Docker Hub](https://img.shields.io/static/v1.svg?color=086dd7&labelColor=555555&logoColor=ffffff&label=&message=docker%20hub&logo=Docker)
+[![Docker Hub](https://img.shields.io/static/v1.svg?color=086dd7&labelColor=555555&logoColor=ffffff&label=&message=docker%20hub&logo=Docker)](https://hub.docker.com/r/louisgrasset/touitomamout)
 
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
