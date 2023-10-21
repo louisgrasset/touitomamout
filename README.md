@@ -20,6 +20,14 @@ Pipelines:
 
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
+## Documentation
+You'll find everything you need from the project's discovery to its deployment, by the way of its configuration and some technical deep dives.
+
+Please find the project documentation here:
+
+[<img src="./.github/docs/documentation-center.svg"  width="300px"/>](https://louisgrasset.github.io/touitomamout/docs/discover)
+
+
 ## Installation
 **Clone** the project
 ```bash
