@@ -1,0 +1,44 @@
+.platformsWrapper {
+    gap: 16px;
+    margin: 32px -16px;
+    box-sizing: border-box;
+}
+
+.platformLink {
+    flex-basis: 200px;
+    padding: 8px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--ifm-table-border-color);
+    box-sizing: border-box;
+    text-decoration: none !important;
+    color: var(--ifm-color-content-secondary);
+    position: relative;
+}
+
+.platformLink:hover {
+    color: var(--ifm-color-content-primary);
+    outline: 4px solid var(--ifm-table-border-color);
+}
+
+.platformLabel {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    align-items: center;
+}
+
+.platformName {
+    display: block;
+    margin: unset;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.platformNameSpan {
+    font-weight: 600;
+    font-size: 32px;
+}
+
+.platformIcon {
+    font-size: 48px;
+}
