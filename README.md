@@ -2,7 +2,6 @@
 ## 🦤 → 🦣+☁️
 An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 
-![Build](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/ci.yml)
 ![Release](https://img.shields.io/github/package-json/v/louisgrasset/touitomamout/main?label=release&color=#4c1)
 ![License](https://img.shields.io/github/license/louisgrasset/touitomamout?color=#4c1)
 ![Contributors](https://img.shields.io/github/contributors/louisgrasset/touitomamout)
@@ -11,6 +10,13 @@ An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 ![Docker Pulls](https://img.shields.io/docker/pulls/louisgrasset/touitomamout?color=086dd7)
 ![Github Pulls](https://img.shields.io/github/downloads/louisgrasset/touitomamout/latest/total?label=ghrc%20pulls&color=086dd7)
 [![Docker Hub](https://img.shields.io/static/v1.svg?color=086dd7&labelColor=555555&logoColor=ffffff&label=&message=docker%20hub&logo=Docker)](https://hub.docker.com/r/louisgrasset/touitomamout)
+
+Pipelines:
+
+![CI](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/ci.yml?label=ci)
+![CD](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/cd.yml?label=cd)
+![CD](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/codeql.yml?label=codeql)
+![Release](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/release.yml?label=release)
 
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
