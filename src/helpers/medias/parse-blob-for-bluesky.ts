@@ -4,7 +4,7 @@ interface BlueskyBlob {
 }
 
 /**
- * An async method to convert a Blob to an upload-compatible Bluesky Blob
+ * An async method to convert a Blob to an upload-compatible Bluesky Blob.
  * @returns BlueskyBlob
  */
 export const parseBlobForBluesky = async (blob: Blob): Promise<BlueskyBlob> => {

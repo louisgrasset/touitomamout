@@ -13,7 +13,7 @@ import { mediaDownloaderService } from './index.js';
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
 /**
- * An async method in charge of handling Bluesky posts computation & uploading
+ * An async method in charge of handling Bluesky posts computation & uploading.
  */
 export const blueskySenderService = async (client: BskyAgent | null, post: BlueskyPost | null, medias: Media[], log: Ora) => {
     if(!client || !post) {
@@ -57,7 +57,7 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
         }
     }
 
-    // When no compatible media has been found and no text is present, skip the post
+    // When no compatible media has been found and no text is present, skip the post.
     if(!mediaAttachments.length && !post.tweet.text) {
         log.warn(`☁️ | post skipped: no compatible media nor text to post (tweet: ${post.tweet.id})`);
         return;

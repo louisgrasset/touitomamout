@@ -4,8 +4,8 @@ title: Environment variables
 
 # Environment variables
 
-In order to configure the application, you have to provide environment variables. You'll find here the list of all the
-environment variables by type of usage. `(📌 means the variable is required for the context where it is defined)`
+To configure the application, you have to provide environment variables. You'll find here the list of all the
+environment variables by usage. `(📌 means the variable is required for the context where it is defined)`
 
 ## Core variables
 

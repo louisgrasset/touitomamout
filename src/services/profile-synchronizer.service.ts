@@ -17,7 +17,7 @@ import { Platform, SynchronizerResponse } from '../types/index.js';
 import { mediaDownloaderService } from './index.js';
 
 /**
- * An async method in charge of dispatching profile synchronization tasks
+ * An async method in charge of dispatching profile synchronization tasks.
  */
 export const profileSynchronizerService = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null): Promise<SynchronizerResponse> => {
     const log = ora({ color: 'cyan', prefixText: oraPrefixer('profile-sync') }).start();

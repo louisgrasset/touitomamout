@@ -1,5 +1,5 @@
 /**
- * A method to download the media
+ * A method to download the media.
  */
 export const mediaDownloaderService = (url: string): Promise<Blob | null> => {
     return fetch(url)
