@@ -15,7 +15,7 @@ const BLUESKY_MEDIA_IMAGES_MAX_COUNT = 4;
  * An async method in charge of handling Mastodon posts computation & uploading
  */
 export const mastodonSenderService = async (client: mastodon.rest.Client | null, post: MastodonPost | null, medias: Media[], log: Ora) => {
-    if(!client || !post) {
+    if (!client || !post) {
         return;
     }
 
@@ -50,7 +50,7 @@ export const mastodonSenderService = async (client: mastodon.rest.Client | null,
     }
 
     // When no compatible media has been found and no text is present, skip the post
-    if(!mediaAttachments.length && !post.tweet.text) {
+    if (!mediaAttachments.length && !post.tweet.text) {
         log.warn(`🦣️ | post skipped: no compatible media nor text to post (tweet: ${post.tweet.id})`);
         return;
     }
@@ -67,6 +67,6 @@ export const mastodonSenderService = async (client: mastodon.rest.Client | null,
         .then(async (toot) => {
             log.succeed(`🦣 | toot sent: ${getPostExcerpt(post.tweet.text ?? VOID)}`);
             const cache = await getCache();
-            await savePostToCache(cache, post.tweet.id, toot.id, Platform.MASTODON);
+            await savePostToCache({ cache, tweetId: post.tweet.id, data: toot.id, platform: Platform.MASTODON });
         });
 };

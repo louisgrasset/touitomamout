@@ -13,8 +13,8 @@ export type BlueskyPost = {
     status: string,
     username: string,
     facets?: Facet[],
-    quotePost?: { uri: string; cid: string; value: AppBskyFeedPost.Record } | undefined
-    replyPost?: { uri: string; cid: string; value: AppBskyFeedPost.Record } | undefined
+    quotePost?: { uri: string; cid: string; value: AppBskyFeedPost.Record }
+    replyPost?: { uri: string; cid: string; value: AppBskyFeedPost.Record }
 }
 
 export type Post = {

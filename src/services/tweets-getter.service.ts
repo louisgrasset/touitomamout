@@ -30,37 +30,36 @@ export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet
     let hasRateLimit = false;
     for await(const tweet of tweetsIds) {
         const rateLimitTimeout = setTimeout(() => hasRateLimit = true,1000 * API_RATE_LIMIT);
-        if(hasRateLimit) {
+        if(hasRateLimit || isTweetCached(tweet, cache)) {
             continue;
         }
-        if (tweet && !isTweetCached(tweet, cache)) {
-            const t: Tweet = {
-                ...tweet,
-                id: getTweetIdFromPermalink(tweet.id || ''),
-                timestamp: (tweet.timestamp ?? 0) * 1000,
-                text: formatTweetText(tweet)
-            };
 
-            // Inject quoted tweet
-            if (tweet.quotedStatusId) {
-                const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
-                if (quotedStatus) {
-                    t.quotedStatus = quotedStatus;
-                }
-            }
+        const t: Tweet = {
+            ...tweet,
+            id: getTweetIdFromPermalink(tweet.id || ''),
+            timestamp: (tweet.timestamp ?? 0) * 1000,
+            text: formatTweetText(tweet)
+        };
 
-            // Inject in reply tweet
-            if (tweet.inReplyToStatusId) {
-                const inReplyStatus = await twitterClient.getTweet(tweet.inReplyToStatusId);
-                if (inReplyStatus) {
-                    t.inReplyToStatus = inReplyStatus;
-                }
+        // Inject quoted tweet
+        if (tweet.quotedStatusId) {
+            const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
+            if (quotedStatus) {
+                t.quotedStatus = quotedStatus;
             }
+        }
 
-            const eligibleTweet = await getEligibleTweet(t);
-            if (eligibleTweet) {
-                tweets.unshift(eligibleTweet);
+        // Inject in reply tweet
+        if (tweet.inReplyToStatusId) {
+            const inReplyStatus = await twitterClient.getTweet(tweet.inReplyToStatusId);
+            if (inReplyStatus) {
+                t.inReplyToStatus = inReplyStatus;
             }
+        }
+
+        const eligibleTweet = await getEligibleTweet(t);
+        if (eligibleTweet) {
+            tweets.unshift(eligibleTweet);
         }
         clearTimeout(rateLimitTimeout);
     }

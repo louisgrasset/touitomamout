@@ -4,7 +4,7 @@ export const getRedirectedUrl = async(url: string): Promise<string | null> => {
 
         if (response.status >= 300 && response.status < 400) {
             const redirectedUrl = response.headers.get('location');
-            return redirectedUrl || null;
+            return redirectedUrl ?? null;
         }
 
         return null;
