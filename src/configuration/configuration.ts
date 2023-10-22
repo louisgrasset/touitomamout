@@ -1,5 +1,6 @@
 import bsky, { BskyAgent } from '@atproto/api';
-import pm2 from'@pm2/io';
+import { ResponseType, ResponseTypeNames } from '@atproto/xrpc';
+import pm2 from '@pm2/io';
 import Counter from '@pm2/io/build/main/utils/metrics/counter.js';
 import Gauge from '@pm2/io/build/main/utils/metrics/gauge.js';
 import { Scraper } from '@the-convocation/twitter-scraper';
@@ -12,7 +13,9 @@ import {
     MASTODON_ACCESS_TOKEN,
     MASTODON_INSTANCE,
     SYNC_BLUESKY,
-    SYNC_MASTODON, TWITTER_HANDLE } from '../constants.js';
+    SYNC_MASTODON,
+    TWITTER_HANDLE
+} from '../constants.js';
 import { handleTwitterAuth } from '../helpers/auth/auth.js';
 import { createCacheFile, getCache } from '../helpers/cache/index.js';
 import { TouitomamoutError } from '../helpers/error.js';
@@ -71,7 +74,24 @@ export const configuration = async (): Promise<{
     let blueskyClient = null;
     if(SYNC_BLUESKY) {
         blueskyClient = new bsky.BskyAgent({ service: `https://${BLUESKY_INSTANCE}` });
-        await blueskyClient.login({ identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD });
+        await blueskyClient.login({ identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD })
+            .catch(({ error }) => {
+                switch (error) {
+                case ResponseTypeNames[ResponseType.XRPCNotSupported]:
+                    throw new Error(TouitomamoutError(
+                        'The bluesky instance you have provided is not a bluesky instance',
+                        [
+                            'Please check your .env settings.',
+                            'A common error is to provide a bluesky web-client domain instead of the actual bluesky instance'
+                        ]));
+                case ResponseTypeNames[ResponseType.RateLimitExceeded]:
+                    throw new Error(TouitomamoutError(
+                        'You are currently rate limited by the bluesky instance you have provided',
+                        []));
+                default:
+                    console.log({ error });
+                }
+            });
         console.log('☁️ client: ✔ connected');
     }
 
