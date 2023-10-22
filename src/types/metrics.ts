@@ -1,4 +1,4 @@
 export type Metrics = {
-    totalSynced: number,
-    justSynced: number
-}
+  totalSynced: number;
+  justSynced: number;
+};

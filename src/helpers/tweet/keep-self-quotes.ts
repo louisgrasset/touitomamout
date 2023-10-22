@@ -1,12 +1,12 @@
-import { Tweet } from '@the-convocation/twitter-scraper';
+import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { TWITTER_HANDLE } from '../../constants.js';
+import { TWITTER_HANDLE } from "../../constants.js";
 
 export const keepSelfQuotes = async (tweet: Tweet) => {
-    if (tweet.quotedStatus) {
-        return tweet.quotedStatus.username === TWITTER_HANDLE;
-    }
+  if (tweet.quotedStatus) {
+    return tweet.quotedStatus.username === TWITTER_HANDLE;
+  }
 
-    // True by default so chained conditions works
-    return true;
+  // True by default so chained conditions works
+  return true;
 };

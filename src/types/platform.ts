@@ -1,4 +1,4 @@
 export enum Platform {
-    MASTODON= 'mastodon',
-    BLUESKY = 'bluesky'
+  MASTODON = "mastodon",
+  BLUESKY = "bluesky",
 }
