@@ -29,6 +29,8 @@ Platform.propTypes = {
     name: PropTypes.string.isRequired,
 };
 
+PlatformList.propTypes = Array.from(Platform.propTypes);
+
 function Platform({ icon, name }) {
     const page = name.toLowerCase().replaceAll(' ', '-');
     return (
