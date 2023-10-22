@@ -1,1 +1,3 @@
-export const getTweetIdFromPermalink = (url: string): string => url.match(/\d{19}$/)?.[0] || '';
+export const getTweetIdFromPermalink = (url: string): string => {
+    return url.match(/\d{19}$/)?.[0] ?? '';
+};

@@ -14,4 +14,4 @@ RUN echo "" > .env
 
 USER bot
 
-CMD node /app/dist/index.js $ENV_FILE
+CMD node /app/dist/index.js "$ENV_FILE"

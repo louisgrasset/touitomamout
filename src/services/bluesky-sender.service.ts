@@ -79,7 +79,10 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
                 $type: 'app.bsky.embed.recordWithMedia',
                 media: {
                     $type: 'app.bsky.embed.images',
-                    images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text ?? '', image: i.data.blob.original })) : undefined
+                    images: mediaAttachments.length ? mediaAttachments.map(i => ({
+                        alt: i.alt_text ?? '',
+                        image: i.data.blob.original
+                    })) : undefined
                 },
                 record: {
                     $type: 'app.bsky.embed.record',
@@ -114,7 +117,10 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
         if (mediaAttachments.length) {
             data.embed = {
                 $type: 'app.bsky.embed.images',
-                images: mediaAttachments.length ? mediaAttachments.map(i => ({ alt: i.alt_text ?? '', image: i.data.blob.original })) : undefined
+                images: mediaAttachments.length ? mediaAttachments.map(i => ({
+                    alt: i.alt_text ?? '',
+                    image: i.data.blob.original
+                })) : undefined
             };
         }
     }
@@ -125,9 +131,14 @@ export const blueskySenderService = async (client: BskyAgent | null, post: Blues
     await client.post({ ...data }).then(async (createdPost) => {
         log.succeed(`☁️ | post sent: ${getPostExcerpt(post.tweet.text ?? VOID)}`);
         const cache = await getCache();
-        await savePostToCache(cache, post.tweet.id, {
-            cid: createdPost.cid,
-            rkey: createdPost.uri.match(/\/(?<rkey>\w+)$/)?.groups?.['rkey'] || ''
-        }, Platform.BLUESKY);
+        await savePostToCache({
+            cache,
+            tweetId: post.tweet.id,
+            data: {
+                cid: createdPost.cid,
+                rkey: createdPost.uri.match(/\/(?<rkey>\w+)$/)?.groups?.['rkey'] || ''
+            },
+            platform: Platform.BLUESKY
+        });
     });
 };
