@@ -25,7 +25,7 @@ You'll find everything you need from the project's discovery to its deployment, 
 
 Please find the project documentation here:
 
-[<img src="./.github/docs/documentation-center.svg"  width="300px"/>](https://louisgrasset.github.io/touitomamout/docs/discover)
+[<img src="https://github.com/louisgrasset/touitomamout/raw/main/.github/docs/documentation-center.svg"  width="300px"/>](https://louisgrasset.github.io/touitomamout/docs/discover)
 
 
 ## Installation
