@@ -1,6 +1,6 @@
 {
   "name": "touitomamout",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.",
   "scripts": {
     "lint": "eslint src/ --ext .ts",
