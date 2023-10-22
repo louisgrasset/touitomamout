@@ -13,7 +13,7 @@ import { tweetsGetterService } from './index.js';
 import { mastodonSenderService } from './mastodon-sender.service.js';
 
 /**
- * An async method in charge of dispatching posts synchronization tasks for each received tweets
+ * An async method in charge of dispatching posts synchronization tasks for each received tweets.
  */
 export const postsSynchronizerService = async (twitterClient: Scraper, mastodonClient: mastodon.rest.Client | null, blueskyClient: BskyAgent | null, synchronizedPostsCountThisRun: Counter.default): Promise<SynchronizerResponse & { metrics: Metrics }> => {
     const tweets = await tweetsGetterService(twitterClient);

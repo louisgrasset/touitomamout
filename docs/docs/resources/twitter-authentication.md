@@ -4,10 +4,10 @@ title: Twitter autentication
 
 # Twitter Authentication
 
-Touitomamout is leveraging the [Twitter Scrapper](https://github.com/the-convocation/twitter-scraper) project to
+Touitomamout leverages the [Twitter Scrapper](https://github.com/the-convocation/twitter-scraper) project to
 retrieve Twitter's data.
 
-Even if you are technically allowed to use by Touitomamout without passing a Twitter username & password, the data we're
+Even if you are technically allowed to use by Touitomamout without passing a Twitter username & password, the data we are
 able to retrieve from it is pretty limited (euphemism). That's why we **_highly_** recommend you to provide twitter
 credentials.
 
@@ -34,7 +34,7 @@ able to automate its tasks without having to wait for a human to input a code re
 
 > The only way to authenticated with Twitter is to provide credentials for an account with 2FA **disabled**
 
-(Tip: sms,  google | dashlane | other  authenticator apps = **OFF**).
+(Tip: sms, google | dashlane | other authenticator apps = **OFF**).
 
 ## No guaranty regarding the account you will log in with ❗
 
@@ -48,5 +48,5 @@ official Twitter webapp. Meaning we can get the data for free as a regular user 
 Since this technique is not official at all nor especially legal, the recommendation is to rely on a secondary account you
 could accept to lose or get restricted.
 
-Until now (date of writing), no account of the author has been impacted in any way. But we cannot garranty anything,
-let's be cautious
+Until now (date of writing), no account of the author has been impacted in any way. But we can't guarantee anything,
+let's be cautious.

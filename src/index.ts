@@ -11,7 +11,7 @@ const {
 } = await configuration();
 
 /**
- * Let the magic happens 💫
+ * Let the magic happens 💫.
  */
 const touitomamout = async () => {
     if (SYNC_MASTODON && !mastodonClient) {
@@ -38,7 +38,7 @@ const touitomamout = async () => {
 await touitomamout();
 
 if(DAEMON){
-    console.log(`Run dameon every ${DAEMON_PERIOD_MIN}min`);
+    console.log(`Run daemon every ${DAEMON_PERIOD_MIN}min`);
     setInterval(async () => {
         await touitomamout();
     }, DAEMON_PERIOD_MIN * 60 * 1000);

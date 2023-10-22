@@ -3,7 +3,7 @@ title: Auth system
 ---
 
 # Auth system
-To prevent Touitomamout to re-authenticate at each run, the application is storing the authentication tokens in a file.
+To prevent Touitomamout to re-authenticate at each run, the application stores the authentication tokens in a file.
 A `Cookies` file is always named with the following naming: `cookies.<source-twitter-username>.json`.
 
 **Take care of this file!**
