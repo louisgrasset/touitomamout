@@ -28,7 +28,7 @@ export const getEligibleTweet = async (
   if (DEBUG && keep) {
     console.log(
       `✅ : ${tweet.id}: from:@${tweet.username}: ${getPostExcerpt(
-        tweet.text || "",
+        tweet.text ?? "",
       )}`,
     );
   }
