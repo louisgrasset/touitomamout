@@ -9,6 +9,7 @@ dist/
 .DS_Store
 .env*
 !.env.example
+coverage/
 
 # Temporary files
 cache*.json
