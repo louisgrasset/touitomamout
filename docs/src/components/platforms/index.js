@@ -1,5 +1,6 @@
 import Link from '@docusaurus/Link';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import styles from './styles.module.css';
@@ -23,6 +24,13 @@ const PlatformList = [
     },
 ];
 
+Platform.propTypes = {
+    icon: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+};
+
+PlatformList.propTypes = Array.from(Platform.propTypes);
+
 function Platform({ icon, name }) {
     const page = name.toLowerCase().replaceAll(' ', '-');
     return (
@@ -40,8 +48,8 @@ export default function Index() {
         <section>
             <div className="container">
                 <div className={clsx(['row',styles.platformsWrapper])}>
-                    {PlatformList.map((props, idx) => (
-                        <Platform key={idx} {...props} />
+                    {PlatformList.map((props) => (
+                        <Platform key={props.name} {...props} />
                     ))}
                 </div>
             </div>
