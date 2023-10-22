@@ -1,74 +1,96 @@
-import { Scraper, Tweet } from '@the-convocation/twitter-scraper';
-import ora from 'ora';
+import { Scraper, Tweet } from "@the-convocation/twitter-scraper";
+import ora from "ora";
 
-import { API_RATE_LIMIT, TWITTER_HANDLE } from '../constants.js';
-import { getCache } from '../helpers/cache/index.js';
-import { oraPrefixer } from '../helpers/logs/ora-prefixer.js';
-import { getEligibleTweet } from '../helpers/tweet/get-eligible-tweet.js';
-import { formatTweetText, getTweetIdFromPermalink, isTweetCached } from '../helpers/tweet/index.js';
+import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
+import { getCache } from "../helpers/cache/index.js";
+import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
+import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
+import {
+  formatTweetText,
+  getTweetIdFromPermalink,
+  isTweetCached,
+} from "../helpers/tweet/index.js";
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
-    const stats = {
-        total: tweets.length,
-        retweets: tweets.filter(t => t.isRetweet).length,
-        replies: tweets.filter(t => t.isReply).length,
-        quotes: tweets.filter(t => t.isQuoted).length,
-    };
+  const stats = {
+    total: tweets.length,
+    retweets: tweets.filter((t) => t.isRetweet).length,
+    replies: tweets.filter((t) => t.isReply).length,
+    quotes: tweets.filter((t) => t.isQuoted).length,
+  };
 
-    return `${title}:` + Object.entries(stats).reduce((s, [name, value]) => `${s} ${name}: ${value}`, '');
+  return (
+    `${title}:` +
+    Object.entries(stats).reduce(
+      (s, [name, value]) => `${s} ${name}: ${value}`,
+      "",
+    )
+  );
 };
 
-export const tweetsGetterService = async (twitterClient: Scraper): Promise<Tweet[]> => {
-    const cache = await getCache();
-    const log = ora({ color: 'cyan', prefixText: oraPrefixer('content-mapper') }).start();
-    log.text = 'filtering';
+export const tweetsGetterService = async (
+  twitterClient: Scraper,
+): Promise<Tweet[]> => {
+  const cache = await getCache();
+  const log = ora({
+    color: "cyan",
+    prefixText: oraPrefixer("content-mapper"),
+  }).start();
+  log.text = "filtering";
 
-    // Get tweets from API
-    const tweets: Tweet[] = [];
-    const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
+  // Get tweets from API
+  const tweets: Tweet[] = [];
+  const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
-    let hasRateLimit = false;
-    for await(const tweet of tweetsIds) {
-        const rateLimitTimeout = setTimeout(() => hasRateLimit = true,1000 * API_RATE_LIMIT);
-        if(hasRateLimit || isTweetCached(tweet, cache)) {
-            continue;
-        }
-
-        const t: Tweet = {
-            ...tweet,
-            id: getTweetIdFromPermalink(tweet.id || ''),
-            timestamp: (tweet.timestamp ?? 0) * 1000,
-            text: formatTweetText(tweet)
-        };
-
-        // Inject quoted tweet
-        if (tweet.quotedStatusId) {
-            const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
-            if (quotedStatus) {
-                t.quotedStatus = quotedStatus;
-            }
-        }
-
-        // Inject in reply tweet
-        if (tweet.inReplyToStatusId) {
-            const inReplyStatus = await twitterClient.getTweet(tweet.inReplyToStatusId);
-            if (inReplyStatus) {
-                t.inReplyToStatus = inReplyStatus;
-            }
-        }
-
-        const eligibleTweet = await getEligibleTweet(t);
-        if (eligibleTweet) {
-            tweets.unshift(eligibleTweet);
-        }
-        clearTimeout(rateLimitTimeout);
+  let hasRateLimit = false;
+  for await (const tweet of tweetsIds) {
+    const rateLimitTimeout = setTimeout(
+      () => (hasRateLimit = true),
+      1000 * API_RATE_LIMIT,
+    );
+    if (hasRateLimit || isTweetCached(tweet, cache)) {
+      continue;
     }
 
-    if(hasRateLimit) {
-        log.warn(`rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`);
-    }
-    log.succeed(pullContentStats(tweets, 'tweets'));
-    log.succeed('task finished');
+    const t: Tweet = {
+      ...tweet,
+      id: getTweetIdFromPermalink(tweet.id || ""),
+      timestamp: (tweet.timestamp ?? 0) * 1000,
+      text: formatTweetText(tweet),
+    };
 
-    return tweets;
+    // Inject quoted tweet
+    if (tweet.quotedStatusId) {
+      const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
+      if (quotedStatus) {
+        t.quotedStatus = quotedStatus;
+      }
+    }
+
+    // Inject in reply tweet
+    if (tweet.inReplyToStatusId) {
+      const inReplyStatus = await twitterClient.getTweet(
+        tweet.inReplyToStatusId,
+      );
+      if (inReplyStatus) {
+        t.inReplyToStatus = inReplyStatus;
+      }
+    }
+
+    const eligibleTweet = await getEligibleTweet(t);
+    if (eligibleTweet) {
+      tweets.unshift(eligibleTweet);
+    }
+    clearTimeout(rateLimitTimeout);
+  }
+
+  if (hasRateLimit) {
+    log.warn(
+      `rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`,
+    );
+  }
+  log.succeed(pullContentStats(tweets, "tweets"));
+  log.succeed("task finished");
+
+  return tweets;
 };

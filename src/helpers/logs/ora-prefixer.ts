@@ -1,1 +1,1 @@
-export const oraPrefixer = (prefix: string): string => prefix.padEnd(15, ' ');
+export const oraPrefixer = (prefix: string): string => prefix.padEnd(15, " ");
