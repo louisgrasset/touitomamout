@@ -23,8 +23,19 @@ jobs:
       - name: Install dependencies (with dev)
         run: npm ci --include=dev
 
-      - name: Run tests
-        run: npm run test
+      - name: Run test and coverage
+        run: npm run test -- --coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=louisgrasset
+            -Dsonar.projectKey=touitomamout
+            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
 
   commitlint:
     name: "Commitlint Validation"
