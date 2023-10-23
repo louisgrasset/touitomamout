@@ -32,11 +32,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          projectBaseDir: src
           args: >
             -Dsonar.organization=louisgrasset
             -Dsonar.projectKey=louisgrasset_touitomamout
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+            -Dsonar.sources=src
+            -Dsonar.exclusions=src/**/__tests__/**
+            -Dsonar.tests=src
+            -Dsonar.test.inclusions=src/**/__tests__/**
 
   commitlint:
     name: "Commitlint Validation"
