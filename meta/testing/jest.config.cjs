@@ -11,6 +11,9 @@ module.exports = {
     transform: {
         "^.+\\.ts?$": ["ts-jest", {
             useESM: true,
+        }],
+        "^.+\\.js?$": ["ts-jest", {
+            useESM: true,
         }]
     },
     verbose: false,
