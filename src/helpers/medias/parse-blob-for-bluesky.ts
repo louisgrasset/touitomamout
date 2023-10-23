@@ -9,7 +9,7 @@ interface BlueskyBlob {
  */
 export const parseBlobForBluesky = async (blob: Blob): Promise<BlueskyBlob> => {
   return new Promise<BlueskyBlob>((resolve, reject) => {
-    const allowedMimeTypes = ["image/jpeg", "image/png"];
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png"];
     const mimeType = blob.type;
 
     blob.arrayBuffer().then((ab) => {

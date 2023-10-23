@@ -11,14 +11,16 @@ export const shortenedUrlsReplacer = async (text: string): Promise<string> => {
   if (!matches.length) {
     return text;
   }
-
   // Get all original urls
   const replacedItems = await Promise.all(
-    matches.map(async (match) => (await getRedirectedUrl(match[0])) ?? ""),
+    matches.map(async (match) => await getRedirectedUrl(match[0])),
   );
 
-  // Replace shortened urls to original ones
+  // Replace shortened urls to original ones, remove non-resolved ones.
   return matches.reduce((description, match, index) => {
-    return description.replace(TWITTER_URL_SHORTENER, replacedItems[index]);
+    const resolvedUrl = replacedItems[index];
+    return resolvedUrl
+      ? description.replace(match[0], resolvedUrl)
+      : description;
   }, text);
 };

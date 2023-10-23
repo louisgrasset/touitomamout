@@ -1,7 +1,7 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
 export const formatTweetText = (tweet: Tweet): string => {
-  let text = tweet.text || "";
+  let text = tweet.text ?? "";
 
   // Replace urls
   tweet.urls.forEach((url) => {
@@ -12,5 +12,5 @@ export const formatTweetText = (tweet: Tweet): string => {
   text = text.replaceAll(/https:\/\/t\.co\/\w+/g, "");
 
   // Return formatted
-  return text;
+  return text.trim();
 };
