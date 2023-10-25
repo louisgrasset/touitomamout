@@ -67,7 +67,8 @@ const Generator = ({ setConfiguration }) => {
         {
           name: "instance",
           type: "string",
-          value: "",
+          label: "Mastodon instance (example: mastodon.social)",
+          value: "mastodon.social",
           env: "MASTODON_INSTANCE",
         },
         {
@@ -86,13 +87,15 @@ const Generator = ({ setConfiguration }) => {
         {
           name: "instance",
           type: "string",
-          value: "",
+          label: "Bluesky instance (often bsky.social)",
+          value: "bsky.social",
           env: "BLUESKY_INSTANCE",
         },
         {
           name: "username",
+          label: "Bluesky username (often username.bsky.social or domain.tld)",
           type: "string",
-          value: "",
+          value: "username.bsky.social",
           env: "BLUESKY_IDENTIFIER",
         },
         {
