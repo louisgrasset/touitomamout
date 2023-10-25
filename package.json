@@ -13,6 +13,9 @@
     "postinstall": "husky install .husky",
     "commitlint": "commitlint --edit"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "type": "module",
   "author": "Louis Grasset",
   "homepage": "https://github.com/louisgrasset/touitomamout",
