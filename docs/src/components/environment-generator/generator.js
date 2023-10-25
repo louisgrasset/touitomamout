@@ -68,13 +68,13 @@ const Generator = ({ setConfiguration }) => {
           name: "instance",
           type: "string",
           value: "",
-          env: "MASTODON_INSTANCEBLUESKY_INSTANCE",
+          env: "MASTODON_INSTANCE",
         },
         {
           name: "token",
           type: "string",
           value: "",
-          env: "MASTODON_ACCESS_TOKENBLUESKY_IDENTIFIER",
+          env: "MASTODON_ACCESS_TOKEN",
         },
       ],
     },
@@ -190,7 +190,10 @@ const Generator = ({ setConfiguration }) => {
         return [
           builtEnv,
           category.fields
-            .filter((field) => !!field.value)
+            // Keep booleans and non-empty strings)
+            .filter((field) =>
+              typeof field.value === "boolean" ? true : !!field.value,
+            )
             .filter((field) => {
               if (field.validationHandler) {
                 return field.validationHandler(field.value);
@@ -198,7 +201,7 @@ const Generator = ({ setConfiguration }) => {
               return true;
             })
             .map((field) => {
-              return `${field.env}=${field.value || ""}`;
+              return `${field.env}=${field.value.toString()}`;
             })
             .join("\n"),
         ].join("\n");
