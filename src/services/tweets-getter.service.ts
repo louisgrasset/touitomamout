@@ -5,11 +5,7 @@ import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
 import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
 import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
-import {
-  formatTweetText,
-  getTweetIdFromPermalink,
-  isTweetCached,
-} from "../helpers/tweet/index.js";
+import { formatTweetText, isTweetCached } from "../helpers/tweet/index.js";
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
   const stats = {
@@ -54,28 +50,9 @@ export const tweetsGetterService = async (
 
     const t: Tweet = {
       ...tweet,
-      id: getTweetIdFromPermalink(tweet.id || ""),
       timestamp: (tweet.timestamp ?? 0) * 1000,
       text: formatTweetText(tweet),
     };
-
-    // Inject quoted tweet
-    if (tweet.quotedStatusId) {
-      const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
-      if (quotedStatus) {
-        t.quotedStatus = quotedStatus;
-      }
-    }
-
-    // Inject in reply tweet
-    if (tweet.inReplyToStatusId) {
-      const inReplyStatus = await twitterClient.getTweet(
-        tweet.inReplyToStatusId,
-      );
-      if (inReplyStatus) {
-        t.inReplyToStatus = inReplyStatus;
-      }
-    }
 
     const eligibleTweet = await getEligibleTweet(t);
     if (eligibleTweet) {
