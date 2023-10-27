@@ -38,14 +38,26 @@ export const tweetsGetterService = async (
   const tweets: Tweet[] = [];
   const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
-  let hasRateLimit = false;
+  let hasRateLimitReached = false;
+  let latestTweetAlreadySynced = false;
+  let tweetsCount = 0;
   for await (const tweet of tweetsIds) {
     const rateLimitTimeout = setTimeout(
-      () => (hasRateLimit = true),
+      () => (hasRateLimitReached = true),
       1000 * API_RATE_LIMIT,
     );
-    if (hasRateLimit || isTweetCached(tweet, cache)) {
+
+    if (
+      latestTweetAlreadySynced ||
+      hasRateLimitReached ||
+      isTweetCached(tweet, cache)
+    ) {
       continue;
+    }
+
+    // Skip posts sync if the latest one has already synced
+    if (tweetsCount === 0 && isTweetCached(tweet, cache)) {
+      latestTweetAlreadySynced = true;
     }
 
     const t: Tweet = {
@@ -59,9 +71,10 @@ export const tweetsGetterService = async (
       tweets.unshift(eligibleTweet);
     }
     clearTimeout(rateLimitTimeout);
+    tweetsCount++;
   }
 
-  if (hasRateLimit) {
+  if (hasRateLimitReached) {
     log.warn(
       `rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`,
     );
