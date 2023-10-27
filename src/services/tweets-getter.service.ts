@@ -59,24 +59,6 @@ export const tweetsGetterService = async (
       text: formatTweetText(tweet),
     };
 
-    // Inject quoted tweet
-    if (tweet.quotedStatusId) {
-      const quotedStatus = await twitterClient.getTweet(tweet.quotedStatusId);
-      if (quotedStatus) {
-        t.quotedStatus = quotedStatus;
-      }
-    }
-
-    // Inject in reply tweet
-    if (tweet.inReplyToStatusId) {
-      const inReplyStatus = await twitterClient.getTweet(
-        tweet.inReplyToStatusId,
-      );
-      if (inReplyStatus) {
-        t.inReplyToStatus = inReplyStatus;
-      }
-    }
-
     const eligibleTweet = await getEligibleTweet(t);
     if (eligibleTweet) {
       tweets.unshift(eligibleTweet);

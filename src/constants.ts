@@ -48,4 +48,4 @@ export const DEBUG = (process.env.TOUITOMAMOUT_DEBUG || "false") === "true";
 export const DAEMON = (process.env.DAEMON || "false") === "true";
 export const DAEMON_PERIOD_MIN = parseInt(process.env.DAEMON_PERIOD_MIN ?? "7"); // Default 7 min
 export const VOID = "∅";
-export const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT ?? "60");
+export const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT ?? "10");
