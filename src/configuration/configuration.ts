@@ -5,6 +5,7 @@ import Counter from "@pm2/io/build/main/utils/metrics/counter.js";
 import Gauge from "@pm2/io/build/main/utils/metrics/gauge.js";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { createRestAPIClient, mastodon } from "masto";
+import ora from "ora";
 
 import {
   BLUESKY_IDENTIFIER,
@@ -18,7 +19,9 @@ import {
 } from "../constants.js";
 import { handleTwitterAuth } from "../helpers/auth/auth.js";
 import { createCacheFile, getCache } from "../helpers/cache/index.js";
+import { runMigrations } from "../helpers/cache/run-migrations.js";
 import { TouitomamoutError } from "../helpers/error.js";
+import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
 import { buildConfigurationRules } from "./build-configuration-rules.js";
 
 export const configuration = async (): Promise<{
@@ -45,6 +48,7 @@ export const configuration = async (): Promise<{
 
   // Init configuration
   await createCacheFile();
+  await runMigrations();
 
   const synchronizedPostsCountThisRun = pm2.counter({
     name: "Synced posts this run",
@@ -69,22 +73,58 @@ export const configuration = async (): Promise<{
 
   let mastodonClient = null;
   if (SYNC_MASTODON) {
+    const log = ora({
+      color: "gray",
+      prefixText: oraPrefixer("🦣 client"),
+    }).start("connecting to mastodon...");
+
     mastodonClient = createRestAPIClient({
       url: `https://${MASTODON_INSTANCE}`,
       accessToken: MASTODON_ACCESS_TOKEN,
     });
-    console.log("🦣 client: ✔ connected");
+
+    await mastodonClient.v1.accounts
+      .verifyCredentials()
+      .then(() => log.succeed("connected"))
+      .catch(() => {
+        log.fail("authentication failure");
+        throw new Error(
+          TouitomamoutError(
+            "Touitomamout was unable to connect to mastodon with the given credentials",
+            ["Please check your .env settings."],
+          ),
+        );
+      });
   }
 
   let blueskyClient = null;
   if (SYNC_BLUESKY) {
+    const log = ora({
+      color: "gray",
+      prefixText: oraPrefixer("☁️ client"),
+    }).start("connecting to bluesky...");
+
     blueskyClient = new bsky.BskyAgent({
       service: `https://${BLUESKY_INSTANCE}`,
     });
     await blueskyClient
-      .login({ identifier: BLUESKY_IDENTIFIER, password: BLUESKY_PASSWORD })
+      .login({
+        identifier: BLUESKY_IDENTIFIER,
+        password: BLUESKY_PASSWORD,
+      })
+      .then(() => {
+        log.succeed("connected");
+      })
       .catch(({ error }) => {
+        log.fail("authentication failure");
         switch (error) {
+          case ResponseTypeNames[ResponseType.AuthRequired]:
+            throw new Error(
+              TouitomamoutError(
+                "Touitomamout was unable to connect to bluesky with the given credentials",
+                ["Please check your .env settings."],
+              ),
+            );
           case ResponseTypeNames[ResponseType.XRPCNotSupported]:
             throw new Error(
               TouitomamoutError(
@@ -103,10 +143,9 @@ export const configuration = async (): Promise<{
               ),
             );
           default:
-            console.log({ error });
+            console.log(error);
         }
       });
-    console.log("☁️ client: ✔ connected");
   }
 
   return {
