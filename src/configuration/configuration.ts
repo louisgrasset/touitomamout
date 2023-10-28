@@ -18,6 +18,7 @@ import {
 } from "../constants.js";
 import { handleTwitterAuth } from "../helpers/auth/auth.js";
 import { createCacheFile, getCache } from "../helpers/cache/index.js";
+import { runMigrations } from "../helpers/cache/run-migrations.js";
 import { TouitomamoutError } from "../helpers/error.js";
 import { buildConfigurationRules } from "./build-configuration-rules.js";
 
@@ -45,6 +46,7 @@ export const configuration = async (): Promise<{
 
   // Init configuration
   await createCacheFile();
+  await runMigrations();
 
   const synchronizedPostsCountThisRun = pm2.counter({
     name: "Synced posts this run",
