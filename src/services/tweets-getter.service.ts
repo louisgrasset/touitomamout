@@ -5,7 +5,7 @@ import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
 import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
 import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
-import { formatTweetText, isTweetCached } from "../helpers/tweet/index.js";
+import { isTweetCached, tweetFormatter } from "../helpers/tweet/index.js";
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
   const stats = {
@@ -34,53 +34,74 @@ export const tweetsGetterService = async (
   }).start();
   log.text = "filtering";
 
+  let preventPostsSynchronization = false;
+  const LATEST_TWEETS_COUNT = 5;
+
+  /**
+   * Synchronization optimization: prevent excessive API calls & potential rate-limiting
+   *
+   * Pull the ${LATEST_TWEETS_COUNT}, filter eligible ones.
+   * This optimization prevents the post sync if the latest eligible tweet is cached.
+   */
+  const latestTweets = twitterClient.getTweets(
+    TWITTER_HANDLE,
+    LATEST_TWEETS_COUNT,
+  );
+
+  for await (const latestTweet of latestTweets) {
+    if (!preventPostsSynchronization) {
+      // Only consider eligible tweets.
+      const tweet = await getEligibleTweet(tweetFormatter(latestTweet));
+
+      if (tweet) {
+        // If the latest eligible tweet is cached, mark sync as unneeded.
+        if (isTweetCached(tweet, cache)) {
+          preventPostsSynchronization = true;
+        }
+        // If the latest tweet is not cached,
+        // skip the current optimization and go to synchronization step.
+        break;
+      }
+    }
+  }
+
   // Get tweets from API
   const tweets: Tweet[] = [];
-  const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
-  let hasRateLimitReached = false;
-  let latestTweetAlreadySynced = false;
-  let tweetsCount = 0;
-  for await (const tweet of tweetsIds) {
-    const rateLimitTimeout = setTimeout(
-      () => (hasRateLimitReached = true),
-      1000 * API_RATE_LIMIT,
-    );
+  if (preventPostsSynchronization) {
+    log.succeed("task finished (unneeded sync)");
+  } else {
+    const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
-    if (
-      latestTweetAlreadySynced ||
-      hasRateLimitReached ||
-      isTweetCached(tweet, cache)
-    ) {
-      continue;
+    let hasRateLimitReached = false;
+    for await (const tweet of tweetsIds) {
+      const rateLimitTimeout = setTimeout(
+        () => (hasRateLimitReached = true),
+        1000 * API_RATE_LIMIT,
+      );
+
+      if (hasRateLimitReached || isTweetCached(tweet, cache)) {
+        continue;
+      }
+
+      const t: Tweet = tweetFormatter(tweet);
+
+      const eligibleTweet = await getEligibleTweet(t);
+      if (eligibleTweet) {
+        tweets.unshift(eligibleTweet);
+      }
+      clearTimeout(rateLimitTimeout);
     }
 
-    // Skip posts sync if the latest one has already synced
-    if (tweetsCount === 0 && isTweetCached(tweet, cache)) {
-      latestTweetAlreadySynced = true;
+    if (hasRateLimitReached) {
+      log.warn(
+        `rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`,
+      );
     }
 
-    const t: Tweet = {
-      ...tweet,
-      timestamp: (tweet.timestamp ?? 0) * 1000,
-      text: formatTweetText(tweet),
-    };
-
-    const eligibleTweet = await getEligibleTweet(t);
-    if (eligibleTweet) {
-      tweets.unshift(eligibleTweet);
-    }
-    clearTimeout(rateLimitTimeout);
-    tweetsCount++;
+    log.succeed(pullContentStats(tweets, "tweets"));
+    log.succeed("task finished");
   }
-
-  if (hasRateLimitReached) {
-    log.warn(
-      `rate limit reached, more than ${API_RATE_LIMIT}s to fetch a single tweet`,
-    );
-  }
-  log.succeed(pullContentStats(tweets, "tweets"));
-  log.succeed("task finished");
 
   return tweets;
 };
