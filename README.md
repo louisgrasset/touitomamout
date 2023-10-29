@@ -31,5 +31,5 @@ Please find the project documentation here:
 Kudos to the following projects that made Touitomamout project possible 🙏
 - 🦤 [twitter-scraper](https://github.com/the-convocation/twitter-scraper)
 - 🦣 [masto.js](https://github.com/neet/masto.js)
-- ☁️[atproto](https://github.com/bluesky-social/atproto)
+- ☁️ [atproto](https://github.com/bluesky-social/atproto)
 
