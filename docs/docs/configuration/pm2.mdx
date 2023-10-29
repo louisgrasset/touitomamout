@@ -1,0 +1,41 @@
+---
+sidebar_position: 4
+title: Configure with PM2
+tags: [
+  'configuration',
+  'pm2',
+]
+---
+import SectionPullInstallProject from "./sections/_section_pull_install_project.md"
+import TipFileGenerator from "./sections/_tip-file-generator.md"
+
+# ⏲️ PM2 configuration
+
+## Installation
+<SectionPullInstallProject/>
+
+## Define environment variables
+3 types of environment variables are required to run the sync:
+- **Core variables**: required in situations, get them [here](/docs/resources/environment-variables#core-variables).
+- **Sync variables**: required for the sync **you** want, get them [here](/docs/resources/environment-variables#synchronization-).
+- **PM2 variables**: required for the PM2 instance, get them [here](/docs/resources/environment-variables#configuration-with-pm2-).
+
+<TipFileGenerator />
+
+Once your env variables are ready, inject them in a .env.{handle_to_sync} file. (e.g: `.env.signalapp`)
+
+## Run it!
+
+Touitomamout comes with a script that will automatically handle the PM2 instances management for you.
+
+Simply run the following command, and all your `.env.{handle_to_sync}` files will be used by PM2 to create a dedicated Touitomamout instance for each.
+
+```bash
+npm run pm2
+```
+
+:::info I upgraded the project to the latest version, what should I do?
+If you upgrade the project, you will need to update the PM2 instance(s) to use the latest version of the project. But that's as quick as running the following command:
+```bash
+npm run pm2:update
+```

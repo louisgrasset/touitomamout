@@ -30,6 +30,24 @@ const twitterSourceWarning = () => (
     </Link>
   </>
 );
+const daemonWarning = () => (
+  <>
+    The daemon mode should only be enabled when running Touitomamout in a Docker
+    container or when run as a "manual sync". It is <i>enabling</i> the self
+    restarting synchronization loop. <br />
+    <span
+      style={{
+        display: "block",
+        marginTop: "8px",
+        paddingLeft: "8px",
+        borderLeft: "2px solid #c4c4c4",
+      }}
+    >
+      If you rely on a <b>cron</b> or <b>pm2</b>, please set it to false or
+      remove the environment variable.
+    </span>
+  </>
+);
 
 const Generator = ({ setConfiguration }) => {
   const [data, setData] = useState({
@@ -106,8 +124,29 @@ const Generator = ({ setConfiguration }) => {
         },
       ],
     },
+    sync: {
+      name: "🔄 Synchronization",
+      required: false,
+      fields: [
+        {
+          name: "daemon",
+          warning: daemonWarning,
+          label: "Daemon mode 😈 (only for Docker or manual sync)",
+          type: "boolean",
+          value: false,
+          env: "DAEMON",
+        },
+        {
+          name: "frequency",
+          label: "Synchronization frequency in minutes",
+          type: "number",
+          value: 30,
+          env: "SYNC_FREQUENCY_MIN",
+        },
+      ],
+    },
     profile: {
-      name: "🔄 Profile synchronization",
+      name: "👻 Profile synchronization",
       required: false,
       fields: [
         {
@@ -137,48 +176,6 @@ const Generator = ({ setConfiguration }) => {
           type: "boolean",
           value: false,
           env: "SYNC_PROFILE_NAME",
-        },
-      ],
-    },
-    runtime: {
-      name: "⚙️ Runtime configuration",
-      required: true,
-      fields: [
-        {
-          name: "instance",
-          label: "Touitomamout instance id",
-          type: "string",
-          value: "",
-          env: "INSTANCE_ID",
-        },
-        {
-          name: "execution",
-          label: "Execution method",
-          type: "select",
-          value: "",
-          env: "EXECUTION",
-          validationHandler: (value) => {
-            const keepValues = ["pm2", "manual"];
-            return keepValues.includes(value);
-          },
-          options: [
-            {
-              label: "PM2",
-              value: "pm2",
-            },
-            {
-              label: "Manual",
-              value: "manual",
-            },
-            {
-              label: "Docker",
-              value: "docker",
-            },
-            {
-              label: "Cron",
-              value: "cron",
-            },
-          ],
         },
       ],
     },
@@ -263,80 +260,92 @@ const Generator = ({ setConfiguration }) => {
         <Text>Create your configuration in a few clicks!</Text>
         <Separator my="3" size="4" />
 
-        {Object.entries(data).map(([categorySlug, category]) => (
-          <Flex gap="3" direction="column" key={categorySlug}>
-            <Flex gap="2" justify="between">
-              <Heading size="3" as="h2">
-                {category.name}
-              </Heading>
-              {typeof category.enabled === "boolean" ? (
-                <Switch
-                  color="cyan"
-                  checked={category.enabled}
-                  onCheckedChange={(enabled) =>
-                    onCategoryToggleChange(categorySlug, enabled)
-                  }
-                />
+        {Object.entries(data).map(
+          ([categorySlug, category], index, entries) => (
+            <Flex gap="3" direction="column" key={categorySlug}>
+              <Flex gap="2" justify="between">
+                <Heading size="3" as="h2">
+                  {category.name}
+                </Heading>
+                {typeof category.enabled === "boolean" ? (
+                  <Switch
+                    color="cyan"
+                    checked={category.enabled}
+                    onCheckedChange={(enabled) =>
+                      onCategoryToggleChange(categorySlug, enabled)
+                    }
+                  />
+                ) : null}
+              </Flex>
+
+              {category.description ? (
+                <Text>Create your configuration in a few clicks!</Text>
               ) : null}
-            </Flex>
 
-            {category.description ? (
-              <Text>Create your configuration in a few clicks!</Text>
-            ) : null}
+              {category.warning ? (
+                <Callout.Root color="gray">
+                  <Callout.Icon>
+                    <InfoCircledIcon />
+                  </Callout.Icon>
+                  <Callout.Text>
+                    <category.warning />
+                  </Callout.Text>
+                </Callout.Root>
+              ) : null}
 
-            {category.warning ? (
-              <Callout.Root color="gray">
-                <Callout.Icon>
-                  <InfoCircledIcon />
-                </Callout.Icon>
-                <Callout.Text>
-                  <category.warning />
-                </Callout.Text>
-              </Callout.Root>
-            ) : null}
+              {category.enabled !== false
+                ? category.fields.map((field) => (
+                    <div key={categorySlug + field.name}>
+                      {field.warning ? (
+                        <Callout.Root
+                          color="gray"
+                          size="1"
+                          style={{ marginBottom: "8px" }}
+                        >
+                          <Callout.Icon>
+                            <InfoCircledIcon />
+                          </Callout.Icon>
+                          <Callout.Text>
+                            <field.warning />
+                          </Callout.Text>
+                        </Callout.Root>
+                      ) : null}
 
-            {category.enabled !== false
-              ? category.fields.map((field) => {
-                  if (field.type === "boolean") {
-                    return (
-                      <div key={categorySlug + field.name}>
+                      {field.type === "boolean" ? (
                         <ToggleComponent
                           field={field}
                           categorySlug={categorySlug}
                           category={category}
                           onChange={onFieldChange}
                         />
-                      </div>
-                    );
-                  }
-                  if (field.type === "string") {
-                    return (
-                      <div key={categorySlug + field.name}>
+                      ) : null}
+
+                      {field.type === "string" || field.type === "number" ? (
                         <TextComponent
                           field={field}
+                          type={field.type}
                           categorySlug={categorySlug}
                           onChange={onFieldChange}
                         />
-                      </div>
-                    );
-                  }
-                  if (field.type === "select") {
-                    return (
-                      <div key={categorySlug + field.name}>
+                      ) : null}
+
+                      {field.type === "select" ? (
                         <SelectComponent
                           field={field}
                           categorySlug={categorySlug}
                           onChange={onFieldChange}
                         />
-                      </div>
-                    );
-                  }
-                })
-              : null}
+                      ) : null}
+                    </div>
+                  ))
+                : null}
 
-            <Separator my="3" size="4" />
-          </Flex>
-        ))}
+              {index !== entries.length - 1 ? (
+                <Separator my="3" size="4" />
+              ) : null}
+            </Flex>
+          ),
+        )}
       </Flex>
     </Card>
   );

@@ -21,6 +21,7 @@ Here is an example of a cache file:
         "rkey": "<corresponding-bluesky-post-rkey"
       }
     }
-  }
+  },
+  "version": "x.x"
 }
 ```

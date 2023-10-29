@@ -3,7 +3,8 @@ version: '3.9'
 services:
   touitomamout:
     container_name: "touitomamout"
-    image: louisgrasset/touitomamout:latest  # Or "ghcr.io/louisgrasset/touitomamout:latest"
+    build:
+      context: ./  # ← This will build the image from the source code
     restart: unless-stopped
     environment:
       - ENV_FILE=/data/.env

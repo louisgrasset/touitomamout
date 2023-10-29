@@ -1,0 +1,71 @@
+---
+sidebar_position: 2
+title: Configure with Docker
+tags: [
+  'configuration',
+  'docker',
+]
+---
+import TipFileGenerator from "./sections/_tip-file-generator.md"
+
+# 🐳 Docker configuration
+
+## Define environment variables
+3 types of environment variables are required to run the sync:
+- **Core variables**: required in situations, get them [here](/docs/resources/environment-variables#core-variables)
+- **Sync variables**: required for the sync **you** want, get them [here](/docs/resources/environment-variables#synchronization-)
+- **Docker variables**: required for the docker container, get them [here](/docs/resources/environment-variables#configuration-with-docker-)
+
+<TipFileGenerator />
+
+## Create the touitomamout docker container
+Two ways of creating it: either by using the image or by building it from the source code. The first one is a bit easier, but features will be the same in both cases.
+
+---
+📦 Releases are published on the following registries:
+- [Docker Hub](https://hub.docker.com/r/louisgrasset/touitomamout) (`louisgrasset/touitomamout`)
+- [Github (GHCR)](https://github.com/louisgrasset/touitomamout/pkgs/container/touitomamout) (`ghcr.io/louisgrasset/touitomamout`)
+
+| Image tag | Description                                        |
+|-----------|----------------------------------------------------|
+| `latest`  | Corresponds to the latest release.                 |
+| `dev`     | Reflects the most recent changes on "main" branch. |
+| `x.x.x`   | A specific version.                                |
+
+## From the image
+```yml title="docker-compose.yml"
+version: '3.9'
+
+services:
+  touitomamout:
+    container_name: "touitomamout"
+    image: louisgrasset/touitomamout:latest  # Or "ghcr.io/louisgrasset/touitomamout:latest"
+    restart: unless-stopped
+    environment:
+      - ENV_FILE=/data/.env
+      - STORAGE_DIR=/data
+    volumes:
+      - ./data:/data
+```
+## From the source code
+```yml title="docker-compose.source.yml"
+version: '3.9'
+
+services:
+  touitomamout:
+    container_name: "touitomamout"
+    build:
+      context: ./  # ← This will build the image from the source code
+    restart: unless-stopped
+    environment:
+      - ENV_FILE=/data/.env
+      - STORAGE_DIR=/data
+    volumes:
+      - ./data:/data
+```
+
+## Run it!
+Simply run this command to start the container.
+```bash
+docker-compose up -d
+```
