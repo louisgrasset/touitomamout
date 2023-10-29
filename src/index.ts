@@ -1,8 +1,8 @@
 import { configuration } from "./configuration/configuration.js";
 import {
   DAEMON,
-  DAEMON_PERIOD_MIN,
   SYNC_BLUESKY,
+  SYNC_FREQUENCY_MIN,
   SYNC_MASTODON,
   TWITTER_HANDLE,
 } from "./constants.js";
@@ -64,11 +64,11 @@ const touitomamout = async () => {
 await touitomamout();
 
 if (DAEMON) {
-  console.log(`Run daemon every ${DAEMON_PERIOD_MIN}min`);
+  console.log(`Run daemon every ${SYNC_FREQUENCY_MIN}min`);
   setInterval(
     async () => {
       await touitomamout();
     },
-    DAEMON_PERIOD_MIN * 60 * 1000,
+    SYNC_FREQUENCY_MIN * 60 * 1000,
   );
 }

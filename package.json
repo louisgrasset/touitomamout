@@ -8,8 +8,8 @@
     "test": "jest --config ./meta/testing/jest.config.cjs",
     "build": "tsc",
     "predeploy": "npm ci && npm run build",
-    "deploy": "bash ./deployment/deploy.sh",
-    "deploy:update": "bash ./deployment/deploy.sh --update",
+    "pm2": "bash deployment/pm2.sh",
+    "pm2:update": "bash deployment/pm2.sh --update",
     "postinstall": "husky install .husky",
     "commitlint": "commitlint --edit"
   },

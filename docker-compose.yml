@@ -8,6 +8,5 @@ services:
     environment:
       - ENV_FILE=/data/.env
       - STORAGE_DIR=/data
-      - DAEMON_PERIOD_MIN=1
     volumes:
       - ./data:/data
