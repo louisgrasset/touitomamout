@@ -45,12 +45,17 @@ export const mastodonSenderService = async (
       log.text = `medias: ↑ (${mediaAttachments.length + 1}/${
         medias.length
       }) uploading`;
+      const m: {
+        file: unknown;
+        description?: string | null;
+      } = {
+        file: mediaBlob,
+      };
+      if (media.type === "image" && media.alt_text) {
+        m.description = media.alt_text;
+      }
       await client.v2.media
-        .create({
-          file: mediaBlob,
-          description:
-            media.type === "image" && media.alt_text ? media.alt_text : null,
-        })
+        .create(m)
         .then(async (mediaSent) => {
           mediaAttachments.push(mediaSent);
         })
