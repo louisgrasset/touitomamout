@@ -4,6 +4,7 @@ import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 import ora from "ora";
 
+import { SYNC_DRY_RUN } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
 import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
 import { makePost } from "../helpers/post/make-post.js";
@@ -42,9 +43,10 @@ export const postsSynchronizerService = async (
         log,
       );
 
-      await mastodonSenderService(mastodonClient, mastodonPost, medias, log);
-      await blueskySenderService(blueskyClient, blueskyPost, medias, log);
-
+      if (!SYNC_DRY_RUN) {
+        await mastodonSenderService(mastodonClient, mastodonPost, medias, log);
+        await blueskySenderService(blueskyClient, blueskyPost, medias, log);
+      }
       if (mastodonClient || blueskyPost) {
         synchronizedPostsCountThisRun.inc();
       }

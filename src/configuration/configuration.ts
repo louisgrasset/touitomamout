@@ -14,6 +14,7 @@ import {
   MASTODON_ACCESS_TOKEN,
   MASTODON_INSTANCE,
   SYNC_BLUESKY,
+  SYNC_DRY_RUN,
   SYNC_MASTODON,
   TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
@@ -48,6 +49,14 @@ export const configuration = async (): Promise<{
   });
 
   console.log(`Touitomamout@v${TOUITOMAMOUT_VERSION}`);
+
+  if (SYNC_DRY_RUN) {
+    ora({
+      color: "gray",
+      prefixText: oraPrefixer("✌️ dry run"),
+    }).info("mode enabled (no post will be posted)");
+  }
+
   // Init configuration
   await createCacheFile();
   await runMigrations();
