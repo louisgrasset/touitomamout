@@ -3,15 +3,21 @@ import React from "react";
 
 import { getFormattedLabel } from "./utils";
 
-const TextComponent = ({ categorySlug, field, onChange }) => {
+const TextComponent = ({
+  categorySlug,
+  field,
+  onChange,
+  type = "text" || "number",
+}) => {
   const label = getFormattedLabel(field);
 
   return (
     <>
-      <Text size={"2"}>{label}</Text>
+      <Text size="2">{label}</Text>
       <TextField.Input
         radius="large"
         variant="surface"
+        type={type}
         placeholder={label}
         onChange={(e) => onChange(categorySlug, field.name, e.target.value)}
         value={field.value}
@@ -19,12 +25,13 @@ const TextComponent = ({ categorySlug, field, onChange }) => {
     </>
   );
 };
+
 const ToggleComponent = ({ category, categorySlug, field, onChange }) => {
   const label = getFormattedLabel(field);
 
   return (
-    <Flex gap="2" justify="between">
-      <Text size={"2"}>{label}</Text>
+    <Flex gap="2" justify="between" style={{ paddingBottom: "8px" }}>
+      <Text size="2">{label}</Text>
       <Switch
         color="cyan"
         radius="large"
@@ -41,7 +48,7 @@ const SelectComponent = ({ categorySlug, field, onChange }) => {
 
   return (
     <Flex gap="2" direction="column">
-      <Text size={"2"}>{label}</Text>
+      <Text size="2">{label}</Text>
       <Select.Root
         value={field.value}
         onValueChange={(selectedValue) =>

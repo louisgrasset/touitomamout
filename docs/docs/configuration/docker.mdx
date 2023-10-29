@@ -6,6 +6,7 @@ tags: [
   'docker',
 ]
 ---
+import TipFileGenerator from "./sections/_tip-file-generator.md"
 
 # 🐳 Docker configuration
 
@@ -15,6 +16,8 @@ tags: [
 - **Sync variables**: required for the sync **you** want, get them [here](/docs/resources/environment-variables#synchronization-)
 - **Docker variables**: required for the docker container, get them [here](/docs/resources/environment-variables#configuration-with-docker-)
 
+<TipFileGenerator />
+
 ## Create the touitomamout docker container
 Two ways of creating it: either by using the image or by building it from the source code. The first one is a bit easier, but features will be the same in both cases.
 
@@ -23,13 +26,11 @@ Two ways of creating it: either by using the image or by building it from the so
 - [Docker Hub](https://hub.docker.com/r/louisgrasset/touitomamout) (`louisgrasset/touitomamout`)
 - [Github (GHCR)](https://github.com/louisgrasset/touitomamout/pkgs/container/touitomamout) (`ghcr.io/louisgrasset/touitomamout`)
 
-ℹ️ Types of image tags exist:
-
-| Tag      | Description                                 |
-|----------|---------------------------------------------|
-| `latest` | Corresponds to the latest release.          |
-| `dev`    | Reflects the most recent changes on "main". |
-| `x.x.x`  | A specific version.                         |
+| Image tag | Description                                        |
+|-----------|----------------------------------------------------|
+| `latest`  | Corresponds to the latest release.                 |
+| `dev`     | Reflects the most recent changes on "main" branch. |
+| `x.x.x`   | A specific version.                                |
 
 ## From the image
 ```yml title="docker-compose.yml"
@@ -43,7 +44,6 @@ services:
     environment:
       - ENV_FILE=/data/.env
       - STORAGE_DIR=/data
-      - DAEMON_PERIOD_MIN=1
     volumes:
       - ./data:/data
 ```
@@ -60,7 +60,12 @@ services:
     environment:
       - ENV_FILE=/data/.env
       - STORAGE_DIR=/data
-      - DAEMON_PERIOD_MIN=1
     volumes:
       - ./data:/data
+```
+
+## Run it!
+Simply run this command to start the container.
+```bash
+docker-compose up -d
 ```

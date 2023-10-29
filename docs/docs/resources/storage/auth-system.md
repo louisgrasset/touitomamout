@@ -11,7 +11,7 @@ A `Cookies` file is always named with the following naming: `cookies.<source-twi
 ## Cookies file location
 The cookies file is stored in at the root level of the project.
 
-## Cache file format
+## Cookies file format
 Here is an example of a cache file:
 ```json
 [
