@@ -1,7 +1,7 @@
 import { AppBskyEmbedRecord, BskyAgent } from "@atproto/api";
 import { Ora } from "ora";
 
-import { VOID } from "../constants.js";
+import { DEBUG, VOID } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky.js";
@@ -45,14 +45,29 @@ export const blueskySenderService = async (
         continue;
       }
 
+      const blueskyBlob = await parseBlobForBluesky(mediaBlob).catch((err) => {
+        if (DEBUG) {
+          console.log(err);
+        }
+        log.warn(
+          `medias: ↯ (${mediaAttachments.length + 1}/${
+            medias.length
+          }) skipped for ☁️ bluesky : ${err}`,
+        );
+        return null;
+      });
+
+      if (!blueskyBlob) {
+        continue;
+      }
+
       // Upload
       log.text = `medias: ↑ (${mediaAttachments.length + 1}/${
         medias.length
       }) uploading`;
-      const { mimeType, blobData } = await parseBlobForBluesky(mediaBlob);
 
       await client
-        .uploadBlob(blobData, { encoding: mimeType })
+        .uploadBlob(blueskyBlob.blobData, { encoding: blueskyBlob.mimeType })
         .then(async (mediaSent) => {
           const m: BlueskyMediaAttachment = { ...mediaSent };
           if (media.type === "image" && media.alt_text) {

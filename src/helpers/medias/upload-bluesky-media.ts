@@ -1,5 +1,6 @@
 import { BskyAgent } from "@atproto/api";
 
+import { DEBUG } from "../../constants.js";
 import { parseBlobForBluesky } from "./parse-blob-for-bluesky.js";
 
 /**
@@ -13,6 +14,17 @@ export const uploadBlueskyMedia = async (
   if (!blueskyClient) {
     return null;
   }
-  const { mimeType, blobData } = await parseBlobForBluesky(mediaBlob);
-  return await blueskyClient?.uploadBlob(blobData, { encoding: mimeType });
+  return await parseBlobForBluesky(mediaBlob)
+    .then(
+      ({ blobData, mimeType }) =>
+        blueskyClient?.uploadBlob(blobData, {
+          encoding: mimeType,
+        }),
+    )
+    .catch((err) => {
+      if (DEBUG) {
+        console.log(err);
+      }
+      return null;
+    });
 };
