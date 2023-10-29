@@ -15,6 +15,7 @@ import {
   MASTODON_INSTANCE,
   SYNC_BLUESKY,
   SYNC_MASTODON,
+  TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
 } from "../constants.js";
 import { handleTwitterAuth } from "../helpers/auth/auth.js";
@@ -46,6 +47,7 @@ export const configuration = async (): Promise<{
     }
   });
 
+  console.log(`Touitomamout@v${TOUITOMAMOUT_VERSION}`);
   // Init configuration
   await createCacheFile();
   await runMigrations();

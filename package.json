@@ -6,6 +6,7 @@
     "lint": "eslint src/ --ext .ts",
     "lint:fix": "eslint src/ --ext .ts --fix",
     "test": "jest --config ./meta/testing/jest.config.cjs",
+    "prebuild": "bash scripts/build-info.sh",
     "build": "tsc",
     "predeploy": "npm ci && npm run build",
     "pm2": "bash deployment/pm2.sh",

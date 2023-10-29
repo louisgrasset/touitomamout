@@ -4,6 +4,7 @@ import {
   SYNC_BLUESKY,
   SYNC_FREQUENCY_MIN,
   SYNC_MASTODON,
+  TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
 } from "./constants.js";
 import {
@@ -47,7 +48,7 @@ const touitomamout = async () => {
   synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
 
   console.log("\n🦤 → 🦣+☁️");
-  console.log("Touitomamout sync");
+  console.log(`Touitomamout sync | v${TOUITOMAMOUT_VERSION}`);
   console.log(`| Twitter handle: @${TWITTER_HANDLE}`);
   console.log(
     `| ${response.metrics.justSynced
