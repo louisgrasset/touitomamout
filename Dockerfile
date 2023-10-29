@@ -6,8 +6,10 @@ RUN groupadd --system bot \
 WORKDIR /app
 
 COPY src/ /app/src
+COPY scripts/ /app/scripts
 COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
 
+RUN npm run prebuild
 RUN npm ci --ignore-scripts && npm run build
 
 RUN echo "" > .env

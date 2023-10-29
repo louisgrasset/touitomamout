@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import fs from "fs";
 import { join } from "path";
 
+import buildInfo from "./buildInfo.json" assert { type: "json" };
+
 const envPath = process.argv[2] ?? join(process.cwd(), ".env");
 const envAvailable = await fs.promises
   .access(envPath, fs.constants.F_OK)
@@ -60,3 +62,4 @@ export const DEBUG = (process.env.TOUITOMAMOUT_DEBUG || "false") === "true";
 export const DAEMON = (process.env.DAEMON || "false") === "true";
 export const VOID = "∅";
 export const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT ?? "10");
+export const TOUITOMAMOUT_VERSION = buildInfo.version || "0.0.0";
