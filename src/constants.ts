@@ -17,7 +17,7 @@ if (!envAvailable) {
 }
 
 const trimTwitterHandle = (handle: string) => {
-  return handle.toLowerCase().trim().replaceAll(" ", "_").replaceAll("@", "");
+  return handle.toLowerCase().trim().replaceAll("@", "");
 };
 
 dotenv.config({ path: envPath });
