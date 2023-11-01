@@ -2,16 +2,15 @@ import bsky, { BskyAgent } from "@atproto/api";
 import { Tweet } from "@the-convocation/twitter-scraper";
 
 import { BLUESKY_IDENTIFIER } from "../../constants.js";
-import { Platform } from "../../types/index.js";
+import { BlueskyCacheChunk, Platform } from "../../types/index.js";
 import { BlueskyPost } from "../../types/post.js";
-import { getCache } from "../cache/index.js";
+import { splitTextForBluesky } from "../tweet/split-tweet-text.js";
+import { getCachedPostChunk } from "./get-cached-post-last-chunk.js";
 
 export const makeBlueskyPost = async (
   client: BskyAgent,
   tweet: Tweet,
 ): Promise<BlueskyPost> => {
-  const cache = await getCache();
-
   const username = await client
     .getProfile({ actor: BLUESKY_IDENTIFIER })
     .then((account) => account.data.handle);
@@ -19,7 +18,12 @@ export const makeBlueskyPost = async (
   // Get quoted post references
   let quotePost = undefined;
   if (tweet.quotedStatus) {
-    const quoteData = cache[tweet.quotedStatus.id!]?.[Platform.BLUESKY];
+    const quoteData = await getCachedPostChunk<BlueskyCacheChunk>(
+      tweet.quotedStatus.id!,
+      Platform.BLUESKY,
+      "first",
+    );
+
     quotePost = quoteData
       ? await client.getPost({
           cid: quoteData.cid,
@@ -32,7 +36,11 @@ export const makeBlueskyPost = async (
   // Get in reply post references
   let replyPost = undefined;
   if (tweet.inReplyToStatus) {
-    const replyData = cache[tweet.inReplyToStatus.id!]?.[Platform.BLUESKY];
+    const replyData = await getCachedPostChunk<BlueskyCacheChunk>(
+      tweet.inReplyToStatus.id!,
+      Platform.BLUESKY,
+      "last",
+    );
     replyPost = replyData
       ? await client
           .getPost({
@@ -49,8 +57,7 @@ export const makeBlueskyPost = async (
   await post.detectFacets(client); // automatically detects mentions and links
 
   return {
-    status: post.text,
-    facets: post.facets,
+    chunks: await splitTextForBluesky(tweet),
     username,
     replyPost,
     quotePost,

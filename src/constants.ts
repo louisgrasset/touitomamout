@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import { join } from "path";
 
-import buildInfo from "./buildInfo.json" assert { type: "json" };
+import buildInfo from "./buildInfo.json";
 
 const envPath = process.argv[2] ?? join(process.cwd(), ".env");
 const envAvailable = await fs.promises
@@ -64,3 +64,5 @@ export const DAEMON = (process.env.DAEMON || "false") === "true";
 export const VOID = "∅";
 export const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT ?? "30");
 export const TOUITOMAMOUT_VERSION = buildInfo.version || "0.0.0";
+export const MASTODON_MAX_POST_LENGTH = 500;
+export const BLUESKY_MAX_POST_LENGTH = 300;

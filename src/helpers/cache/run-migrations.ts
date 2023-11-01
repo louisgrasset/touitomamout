@@ -12,7 +12,7 @@ export const runMigrations = async () => {
     color: "gray",
     prefixText: oraPrefixer("⚙️ cache"),
   }).start();
-  oraProgress(log, `running migrations`, 0, migrations.length);
+  oraProgress(log, { after: `running migrations` }, 0, migrations.length);
 
   let migrationCounter = 0;
   for (const migration of migrations) {
@@ -30,7 +30,12 @@ export const runMigrations = async () => {
       });
 
     migrationCounter++;
-    oraProgress(log, `running migrations`, migrationCounter, migrations.length);
+    oraProgress(
+      log,
+      { after: `running migrations` },
+      migrationCounter,
+      migrations.length,
+    );
   }
 
   log.succeed("task finished");

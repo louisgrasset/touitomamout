@@ -5,8 +5,8 @@ import {
   MASTODON_INSTANCE,
   MASTODON_MAX_POST_LENGTH,
 } from "../../constants.js";
-import { Platform } from "../../types/index.js";
-import { getCache } from "../cache/index.js";
+import { MastodonCacheChunk, Platform } from "../../types/index.js";
+import { getCachedPostChunk } from "../post/get-cached-post-last-chunk.js";
 
 export const splitTextForMastodon = (tweet: Tweet, mastodonUsername: string) =>
   splitTweetText(tweet, Platform.MASTODON, mastodonUsername);
@@ -23,10 +23,14 @@ const splitTweetText = async (
       ? MASTODON_MAX_POST_LENGTH
       : BLUESKY_MAX_POST_LENGTH;
 
-  const cache = await getCache();
-  const quotedStatusLinkSection = `\n\nhttps://${MASTODON_INSTANCE}.com/${
+  const quoteData = await getCachedPostChunk<MastodonCacheChunk>(
+    quotedStatusId,
+    Platform.MASTODON,
+    "last",
+  );
+  const quotedStatusLinkSection = `\n\nhttps://${MASTODON_INSTANCE}/@${
     mastodonUsername ?? ""
-  }/status/${cache[quotedStatusId!]?.[Platform.MASTODON]}`;
+  }/${quoteData}`;
 
   // Small post optimization
   if (quotedStatusId) {
