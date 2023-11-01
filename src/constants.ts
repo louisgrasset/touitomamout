@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import { join } from "path";
 
-import buildInfo from "./buildInfo.json";
+import buildInfo from "./buildInfo.json" assert { type: "json" };
 
 const envPath = process.argv[2] ?? join(process.cwd(), ".env");
 const envAvailable = await fs.promises
