@@ -1,5 +1,16 @@
 import { Platform } from "./platform.js";
 
+export type MastodonCacheChunk = string;
+export type BlueskyCacheChunk = {
+  cid: string;
+  rkey: string;
+};
+
+export type BlueskyCacheChunkWithUri = BlueskyCacheChunk & { uri: string };
+
+export type MastodonCache = MastodonCacheChunk[];
+export type BlueskyCache = BlueskyCacheChunk[];
+
 export type Cache = Record<
   string,
   {
@@ -8,9 +19,4 @@ export type Cache = Record<
   }
 >;
 
-export type MastodonCache = string;
-export type BlueskyCache = {
-  cid: string;
-  rkey: string;
-};
 export type CompleteCache = Record<string, Cache>;

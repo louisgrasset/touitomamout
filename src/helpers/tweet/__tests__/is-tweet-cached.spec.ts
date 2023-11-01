@@ -8,11 +8,13 @@ describe("isTweetCached", () => {
       { id: "1234567890123456789" } as unknown as Tweet,
       {
         "1234567890123456789": {
-          mastodon: "mastodonId",
-          bluesky: {
-            cid: "cid",
-            rkey: "rkey",
-          },
+          mastodon: ["mastodonId"],
+          bluesky: [
+            {
+              cid: "cid",
+              rkey: "rkey",
+            },
+          ],
         },
       },
     );

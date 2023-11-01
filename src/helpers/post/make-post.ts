@@ -9,6 +9,12 @@ import { getPostExcerpt } from "./get-post-excerpt.js";
 import { makeBlueskyPost } from "./make-bluesky-post.js";
 import { makeMastodonPost } from "./make-mastodon-post.js";
 
+const chunkLogger = (log: Ora, chunks: string[]) => {
+  log.text = `post: → "generated ${
+    chunks.length > 1 ? "" : `${chunks.length} bluesky chunks `
+  }for mastodon`;
+};
+
 export const makePost = async (
   tweet: Tweet,
   mastodonClient: mastodon.rest.Client | null,
@@ -22,11 +28,13 @@ export const makePost = async (
   let mastodonPost = null;
   if (mastodonClient) {
     mastodonPost = await makeMastodonPost(mastodonClient, tweet);
+    chunkLogger(log, mastodonPost.chunks);
   }
   // Bluesky post
   let blueskyPost = null;
   if (blueskyClient) {
     blueskyPost = await makeBlueskyPost(blueskyClient, tweet);
+    chunkLogger(log, blueskyPost.chunks);
   }
   return {
     mastodon: mastodonPost,

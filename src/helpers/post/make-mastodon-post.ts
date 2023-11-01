@@ -1,10 +1,10 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
-import { MASTODON_INSTANCE } from "../../constants.js";
 import { Platform } from "../../types/index.js";
 import { MastodonPost } from "../../types/post.js";
 import { getCache } from "../cache/index.js";
+import { splitTextForMastodon } from "../tweet/split-tweet-text.js";
 
 export const makeMastodonPost = async (
   client: mastodon.rest.Client,
@@ -16,25 +16,23 @@ export const makeMastodonPost = async (
     .verifyCredentials()
     .then((account) => account.username);
 
-  // Get quoted post references
-  let status = tweet.text!;
-  if (tweet.quotedStatusId) {
-    status = `${
-      tweet.text
-    }\n\nhttps://${MASTODON_INSTANCE}/@${username}/${cache[
-      tweet.quotedStatusId
-    ]?.[Platform.MASTODON]}`;
-  }
+  // Get post chunks (including quote in first one when needed)
+  const chunks = await splitTextForMastodon(tweet, username);
 
   // Get in reply post references
   let inReplyToId = undefined;
   if (tweet.inReplyToStatus) {
-    inReplyToId = cache[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
+    // Retrieve the potentially already synced post references
+    const existingPost = cache[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
+    // Set inReplyToId to the last chunk reference of the existing post
+    inReplyToId = existingPost
+      ? existingPost[existingPost.length - 1]
+      : undefined;
   }
 
   return {
     username,
-    status,
+    chunks,
     inReplyToId,
     tweet,
   };
