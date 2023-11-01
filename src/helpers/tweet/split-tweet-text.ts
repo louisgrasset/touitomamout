@@ -68,10 +68,8 @@ const splitTweetText = async (
         return [text + quotedStatusLinkSection];
       }
     }
-  } else {
-    if (text!.length <= maxChunkSize) {
-      return [text!];
-    }
+  } else if (text!.length <= maxChunkSize) {
+    return [text!];
   }
 
   return buildChunks(

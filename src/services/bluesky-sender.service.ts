@@ -157,12 +157,10 @@ export const blueskySenderService = async (
             $type: "app.bsky.embed.recordWithMedia",
           };
         }
-      } else {
-        if (Object.keys(mediaRecord).length) {
-          embed = {
-            ...mediaRecord.media,
-          };
-        }
+      } else if (Object.keys(mediaRecord).length) {
+        embed = {
+          ...mediaRecord.media,
+        };
       }
 
       if (Object.keys(embed).length) {
