@@ -1,6 +1,6 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { MASTODON_INSTANCE, TWITTER_HANDLE } from "../../../constants.js";
+import { MASTODON_INSTANCE } from "../../../constants.js";
 import {
   splitTextForBluesky,
   splitTextForMastodon,
@@ -19,14 +19,14 @@ jest.mock("../../cache/index.js", () => {
   return {
     getCache: jest.fn().mockResolvedValue({
       "1234567891234567891": {
-        mastodon: "1234567891234567891",
+        mastodon: ["1234567891234567891"],
       },
     }),
   };
 });
 
 const MASTODON_USERNAME = "username";
-const MASTODON_QUOTING_SECTION = `\n\nhttps://${MASTODON_INSTANCE}.com/${TWITTER_HANDLE}/status/1234567891234567891`;
+const MASTODON_QUOTING_SECTION = `\n\nhttps://${MASTODON_INSTANCE}/@${MASTODON_USERNAME}/1234567891234567891`;
 
 const POST_99_CHARS =
   "In the symphony of existence, every note, contributes to the masterpiece. Embrace the cacophony!...";
@@ -143,8 +143,8 @@ describe("splitTweetText", () => {
 
         // Mastodon statuses must include the quote in initial thread chunk
         expect(mastodonStatuses).toEqual([
-          POST_900_CHARS.slice(0, 432) + MASTODON_QUOTING_SECTION,
-          POST_900_CHARS.slice(433, 900),
+          POST_900_CHARS.slice(0, 444) + MASTODON_QUOTING_SECTION,
+          POST_900_CHARS.slice(445, 900),
         ]);
 
         // Bluesky should not be impacted by the quote
