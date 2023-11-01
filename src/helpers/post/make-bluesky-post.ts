@@ -5,7 +5,7 @@ import { BLUESKY_IDENTIFIER } from "../../constants.js";
 import { BlueskyCacheChunk, Platform } from "../../types/index.js";
 import { BlueskyPost } from "../../types/post.js";
 import { splitTextForBluesky } from "../tweet/split-tweet-text.js";
-import { getCachedPostChunk } from "./get-cached-post-last-chunk.js";
+import { getCachedPostChunk } from "./get-cached-post-chunk.js";
 
 export const makeBlueskyPost = async (
   client: BskyAgent,
@@ -19,9 +19,9 @@ export const makeBlueskyPost = async (
   let quotePost = undefined;
   if (tweet.quotedStatus) {
     const quoteData = await getCachedPostChunk<BlueskyCacheChunk>(
-      tweet.quotedStatus.id!,
       Platform.BLUESKY,
       "first",
+      tweet.quotedStatus.id,
     );
 
     quotePost = quoteData
@@ -37,9 +37,9 @@ export const makeBlueskyPost = async (
   let replyPost = undefined;
   if (tweet.inReplyToStatus) {
     const replyData = await getCachedPostChunk<BlueskyCacheChunk>(
-      tweet.inReplyToStatus.id!,
       Platform.BLUESKY,
       "last",
+      tweet.inReplyToStatus.id,
     );
     replyPost = replyData
       ? await client
