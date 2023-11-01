@@ -1,20 +1,16 @@
 import dotenv from "dotenv";
-import fs from "fs";
+import { accessSync, constants } from "fs";
 import { join } from "path";
 
 import buildInfo from "./buildInfo.json" assert { type: "json" };
 
 const envPath = process.argv[2] ?? join(process.cwd(), ".env");
-const envAvailable = await fs.promises
-  .access(envPath, fs.constants.F_OK)
-  .then(() => true)
-  .catch(() => false);
-
 if (envPath.endsWith("example")) {
   throw new Error("You should not use the example configuration file.");
 }
-
-if (!envAvailable) {
+try {
+  accessSync(envPath, constants.F_OK);
+} catch (err) {
   throw new Error("No suitable .env file found.");
 }
 
