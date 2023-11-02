@@ -48,7 +48,7 @@ export const configuration = async (): Promise<{
     }
   });
 
-  console.log(`Touitomamout@v${TOUITOMAMOUT_VERSION}`);
+  console.log(`\nTouitomamout@v${TOUITOMAMOUT_VERSION}\n`);
 
   if (SYNC_DRY_RUN) {
     ora({
