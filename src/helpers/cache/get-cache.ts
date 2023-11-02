@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { CACHE_PATH, INSTANCE_ID } from "../../constants.js";
+import { CACHE_PATH } from "../../constants.js";
 import { Cache, CompleteCache } from "../../types/index.js";
 
 /**
@@ -9,7 +9,7 @@ import { Cache, CompleteCache } from "../../types/index.js";
 export const getCache = async (): Promise<Cache> => {
   try {
     const fileContent = await fs.promises.readFile(CACHE_PATH, "utf-8");
-    return JSON.parse(fileContent)[INSTANCE_ID];
+    return JSON.parse(fileContent).posts;
   } catch (err) {
     console.error("Error reading cache.json file:", err);
 
