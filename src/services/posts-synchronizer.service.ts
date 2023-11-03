@@ -25,7 +25,9 @@ export const postsSynchronizerService = async (
   const tweets = await tweetsGetterService(twitterClient);
 
   try {
+    let tweetIndex = 0;
     for (const tweet of tweets) {
+      tweetIndex++;
       const log = ora({
         color: "cyan",
         prefixText: oraPrefixer("content-sync"),
@@ -41,6 +43,7 @@ export const postsSynchronizerService = async (
         mastodonClient,
         blueskyClient,
         log,
+        { current: tweetIndex, total: tweets.length },
       );
 
       if (!SYNC_DRY_RUN) {
