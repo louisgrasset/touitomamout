@@ -10,7 +10,7 @@ import {
   SYNC_PROFILE_PICTURE,
   TWITTER_HANDLE,
 } from "../constants.js";
-import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
+import { oraPrefixer } from "../helpers/logs/index.js";
 import { uploadBlueskyMedia } from "../helpers/medias/upload-bluesky-media.js";
 import { shortenedUrlsReplacer } from "../helpers/url/shortened-urls-replacer.js";
 import { Platform, SynchronizerResponse } from "../types/index.js";

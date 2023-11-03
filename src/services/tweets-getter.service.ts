@@ -3,7 +3,7 @@ import ora from "ora";
 
 import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
-import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
+import { oraPrefixer, oraProgress } from "../helpers/logs/index.js";
 import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
 import { isTweetCached, tweetFormatter } from "../helpers/tweet/index.js";
 
@@ -49,6 +49,7 @@ export const tweetsGetterService = async (
   );
 
   for await (const latestTweet of latestTweets) {
+    log.text = "post: → checking for synchronization needs";
     if (!preventPostsSynchronization) {
       // Only consider eligible tweets.
       const tweet = await getEligibleTweet(tweetFormatter(latestTweet));
@@ -74,7 +75,11 @@ export const tweetsGetterService = async (
     const tweetsIds = twitterClient.getTweets(TWITTER_HANDLE, 200);
 
     let hasRateLimitReached = false;
+    let tweetIndex = 0;
     for await (const tweet of tweetsIds) {
+      tweetIndex++;
+      oraProgress(log, { before: "post: → filtering" }, tweetIndex, 200);
+
       const rateLimitTimeout = setTimeout(
         () => (hasRateLimitReached = true),
         1000 * API_RATE_LIMIT,
