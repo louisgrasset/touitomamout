@@ -23,7 +23,7 @@ import { handleTwitterAuth } from "../helpers/auth/auth.js";
 import { createCacheFile, getCache } from "../helpers/cache/index.js";
 import { runMigrations } from "../helpers/cache/run-migrations.js";
 import { TouitomamoutError } from "../helpers/error.js";
-import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
+import { oraPrefixer } from "../helpers/logs/index.js";
 import { buildConfigurationRules } from "./build-configuration-rules.js";
 
 export const configuration = async (): Promise<{

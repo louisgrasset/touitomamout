@@ -5,7 +5,7 @@ import { Ora } from "ora";
 
 import { VOID } from "../../constants.js";
 import { BlueskyPost, MastodonPost, Post } from "../../types/post.js";
-import { oraProgress } from "../logs/ora-progress.js";
+import { oraProgress } from "../logs/index.js";
 import { getPostExcerpt } from "./get-post-excerpt.js";
 import { makeBlueskyPost } from "./make-bluesky-post.js";
 import { makeMastodonPost } from "./make-mastodon-post.js";

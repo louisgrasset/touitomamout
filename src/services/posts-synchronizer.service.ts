@@ -6,7 +6,7 @@ import ora from "ora";
 
 import { SYNC_DRY_RUN } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
-import { oraPrefixer } from "../helpers/logs/ora-prefixer.js";
+import { oraPrefixer } from "../helpers/logs/index.js";
 import { makePost } from "../helpers/post/make-post.js";
 import { Media, Metrics, SynchronizerResponse } from "../types/index.js";
 import { blueskySenderService } from "./bluesky-sender.service.js";

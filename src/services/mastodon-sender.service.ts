@@ -4,7 +4,7 @@ import { Ora } from "ora";
 import { VOID } from "../constants.js";
 import { getCache } from "../helpers/cache/index.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
-import { oraProgress } from "../helpers/logs/ora-progress.js";
+import { oraProgress } from "../helpers/logs/index.js";
 import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
 import { MastodonCacheChunk, Media, Platform } from "../types/index.js";
 import { MastodonPost } from "../types/post.js";
