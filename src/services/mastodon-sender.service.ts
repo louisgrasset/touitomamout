@@ -47,7 +47,7 @@ export const mastodonSenderService = async (
         medias.length
       }) uploading`;
       const m: {
-        file: unknown;
+        file: Blob;
         description?: string | null;
       } = {
         file: mediaBlob,
