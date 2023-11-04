@@ -36,6 +36,20 @@ const POST_299_CHARS =
 
 const POST_900_CHARS =
   "Le premier soir je me suis donc endormi sur le sable à mille milles de toute terre habitée. J’étais bien plus isolé qu’un naufragé sur un radeau au milieu de l’Océan. Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait :\n\n– S’il vous plaît... dessine-moi un mouton !\n\n– Hein !\n\n– Dessine-moi un mouton…\n\nJ’ai sauté sur mes pieds comme si j’avais été frappé par la foudre. J’ai bien frotté mes yeux. J’ai bien regardé. Et j’ai vu un petit bonhomme tout à fait extraordinaire qui me considérait gravement. Voilà le meilleur portrait que, plus tard, j’ai réussi à faire de lui. Mais mon dessin, bien sûr, est beaucoup moins ravissant que le modèle. Ce n’est pas ma faute. J’avais été découragé dans ma carrière de peintre par les grandes personnes, à l’âge de six ans, et je n’avais rien appris à dessiner, sauf les boas fermés et les boas ouverts";
+
+const checkChunksLengthExpectations = (
+  mastodonStatuses: string[],
+  blueskyStatuses: string[],
+) => {
+  mastodonStatuses.forEach((status) => {
+    expect(status.length).toBeLessThanOrEqual(500);
+  });
+
+  blueskyStatuses.forEach((status) => {
+    expect(status.length).toBeLessThanOrEqual(300);
+  });
+};
+
 describe("splitTweetText", () => {
   describe("when the text is small (99 chars: < mastodon, < bluesky)", () => {
     describe("and when the text is not quote", () => {
@@ -48,6 +62,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([POST_99_CHARS]);
         expect(blueskyStatuses).toEqual([POST_99_CHARS]);
       });
@@ -63,6 +79,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
           POST_99_CHARS + MASTODON_QUOTING_SECTION,
         ]);
@@ -82,6 +100,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([POST_299_CHARS]);
         expect(blueskyStatuses).toEqual([POST_299_CHARS]);
       });
@@ -97,6 +117,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
           POST_299_CHARS + MASTODON_QUOTING_SECTION,
         ]);
@@ -116,6 +138,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toStrictEqual([
           POST_900_CHARS.slice(0, 493),
           POST_900_CHARS.slice(494, 900),
@@ -140,6 +164,8 @@ describe("splitTweetText", () => {
           MASTODON_USERNAME,
         );
         const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
 
         // Mastodon statuses must include the quote in initial thread chunk
         expect(mastodonStatuses).toEqual([
