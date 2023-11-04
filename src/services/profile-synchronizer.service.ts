@@ -10,10 +10,16 @@ import {
   SYNC_PROFILE_PICTURE,
   TWITTER_HANDLE,
 } from "../constants.js";
+import { updateCacheEntry } from "../helpers/cache/update-cache-entry.js";
 import { oraPrefixer } from "../helpers/logs/index.js";
 import { uploadBlueskyMedia } from "../helpers/medias/upload-bluesky-media.js";
+import { buildProfileUpdate } from "../helpers/profile/build-profile-update.js";
 import { shortenedUrlsReplacer } from "../helpers/url/shortened-urls-replacer.js";
-import { Platform, SynchronizerResponse } from "../types/index.js";
+import {
+  Platform,
+  ProfileCache,
+  SynchronizerResponse,
+} from "../types/index.js";
 import { mediaDownloaderService } from "./index.js";
 
 /**
@@ -32,19 +38,37 @@ export const profileSynchronizerService = async (
 
   const profile = await twitterClient.getProfile(TWITTER_HANDLE);
 
-  const profilePicture = profile.avatar
+  // Get profile images
+  log.text = `avatar: ↓ downloading`;
+  const avatarBlob = profile.avatar
     ? await mediaDownloaderService(profile.avatar.replace("_normal", ""))
     : null;
-  const profileHeader = profile.banner
+  log.text = `banner: ↓ downloading`;
+  const bannerBlob = profile.banner
     ? await mediaDownloaderService(profile.banner)
     : null;
 
-  const blueskyProfilePicture = profilePicture
-    ? await uploadBlueskyMedia(profilePicture, blueskyClient)
-    : null;
-  const blueskyProfileHeader = profileHeader
-    ? await uploadBlueskyMedia(profileHeader, blueskyClient)
-    : null;
+  // Build profile update
+  const profileUpdate = await buildProfileUpdate(
+    {
+      avatar: avatarBlob,
+      banner: bannerBlob,
+    },
+    log,
+  );
+
+  // Upload images to Bluesky if needed
+  const blueskyAvatar =
+    avatarBlob && profileUpdate.avatar.required
+      ? await uploadBlueskyMedia(avatarBlob, blueskyClient)
+      : null;
+
+  const blueskyBanner =
+    bannerBlob && profileUpdate.banner.required
+      ? await uploadBlueskyMedia(bannerBlob, blueskyClient)
+      : null;
+
+  log.text = "updating profiles...";
 
   // Generate the profile update object based on .env
   const params = [
@@ -71,25 +95,31 @@ export const profileSynchronizerService = async (
       },
     },
     {
-      condition: SYNC_PROFILE_PICTURE && profilePicture instanceof Blob,
+      condition:
+        SYNC_PROFILE_PICTURE &&
+        avatarBlob instanceof Blob &&
+        profileUpdate.avatar.required,
       [Platform.MASTODON]: {
         property: "avatar",
-        value: profilePicture,
+        value: avatarBlob,
       },
       [Platform.BLUESKY]: {
         property: "avatar",
-        value: blueskyProfilePicture?.data.blob,
+        value: blueskyAvatar?.data.blob,
       },
     },
     {
-      condition: SYNC_PROFILE_HEADER && profileHeader instanceof Blob,
+      condition:
+        SYNC_PROFILE_HEADER &&
+        bannerBlob instanceof Blob &&
+        profileUpdate.banner.required,
       [Platform.MASTODON]: {
         property: "header",
-        value: profileHeader,
+        value: bannerBlob,
       },
       [Platform.BLUESKY]: {
         property: "banner",
-        value: blueskyProfileHeader?.data.blob,
+        value: blueskyBanner?.data.blob,
       },
     },
   ].reduce(
@@ -117,12 +147,13 @@ export const profileSynchronizerService = async (
     { [Platform.MASTODON]: {}, [Platform.BLUESKY]: {} },
   );
 
-  // Post updates if any
+  // Post mastodon updates if any
   if (Object.keys(params.mastodon).length && mastodonClient) {
     log.text = "sending";
     await mastodonClient.v1.accounts.updateCredentials(params.mastodon);
   }
 
+  // Post bluesky updates if any
   if (Object.keys(params.bluesky).length && blueskyClient) {
     await blueskyClient.upsertProfile((old) => {
       return {
@@ -131,6 +162,20 @@ export const profileSynchronizerService = async (
       };
     });
   }
+
+  // Update profile images hash
+  await updateCacheEntry(
+    "profile",
+    Object.entries(profileUpdate).reduce(
+      (updated, [type, { hash, ..._rest }]) => {
+        return {
+          ...updated,
+          [type]: hash,
+        };
+      },
+      {} as ProfileCache,
+    ),
+  );
 
   log.succeed("task finished");
 

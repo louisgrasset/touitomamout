@@ -3,14 +3,14 @@ import { mastodon } from "masto";
 
 import { Platform } from "../../types/index.js";
 import { MastodonPost } from "../../types/post.js";
-import { getCache } from "../cache/index.js";
+import { getCachedPosts } from "../cache/get-cached-posts.js";
 import { splitTextForMastodon } from "../tweet/split-tweet-text.js";
 
 export const makeMastodonPost = async (
   client: mastodon.rest.Client,
   tweet: Tweet,
 ): Promise<MastodonPost> => {
-  const cache = await getCache();
+  const cachedPosts = await getCachedPosts();
 
   const username = await client.v1.accounts
     .verifyCredentials()
@@ -23,7 +23,8 @@ export const makeMastodonPost = async (
   let inReplyToId = undefined;
   if (tweet.inReplyToStatus) {
     // Retrieve the potentially already synced post references
-    const existingPost = cache[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
+    const existingPost =
+      cachedPosts[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
     // Set inReplyToId to the last chunk reference of the existing post
     inReplyToId = existingPost
       ? existingPost[existingPost.length - 1]

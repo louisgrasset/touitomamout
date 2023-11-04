@@ -1,13 +1,13 @@
 import {
   BlueskyCache,
-  Cache,
   MastodonCache,
   Platform,
+  PostsCache,
 } from "../../types/index.js";
 import { updateCacheFile } from "./update-cache.js";
 
 interface PostToCache {
-  cache: Cache;
+  cache: PostsCache;
   data: MastodonCache | BlueskyCache;
   tweetId?: string;
   platform: Platform;

@@ -1,12 +1,12 @@
 import fs from "fs";
 
 import { CACHE_PATH } from "../../constants.js";
-import { Cache } from "../../types/index.js";
-import { getCompleteCache } from "./get-cache.js";
+import { PostsCache } from "../../types/index.js";
+import { getCache } from "./get-cache.js";
 
-export const updateCacheFile = async (data: Cache | null) => {
+export const updateCacheFile = async (data: PostsCache | null) => {
   const d = {
-    ...(await getCompleteCache()),
+    ...(await getCache()),
     posts: data ?? {},
   };
   try {

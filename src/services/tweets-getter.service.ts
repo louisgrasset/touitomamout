@@ -2,7 +2,7 @@ import { Scraper, Tweet } from "@the-convocation/twitter-scraper";
 import ora from "ora";
 
 import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
-import { getCache } from "../helpers/cache/index.js";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { oraPrefixer, oraProgress } from "../helpers/logs/index.js";
 import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
 import { isTweetCached, tweetFormatter } from "../helpers/tweet/index.js";
@@ -27,7 +27,7 @@ const pullContentStats = (tweets: Tweet[], title: string) => {
 export const tweetsGetterService = async (
   twitterClient: Scraper,
 ): Promise<Tweet[]> => {
-  const cache = await getCache();
+  const cachedPosts = await getCachedPosts();
   const log = ora({
     color: "cyan",
     prefixText: oraPrefixer("content-mapper"),
@@ -56,7 +56,7 @@ export const tweetsGetterService = async (
 
       if (tweet) {
         // If the latest eligible tweet is cached, mark sync as unneeded.
-        if (isTweetCached(tweet, cache)) {
+        if (isTweetCached(tweet, cachedPosts)) {
           preventPostsSynchronization = true;
         }
         // If the latest tweet is not cached,
@@ -85,7 +85,7 @@ export const tweetsGetterService = async (
         1000 * API_RATE_LIMIT,
       );
 
-      if (hasRateLimitReached || isTweetCached(tweet, cache)) {
+      if (hasRateLimitReached || isTweetCached(tweet, cachedPosts)) {
         continue;
       }
 

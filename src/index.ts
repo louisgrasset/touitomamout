@@ -34,29 +34,32 @@ const touitomamout = async () => {
     throw new Error("Can't connect to Twitter 🦤");
   }
 
+  /* Profile sync */
   await profileSynchronizerService(
     twitterClient,
     mastodonClient,
     blueskyClient,
   );
-  const response = await postsSynchronizerService(
+
+  /* Posts sync */
+  const postsSyncResponse = await postsSynchronizerService(
     twitterClient,
     mastodonClient,
     blueskyClient,
     synchronizedPostsCountThisRun,
   );
-  synchronizedPostsCountAllTime.set(response.metrics.totalSynced);
+  synchronizedPostsCountAllTime.set(postsSyncResponse.metrics.totalSynced);
 
   console.log("\n🦤 → 🦣+☁️");
   console.log(`Touitomamout sync | v${TOUITOMAMOUT_VERSION}`);
   console.log(`| Twitter handle: @${TWITTER_HANDLE}`);
   console.log(
-    `| ${response.metrics.justSynced
+    `| ${postsSyncResponse.metrics.justSynced
       .toString()
       .padStart(5, "0")}  ʲᵘˢᵗ ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ`,
   );
   console.log(
-    `| ${response.metrics.totalSynced
+    `| ${postsSyncResponse.metrics.totalSynced
       .toString()
       .padStart(5, "0")}  ˢʸⁿᶜᵉᵈ ᵖᵒˢᵗˢ ˢᵒ ᶠᵃʳ`,
   );

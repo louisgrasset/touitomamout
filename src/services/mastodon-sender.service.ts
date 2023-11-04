@@ -2,7 +2,7 @@ import { mastodon } from "masto";
 import { Ora } from "ora";
 
 import { VOID } from "../constants.js";
-import { getCache } from "../helpers/cache/index.js";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
 import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
@@ -42,28 +42,34 @@ export const mastodonSenderService = async (
       }) downloading`;
       const mediaBlob = await mediaDownloaderService(media.url);
 
-      // Upload
-      log.text = `medias: ↑ (${mediaAttachments.length + 1}/${
-        medias.length
-      }) uploading`;
-      const m: {
-        file: Blob;
-        description?: string | null;
-      } = {
-        file: mediaBlob,
-      };
-      if (media.type === "image" && media.alt_text) {
-        m.description = media.alt_text;
+      if (mediaBlob) {
+        // Upload
+        log.text = `medias: ↑ (${mediaAttachments.length + 1}/${
+          medias.length
+        }) uploading`;
+
+        const mastodonMedia: {
+          file: Blob;
+          description?: string | null;
+        } = {
+          file: mediaBlob,
+        };
+
+        if (media.type === "image" && media.alt_text) {
+          mastodonMedia.description = media.alt_text;
+        }
+        if (mastodonMedia.file instanceof Blob) {
+          await client.v2.media
+            .create(mastodonMedia)
+            .then(async (mediaSent) => {
+              mediaAttachments.push(mediaSent);
+            })
+            .catch((err) => {
+              log.fail(err);
+              return null;
+            });
+        }
       }
-      await client.v2.media
-        .create(m)
-        .then(async (mediaSent) => {
-          mediaAttachments.push(mediaSent);
-        })
-        .catch((err) => {
-          log.fail(err);
-          return null;
-        });
     }
   }
 
@@ -116,7 +122,7 @@ export const mastodonSenderService = async (
             }`,
           );
 
-          const cache = await getCache();
+          const cache = await getCachedPosts();
           await savePostToCache({
             cache,
             tweetId: post.tweet.id,

@@ -1,11 +1,10 @@
-import fs from "fs";
 import ora from "ora";
 
-import { CACHE_PATH } from "../../constants.js";
-import { oraPrefixer } from "../logs/ora-prefixer.js";
-import { oraProgress } from "../logs/ora-progress.js";
-import { getCompleteCache } from "./get-cache.js";
+import { Cache } from "../../types/index.js";
+import { oraPrefixer, oraProgress } from "../logs/index.js";
+import { getCache } from "./get-cache.js";
 import migrations from "./migrations/index.js";
+import { writeToCacheFile } from "./write-to-cache-file.js";
 
 export const runMigrations = async () => {
   const log = ora({
@@ -16,15 +15,9 @@ export const runMigrations = async () => {
 
   let migrationCounter = 0;
   for (const migration of migrations) {
-    const outdatedCache = await getCompleteCache();
+    const outdatedCache = await getCache();
     await migration(outdatedCache)
-      .then(async (updatedCache) => {
-        try {
-          await fs.promises.writeFile(CACHE_PATH, JSON.stringify(updatedCache));
-        } catch (err) {
-          log.fail("Error updating cache file:" + err);
-        }
-      })
+      .then(async (updatedCache) => writeToCacheFile(updatedCache as Cache))
       .catch((err) => {
         throw new Error(`Error running migration ${migration.name}: ${err}`);
       });

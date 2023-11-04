@@ -20,7 +20,8 @@ import {
   TWITTER_HANDLE,
 } from "../constants.js";
 import { handleTwitterAuth } from "../helpers/auth/auth.js";
-import { createCacheFile, getCache } from "../helpers/cache/index.js";
+import { createCacheFile } from "../helpers/cache/create-cache.js";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { runMigrations } from "../helpers/cache/run-migrations.js";
 import { TouitomamoutError } from "../helpers/error.js";
 import { oraPrefixer } from "../helpers/logs/index.js";
@@ -70,7 +71,7 @@ export const configuration = async (): Promise<{
     name: "Synced posts total",
     id: "app/historic/sync/all_time",
   });
-  synchronizedPostsCountAllTime.set(Object.keys(await getCache()).length);
+  synchronizedPostsCountAllTime.set(Object.keys(await getCachedPosts()).length);
 
   const synchronizedHandle = pm2.metric({
     name: "User handle",

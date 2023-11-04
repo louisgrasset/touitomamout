@@ -15,9 +15,9 @@ jest.mock("../../../constants.js", () => {
   };
 });
 
-jest.mock("../../cache/index.js", () => {
+jest.mock("../../cache/get-cached-posts.js", () => {
   return {
-    getCache: jest.fn().mockResolvedValue({
+    getCachedPosts: jest.fn().mockResolvedValue({
       "1234567891234567891": {
         mastodon: ["1234567891234567891"],
       },
