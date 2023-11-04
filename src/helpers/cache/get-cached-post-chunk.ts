@@ -3,7 +3,7 @@ import {
   MastodonCacheChunk,
   Platform,
 } from "../../types/index.js";
-import { getCachedPosts } from "../cache/get-cached-posts.js";
+import { getCachedPosts } from "./get-cached-posts.js";
 
 export const getCachedPostChunk = async <
   T extends BlueskyCacheChunk | MastodonCacheChunk,

@@ -3,9 +3,9 @@ import {
   MastodonCacheChunk,
   Platform,
 } from "../../../types/index.js";
-import { getCachedPostChunk } from "../../post/get-cached-post-chunk.js";
+import { getCachedPostChunk } from "../get-cached-post-chunk.js";
 
-jest.mock("../../cache/get-cached-posts.js", () => {
+jest.mock("../get-cached-posts.js", () => {
   return {
     getCachedPosts: jest.fn().mockResolvedValue({
       "1234567891234567891": {
