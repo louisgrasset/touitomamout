@@ -31,6 +31,35 @@
         "no-multiple-empty-lines": ["error"],
         "space-in-parens": ["error"],
         "no-trailing-spaces": "error",
-        "object-curly-spacing": [ "error", "always" ]
+        "object-curly-spacing": [ "error", "always" ],
+
+        // forbid usage of unused variables (marked with an _)
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+              "argsIgnorePattern": "^_",
+              "varsIgnorePattern": "^_",
+              "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+              "selector": ["parameter", "variable"],
+              "leadingUnderscore": "forbid",
+              "filter": {
+                // keep this one open for destructuring
+                "regex": "_*",
+                "match": false
+              },
+              "format": null
+            },
+            {
+              "selector": "parameter",
+              "leadingUnderscore": "require",
+              "format": null,
+              "modifiers": ["unused"]
+            }
+        ]
     }
 }
