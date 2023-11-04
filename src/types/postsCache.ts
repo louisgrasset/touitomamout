@@ -11,12 +11,25 @@ export type BlueskyCacheChunkWithUri = BlueskyCacheChunk & { uri: string };
 export type MastodonCache = MastodonCacheChunk[];
 export type BlueskyCache = BlueskyCacheChunk[];
 
-export type Cache = Record<
+export type PostsCache = Record<
   string,
   {
     [Platform.MASTODON]?: MastodonCache;
     [Platform.BLUESKY]?: BlueskyCache;
   }
 >;
+export type ProfileCache = {
+  avatar: string;
+  banner: string;
+};
 
-export type CompleteCache = Record<string, Cache>;
+export type InstanceCache = {
+  id: string;
+};
+
+export type Cache = {
+  version: string;
+  instance: InstanceCache;
+  profile: ProfileCache;
+  posts: PostsCache;
+};

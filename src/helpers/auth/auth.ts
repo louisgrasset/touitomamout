@@ -5,7 +5,7 @@ import { TWITTER_PASSWORD, TWITTER_USERNAME } from "../../constants.js";
 import { getCookies } from "../cookies/get-cookies.js";
 import { saveCookies } from "../cookies/save-cookies.js";
 import { TouitomamoutError } from "../error.js";
-import { oraPrefixer } from "../logs/ora-prefixer.js";
+import { oraPrefixer } from "../logs/index.js";
 
 const restorePreviousSession = async (client: Scraper): Promise<void> => {
   try {

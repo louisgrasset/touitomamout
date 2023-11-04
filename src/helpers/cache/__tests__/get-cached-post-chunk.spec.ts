@@ -3,11 +3,11 @@ import {
   MastodonCacheChunk,
   Platform,
 } from "../../../types/index.js";
-import { getCachedPostChunk } from "../../post/get-cached-post-chunk.js";
+import { getCachedPostChunk } from "../get-cached-post-chunk.js";
 
-jest.mock("../../cache/index.js", () => {
+jest.mock("../get-cached-posts.js", () => {
   return {
-    getCache: jest.fn().mockResolvedValue({
+    getCachedPosts: jest.fn().mockResolvedValue({
       "1234567891234567891": {
         mastodon: ["first", "last"],
         bluesky: [

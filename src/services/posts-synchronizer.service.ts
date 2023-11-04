@@ -5,7 +5,7 @@ import { mastodon } from "masto";
 import ora from "ora";
 
 import { SYNC_DRY_RUN } from "../constants.js";
-import { getCache } from "../helpers/cache/index.js";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { oraPrefixer } from "../helpers/logs/index.js";
 import { makePost } from "../helpers/post/make-post.js";
 import { Media, Metrics, SynchronizerResponse } from "../types/index.js";
@@ -62,7 +62,7 @@ export const postsSynchronizerService = async (
       mastodonClient,
       blueskyClient,
       metrics: {
-        totalSynced: Object.keys(await getCache()).length,
+        totalSynced: Object.keys(await getCachedPosts()).length,
         justSynced: tweets.length,
       },
     };
@@ -74,7 +74,7 @@ export const postsSynchronizerService = async (
       mastodonClient,
       blueskyClient,
       metrics: {
-        totalSynced: Object.keys(await getCache()).length,
+        totalSynced: Object.keys(await getCachedPosts()).length,
         justSynced: 0,
       },
     };

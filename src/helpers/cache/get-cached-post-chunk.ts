@@ -3,7 +3,7 @@ import {
   MastodonCacheChunk,
   Platform,
 } from "../../types/index.js";
-import { getCache } from "../cache/index.js";
+import { getCachedPosts } from "./get-cached-posts.js";
 
 export const getCachedPostChunk = async <
   T extends BlueskyCacheChunk | MastodonCacheChunk,
@@ -12,8 +12,8 @@ export const getCachedPostChunk = async <
   position: "first" | "last",
   tweetId: string = "0",
 ): Promise<T | undefined> => {
-  const cache = await getCache();
-  const chunksFromCache = cache[tweetId]?.[platform];
+  const cachedPosts = await getCachedPosts();
+  const chunksFromCache = cachedPosts[tweetId]?.[platform];
   if (!chunksFromCache) {
     return undefined;
   }
