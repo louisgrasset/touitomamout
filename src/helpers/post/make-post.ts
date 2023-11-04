@@ -10,6 +10,9 @@ import { getPostExcerpt } from "./get-post-excerpt.js";
 import { makeBlueskyPost } from "./make-bluesky-post.js";
 import { makeMastodonPost } from "./make-mastodon-post.js";
 
+const format = (count: number, word: string) =>
+  `${count} ${count === 1 ? word : word + "s"}`;
+
 const chunkLogger = (
   log: Ora,
   chunksByPlatform: {
@@ -19,10 +22,10 @@ const chunkLogger = (
   postExcerpt: string,
 ) => {
   const mastodonLog = chunksByPlatform.mastodon?.chunks.length
-    ? `🦣 ${chunksByPlatform.mastodon.chunks.length} chunks`
+    ? `🦣 ${format(chunksByPlatform.mastodon.chunks.length, "chunk")}`
     : "";
   const blueskyLog = chunksByPlatform.bluesky?.chunks.length
-    ? `☁️ ${chunksByPlatform.bluesky.chunks.length} chunks`
+    ? `☁️ ${format(chunksByPlatform.bluesky.chunks.length, "chunk")}`
     : "";
 
   const chunksLogs = [mastodonLog, blueskyLog].filter((l) => !!l).join(" ");
