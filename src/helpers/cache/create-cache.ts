@@ -1,17 +1,12 @@
 import { access, constants } from "fs/promises";
 
 import { CACHE_PATH, INSTANCE_ID } from "../../constants.js";
-import { getCache } from "./get-cache.js";
 import { writeToCacheFile } from "./write-to-cache-file.js";
 
 export const createCacheFile = async () => {
   try {
     // Check if the file exists
     await access(CACHE_PATH, constants.F_OK);
-    const cache = await getCache();
-    if (cache.instance.id !== INSTANCE_ID) {
-      throw new Error(`Cache for instance ${INSTANCE_ID} not found`);
-    }
   } catch {
     writeToCacheFile({
       version: "0.2",

@@ -2,7 +2,6 @@ import { access } from "fs/promises";
 
 import { INSTANCE_ID } from "../../../constants.js";
 import { createCacheFile } from "../create-cache.js";
-import { getCache } from "../get-cache.js";
 import { writeToCacheFile } from "../write-to-cache-file.js";
 
 jest.mock("fs/promises", () => ({
@@ -18,14 +17,6 @@ jest.mock("../../../constants.js", () => {
     CACHE_PATH: "./cache.json",
   };
 });
-
-jest.mock("../get-cache.js", () => ({
-  getCache: jest.fn().mockResolvedValue({
-    instance: {
-      id: INSTANCE_ID,
-    },
-  }),
-}));
 
 jest.mock("../write-to-cache-file.js", () => ({
   writeToCacheFile: jest.fn(),
@@ -46,7 +37,6 @@ describe("createCache", () => {
       await createCacheFile();
 
       expect(promiseAccessMock).toHaveBeenCalledTimes(1);
-      expect(getCache).toHaveBeenCalledTimes(1);
       expect(writeToCacheFile).not.toHaveBeenCalled();
     });
   });
@@ -60,7 +50,6 @@ describe("createCache", () => {
       await createCacheFile();
 
       expect(promiseAccessMock).toHaveBeenCalledTimes(1);
-      expect(getCache).not.toHaveBeenCalled();
       expect(writeToCacheFile).toHaveBeenCalledWith({
         version: "0.2",
         instance: { id: INSTANCE_ID },
