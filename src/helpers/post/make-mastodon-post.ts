@@ -4,7 +4,7 @@ import { mastodon } from "masto";
 import { Platform } from "../../types/index.js";
 import { MastodonPost } from "../../types/post.js";
 import { getCachedPosts } from "../cache/get-cached-posts.js";
-import { splitTextForMastodon } from "../tweet/split-tweet-text.js";
+import { splitTextForMastodon } from "../tweet/split-tweet-text/index.js";
 
 export const makeMastodonPost = async (
   client: mastodon.rest.Client,

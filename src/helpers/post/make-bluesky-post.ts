@@ -5,7 +5,7 @@ import { BLUESKY_IDENTIFIER } from "../../constants.js";
 import { BlueskyCacheChunk, Platform } from "../../types/index.js";
 import { BlueskyPost } from "../../types/post.js";
 import { getCachedPostChunk } from "../cache/get-cached-post-chunk.js";
-import { splitTextForBluesky } from "../tweet/split-tweet-text.js";
+import { splitTextForBluesky } from "../tweet/split-tweet-text/index.js";
 
 export const makeBlueskyPost = async (
   client: BskyAgent,
