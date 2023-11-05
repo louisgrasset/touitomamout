@@ -4,7 +4,7 @@ import { MASTODON_INSTANCE } from "../../../constants.js";
 import {
   splitTextForBluesky,
   splitTextForMastodon,
-} from "../split-tweet-text.js";
+} from "../split-tweet-text/split-tweet-text.js";
 
 jest.mock("../../../constants.js", () => {
   return {
@@ -37,6 +37,9 @@ const POST_299_CHARS =
 const POST_900_CHARS =
   "Le premier soir je me suis donc endormi sur le sable à mille milles de toute terre habitée. J’étais bien plus isolé qu’un naufragé sur un radeau au milieu de l’Océan. Alors vous imaginez ma surprise, au lever du jour, quand une drôle de petite voix m’a réveillé. Elle disait :\n\n– S’il vous plaît... dessine-moi un mouton !\n\n– Hein !\n\n– Dessine-moi un mouton…\n\nJ’ai sauté sur mes pieds comme si j’avais été frappé par la foudre. J’ai bien frotté mes yeux. J’ai bien regardé. Et j’ai vu un petit bonhomme tout à fait extraordinaire qui me considérait gravement. Voilà le meilleur portrait que, plus tard, j’ai réussi à faire de lui. Mais mon dessin, bien sûr, est beaucoup moins ravissant que le modèle. Ce n’est pas ma faute. J’avais été découragé dans ma carrière de peintre par les grandes personnes, à l’âge de six ans, et je n’avais rien appris à dessiner, sauf les boas fermés et les boas ouverts";
 
+const POST_LONG_LINK =
+  "https://petit-prince.story.example.com/blog/the-story-of-the-petit-prince-a-french-book-written-by-antoine-de-saint-exupery-in-1943/?utm_source=pocket_saves";
+
 const checkChunksLengthExpectations = (
   mastodonStatuses: string[],
   blueskyStatuses: string[],
@@ -52,11 +55,34 @@ const checkChunksLengthExpectations = (
 
 describe("splitTweetText", () => {
   describe("when the text is small (99 chars: < mastodon, < bluesky)", () => {
+    describe("and when the text has long links", () => {
+      it("should return the text", async () => {
+        const tweet = {
+          text: `${POST_99_CHARS} ${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+          urls: [POST_LONG_LINK, POST_LONG_LINK],
+        } as Tweet;
+        const mastodonStatuses = await splitTextForMastodon(
+          tweet,
+          MASTODON_USERNAME,
+        );
+        const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
+        expect(mastodonStatuses).toEqual([
+          `${POST_99_CHARS} ${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+        ]);
+        expect(blueskyStatuses).toEqual([
+          `${POST_99_CHARS} ${POST_LONG_LINK}`,
+          `${POST_LONG_LINK}`,
+        ]);
+      });
+    });
     describe("and when the text is not quote", () => {
       it("should return the text", async () => {
         const tweet = {
           text: POST_99_CHARS,
-        } as Tweet;
+          urls: [],
+        } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
           MASTODON_USERNAME,
@@ -72,8 +98,9 @@ describe("splitTweetText", () => {
       it("should return the text with the quote", async () => {
         const tweet = {
           text: POST_99_CHARS,
+          urls: [],
           quotedStatusId: "1234567891234567891",
-        } as Tweet;
+        } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
           MASTODON_USERNAME,
@@ -111,7 +138,8 @@ describe("splitTweetText", () => {
         const tweet = {
           text: POST_299_CHARS,
           quotedStatusId: "1234567891234567891",
-        } as Tweet;
+          urls: [],
+        } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
           MASTODON_USERNAME,
@@ -132,7 +160,8 @@ describe("splitTweetText", () => {
       it("should return the text", async () => {
         const tweet = {
           text: POST_900_CHARS,
-        } as Tweet;
+          urls: [],
+        } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
           MASTODON_USERNAME,
@@ -158,7 +187,8 @@ describe("splitTweetText", () => {
         const tweet = {
           text: POST_900_CHARS,
           quotedStatusId: "1234567891234567891",
-        } as Tweet;
+          urls: [],
+        } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
           MASTODON_USERNAME,
@@ -181,6 +211,101 @@ describe("splitTweetText", () => {
           POST_900_CHARS.slice(893, 900),
         ]);
       });
+    });
+  });
+
+  describe("when the text has links", () => {
+    describe("when there is no text before & after", () => {
+      it("should return the text", async () => {
+        const tweet = {
+          text: `${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+          urls: [POST_LONG_LINK, POST_LONG_LINK],
+        } as Tweet;
+        const mastodonStatuses = await splitTextForMastodon(
+          tweet,
+          MASTODON_USERNAME,
+        );
+        const blueskyStatuses = await splitTextForBluesky(tweet);
+
+        checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
+        expect(mastodonStatuses).toEqual([
+          `${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+        ]);
+        expect(blueskyStatuses).toEqual([POST_LONG_LINK, POST_LONG_LINK]);
+      });
+    });
+  });
+
+  describe("when there is text before & after", () => {
+    it("should return the text", async () => {
+      const tweet = {
+        text: `${POST_99_CHARS}${POST_LONG_LINK}\n${POST_LONG_LINK}${POST_99_CHARS}`,
+        urls: [POST_LONG_LINK, POST_LONG_LINK],
+      } as Tweet;
+      const mastodonStatuses = await splitTextForMastodon(
+        tweet,
+        MASTODON_USERNAME,
+      );
+      const blueskyStatuses = await splitTextForBluesky(tweet);
+
+      checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
+      expect(mastodonStatuses).toEqual([
+        `${POST_99_CHARS}${POST_LONG_LINK}\n${POST_LONG_LINK}${POST_99_CHARS.slice(
+          0,
+          85,
+        )}`,
+        `${POST_99_CHARS.slice(86, 99)}`,
+      ]);
+      expect(blueskyStatuses).toEqual([
+        `${POST_99_CHARS}${POST_LONG_LINK}`,
+        `${POST_LONG_LINK}${POST_99_CHARS}`,
+      ]);
+    });
+  });
+
+  describe("when there is text only before", () => {
+    it("should return the text", async () => {
+      const tweet = {
+        text: `${POST_99_CHARS}${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+        urls: [POST_LONG_LINK, POST_LONG_LINK],
+      } as Tweet;
+      const mastodonStatuses = await splitTextForMastodon(
+        tweet,
+        MASTODON_USERNAME,
+      );
+      const blueskyStatuses = await splitTextForBluesky(tweet);
+
+      checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
+      expect(mastodonStatuses).toEqual([
+        `${POST_99_CHARS}${POST_LONG_LINK}\n${POST_LONG_LINK}`,
+      ]);
+      expect(blueskyStatuses).toEqual([
+        `${POST_99_CHARS}${POST_LONG_LINK}`,
+        `${POST_LONG_LINK}`,
+      ]);
+    });
+  });
+
+  describe("when there is text only after", () => {
+    it("should return the text", async () => {
+      const tweet = {
+        text: `${POST_LONG_LINK}\n${POST_LONG_LINK}${POST_99_CHARS}`,
+        urls: [POST_LONG_LINK, POST_LONG_LINK],
+      } as Tweet;
+      const mastodonStatuses = await splitTextForMastodon(
+        tweet,
+        MASTODON_USERNAME,
+      );
+      const blueskyStatuses = await splitTextForBluesky(tweet);
+
+      checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
+      expect(mastodonStatuses).toEqual([
+        `${POST_LONG_LINK}\n${POST_LONG_LINK}${POST_99_CHARS}`,
+      ]);
+      expect(blueskyStatuses).toEqual([
+        `${POST_LONG_LINK}`,
+        `${POST_LONG_LINK}${POST_99_CHARS}`,
+      ]);
     });
   });
 });
