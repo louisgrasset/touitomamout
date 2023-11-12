@@ -206,10 +206,11 @@ export const blueskySenderService = async (
       );
 
       // Save post ID to be able to reference it while posting the next chunk.
+      const RKEY_REGEX = /\/(?<rkey>\w+)$/;
       chunkReferences.push({
         cid: createdPost.cid,
         uri: createdPost.uri,
-        rkey: createdPost.uri.match(/\/(?<rkey>\w+)$/)?.groups?.["rkey"] || "",
+        rkey: RKEY_REGEX.exec(createdPost.uri)?.groups?.["rkey"] || "",
       });
 
       // If this is the last chunk, save the all chunks ID to the cache.
