@@ -39,7 +39,7 @@ export const blueskySenderService = async (
     }
     if (
       (media.type === "image" &&
-        mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT - 1) ||
+        mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT) ||
       (media.type === "video" && mediaAttachments.length === 0)
     ) {
       // Download
