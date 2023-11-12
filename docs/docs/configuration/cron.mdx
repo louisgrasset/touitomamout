@@ -22,7 +22,7 @@ import TipFileGenerator from "./sections/_tip-file-generator.md"
 
 <TipFileGenerator />
 
-Once your env variables are ready, inject them in a .env.{handle_to_sync} file. (e.g: `.env.signalapp`)
+Once your env variables are ready, inject them in a .env.[handle_to_sync] file. (e.g: `.env.signalapp`)
 
 ## Run it!
 
@@ -35,7 +35,7 @@ crontab -e
 
 Then, add the following line to run the sync every 30 minutes:
 ```bash
-*/30 * * * * cd /home/{user}/services/touitmamout && node ./dist/index.js .env
+*/30 * * * * cd /home/[user]/services/touitmamout && node ./dist/index.js .env
 ```
 
 Finally, save and exit the editor.
