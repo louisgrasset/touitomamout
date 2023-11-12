@@ -10,7 +10,7 @@ import { MastodonCacheChunk, Media, Platform } from "../types/index.js";
 import { MastodonPost } from "../types/post.js";
 import { mediaDownloaderService } from "./index.js";
 
-const BLUESKY_MEDIA_IMAGES_MAX_COUNT = 4;
+const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 
 /**
  * An async method in charge of handling Mastodon posts computation & uploading.
@@ -33,7 +33,7 @@ export const mastodonSenderService = async (
     }
     if (
       (media.type === "image" &&
-        mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT - 1) ||
+        mediaAttachments.length < MASTODON_MEDIA_IMAGES_MAX_COUNT) ||
       (media.type === "video" && mediaAttachments.length === 0)
     ) {
       // Download
