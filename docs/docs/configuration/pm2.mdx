@@ -22,13 +22,13 @@ import TipFileGenerator from "./sections/_tip-file-generator.md"
 
 <TipFileGenerator />
 
-Once your env variables are ready, inject them in a .env.{handle_to_sync} file. (e.g: `.env.signalapp`)
+Once your env variables are ready, inject them in a .env.[handle_to_sync] file. (e.g: `.env.signalapp`)
 
 ## Run it!
 
 Touitomamout comes with a script that will automatically handle the PM2 instances management for you.
 
-Simply run the following command, and all your `.env.{handle_to_sync}` files will be used by PM2 to create a dedicated Touitomamout instance for each.
+Simply run the following command, and all your `.env.[handle_to_sync]` files will be used by PM2 to create a dedicated Touitomamout instance for each.
 
 ```bash
 npm run pm2
