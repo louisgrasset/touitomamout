@@ -1,8 +1,5 @@
-import { exec } from "node:child_process";
-
 import { BskyAgent } from "@atproto/api";
 
-import { fetchLinkMetadata } from "../fetch-link-metadata.js";
 import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata.js";
 import { METADATA_MOCK } from "./mocks/metadata.js";
 
