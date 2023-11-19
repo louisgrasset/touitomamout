@@ -8,7 +8,6 @@ An easy way to synchronize your Twitter's tweets to Mastodon & Bluesky posts.
 ![Issues](https://img.shields.io/github/issues/louisgrasset/touitomamout)
 ![Github Stars](https://img.shields.io/github/stars/louisgrasset/touitomamout?color=ffe34e)
 ![Docker Pulls](https://img.shields.io/docker/pulls/louisgrasset/touitomamout?color=086dd7)
-![Github Pulls](https://img.shields.io/github/downloads/louisgrasset/touitomamout/latest/total?label=ghrc%20pulls&color=086dd7)
 [![Docker Hub](https://img.shields.io/static/v1.svg?color=086dd7&labelColor=555555&logoColor=ffffff&label=&message=docker%20hub&logo=Docker)](https://hub.docker.com/r/louisgrasset/touitomamout)
 
 Pipelines:
@@ -17,6 +16,12 @@ Pipelines:
 ![CD](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/cd.yml?label=cd)
 ![CD](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/codeql.yml?label=codeql)
 ![Release](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/release.yml?label=release)
+
+Tools:
+
+![Eslint](https://img.shields.io/badge/eslint-3A33D1?logo=eslint&logoColor=white)
+![Prettier](https://img.shields.io/badge/prettier-1A2C34?logo=prettier&logoColor=white)
+![Sonarlint](https://img.shields.io/badge/sonarlint-CB2029?logo=sonarlint&logoColor=white)
 
 ![touitomamout banner](./.github/docs/touitomamout-banner.jpg)
 
