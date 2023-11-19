@@ -2,6 +2,7 @@ import bsky, { BskyAgent } from "@atproto/api";
 import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
+import { getBlueskyChunkLinkMetadata } from "../helpers/bluesky/index.js";
 import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
@@ -118,38 +119,59 @@ export const blueskySenderService = async (
       createdAt: new Date(post.tweet.timestamp || Date.now()).toISOString(),
     };
 
-    // Inject embed data only for the first chunk.
+    /**
+     * First, compute the embed data.
+     * It can be: quote, media, quote + media, or link card.
+     */
+    const quoteRecord = post.quotePost
+      ? {
+          record: {
+            $type: "app.bsky.embed.record",
+            cid: post.quotePost.cid,
+            uri: post.quotePost.uri,
+          },
+        }
+      : {};
+
+    const mediaRecord = mediaAttachments.length
+      ? {
+          media: {
+            $type: "app.bsky.embed.images",
+            images: mediaAttachments.map((i) => ({
+              alt: i.alt_text ?? "",
+              image: i.data.blob.original,
+            })),
+          },
+        }
+      : {};
+
+    const card = await getBlueskyChunkLinkMetadata(richText, client);
+    const externalRecord = card
+      ? {
+          external: {
+            uri: card.url,
+            title: card.title,
+            description: card.description,
+            thumb: card.image.data.blob.original,
+            $type: "app.bsky.embed.external",
+          },
+        }
+      : {};
+
+    /**
+     * Then, build the embed object.
+     */
+    let embed = {};
+
+    // Inject media and/or quote data only for the first chunk.
     if (chunkIndex === 0) {
-      const quoteRecord = post.quotePost
-        ? {
-            record: {
-              $type: "app.bsky.embed.record",
-              cid: post.quotePost.cid,
-              uri: post.quotePost.uri,
-            },
-          }
-        : {};
-
-      const mediaRecord = mediaAttachments.length
-        ? {
-            media: {
-              $type: "app.bsky.embed.images",
-              images: mediaAttachments.map((i) => ({
-                alt: i.alt_text ?? "",
-                image: i.data.blob.original,
-              })),
-            },
-          }
-        : {};
-
-      let embed = {};
-
+      // Handle quote
       if (Object.keys(quoteRecord).length) {
         embed = {
           ...quoteRecord,
           $type: "app.bsky.embed.record",
         };
-
+        // ...with media(s)
         if (Object.keys(mediaRecord).length) {
           embed = {
             ...embed,
@@ -158,14 +180,27 @@ export const blueskySenderService = async (
           };
         }
       } else if (Object.keys(mediaRecord).length) {
+        // Handle media(s) only
         embed = {
           ...mediaRecord.media,
         };
       }
+    }
 
-      if (Object.keys(embed).length) {
-        data.embed = embed;
+    // Handle link card if no quote nor media
+    if (!Object.keys(quoteRecord).length && !Object.keys(mediaRecord).length) {
+      if (Object.keys(externalRecord).length) {
+        embed = {
+          ...embed,
+          ...externalRecord,
+          $type: "app.bsky.embed.external",
+        };
       }
+    }
+
+    // Inject embed data.
+    if (Object.keys(embed).length) {
+      data.embed = embed;
     }
 
     if (chunkIndex === 0) {
