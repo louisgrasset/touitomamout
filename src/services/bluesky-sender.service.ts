@@ -3,7 +3,6 @@ import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
 import { getBlueskyChunkLinkMetadata } from "../helpers/bluesky/index.js";
-import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
 import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky.js";
@@ -258,9 +257,7 @@ export const blueskySenderService = async (
           }`,
         );
 
-        const cache = await getCachedPosts();
         await savePostToCache({
-          cache,
           tweetId: post.tweet.id,
           data: chunkReferences.map((ref) => ({
             rkey: ref.rkey,

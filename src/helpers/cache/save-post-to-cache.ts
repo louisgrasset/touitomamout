@@ -1,29 +1,24 @@
-import {
-  BlueskyCache,
-  MastodonCache,
-  Platform,
-  PostsCache,
-} from "../../types/index.js";
-import { updateCacheFile } from "./update-cache.js";
+import { BlueskyCache, MastodonCache, Platform } from "../../types/index.js";
+import { getCachedPosts } from "./get-cached-posts.js";
+import { updateCacheEntry } from "./update-cache-entry.js";
 
 interface PostToCache {
-  cache: PostsCache;
   data: MastodonCache | BlueskyCache;
   tweetId?: string;
   platform: Platform;
 }
 
 export const savePostToCache = async ({
-  cache,
   tweetId = "",
   data,
   platform,
 }: PostToCache) => {
-  const alreadyExistingCachedPostData = cache[tweetId] || {};
-  await updateCacheFile({
-    ...cache,
+  const cachedPosts = await getCachedPosts();
+  const currentPostData = cachedPosts[tweetId] || {};
+  await updateCacheEntry("posts", {
+    ...cachedPosts,
     [tweetId]: {
-      ...alreadyExistingCachedPostData,
+      ...currentPostData,
       [platform]: data,
     },
   });

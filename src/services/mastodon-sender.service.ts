@@ -2,7 +2,6 @@ import { mastodon } from "masto";
 import { Ora } from "ora";
 
 import { VOID } from "../constants.js";
-import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
 import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
@@ -122,9 +121,7 @@ export const mastodonSenderService = async (
             }`,
           );
 
-          const cache = await getCachedPosts();
           await savePostToCache({
-            cache,
             tweetId: post.tweet.id,
             data: chunkReferences,
             platform: Platform.MASTODON,
