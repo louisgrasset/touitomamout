@@ -12,9 +12,7 @@ jest.mock("../../../constants.js", () => {
 
 describe("fetchLinkMetadata", () => {
   it("should return the metadata if data is found", async () => {
-    const result = await fetchLinkMetadata(
-      "https://github.com/louisgrasset/touitomamout",
-    );
+    const result = await fetchLinkMetadata("https://bsky.app");
     expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(METADATA_MOCK));
   });
 

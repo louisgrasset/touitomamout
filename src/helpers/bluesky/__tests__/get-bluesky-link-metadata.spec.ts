@@ -37,10 +37,9 @@ const uploadBlobMock = jest.fn(() => ({
 
 describe("getBlueskyLinkMetadata", () => {
   it("should return the metadata if data is found", async () => {
-    const result = await getBlueskyLinkMetadata(
-      "https://github.com/louisgrasset/touitomamout",
-      { uploadBlob: uploadBlobMock } as unknown as BskyAgent,
-    );
+    const result = await getBlueskyLinkMetadata("https://bsky.app", {
+      uploadBlob: uploadBlobMock,
+    } as unknown as BskyAgent);
     expect(result).toStrictEqual({
       ...METADATA_MOCK,
       image: {
