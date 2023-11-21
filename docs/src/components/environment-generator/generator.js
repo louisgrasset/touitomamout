@@ -95,6 +95,13 @@ const Generator = ({ setConfiguration }) => {
           value: "",
           env: "MASTODON_ACCESS_TOKEN",
         },
+        {
+          name: "enabled",
+          type: "boolean",
+          value: true,
+          hidden: true,
+          env: "SYNC_MASTODON",
+        },
       ],
     },
     bluesky: {
@@ -121,6 +128,13 @@ const Generator = ({ setConfiguration }) => {
           type: "string",
           value: "",
           env: "BLUESKY_PASSWORD",
+        },
+        {
+          name: "enabled",
+          type: "boolean",
+          value: true,
+          hidden: true,
+          env: "SYNC_BLUESKY",
         },
       ],
     },
@@ -294,50 +308,52 @@ const Generator = ({ setConfiguration }) => {
               ) : null}
 
               {category.enabled !== false
-                ? category.fields.map((field) => (
-                    <div key={categorySlug + field.name}>
-                      {field.warning ? (
-                        <Callout.Root
-                          color="gray"
-                          size="1"
-                          style={{ marginBottom: "8px" }}
-                        >
-                          <Callout.Icon>
-                            <InfoCircledIcon />
-                          </Callout.Icon>
-                          <Callout.Text>
-                            <field.warning />
-                          </Callout.Text>
-                        </Callout.Root>
-                      ) : null}
+                ? category.fields.map((field) =>
+                    field?.hidden !== true ? (
+                      <div key={categorySlug + field.name}>
+                        {field.warning ? (
+                          <Callout.Root
+                            color="gray"
+                            size="1"
+                            style={{ marginBottom: "8px" }}
+                          >
+                            <Callout.Icon>
+                              <InfoCircledIcon />
+                            </Callout.Icon>
+                            <Callout.Text>
+                              <field.warning />
+                            </Callout.Text>
+                          </Callout.Root>
+                        ) : null}
 
-                      {field.type === "boolean" ? (
-                        <ToggleComponent
-                          field={field}
-                          categorySlug={categorySlug}
-                          category={category}
-                          onChange={onFieldChange}
-                        />
-                      ) : null}
+                        {field.type === "boolean" ? (
+                          <ToggleComponent
+                            field={field}
+                            categorySlug={categorySlug}
+                            category={category}
+                            onChange={onFieldChange}
+                          />
+                        ) : null}
 
-                      {field.type === "string" || field.type === "number" ? (
-                        <TextComponent
-                          field={field}
-                          type={field.type}
-                          categorySlug={categorySlug}
-                          onChange={onFieldChange}
-                        />
-                      ) : null}
+                        {field.type === "string" || field.type === "number" ? (
+                          <TextComponent
+                            field={field}
+                            type={field.type}
+                            categorySlug={categorySlug}
+                            onChange={onFieldChange}
+                          />
+                        ) : null}
 
-                      {field.type === "select" ? (
-                        <SelectComponent
-                          field={field}
-                          categorySlug={categorySlug}
-                          onChange={onFieldChange}
-                        />
-                      ) : null}
-                    </div>
-                  ))
+                        {field.type === "select" ? (
+                          <SelectComponent
+                            field={field}
+                            categorySlug={categorySlug}
+                            onChange={onFieldChange}
+                          />
+                        ) : null}
+                      </div>
+                    ) : null,
+                  )
                 : null}
 
               {index !== entries.length - 1 ? (
