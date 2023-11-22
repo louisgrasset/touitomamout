@@ -6,8 +6,6 @@ export type BlueskyCacheChunk = {
   rkey: string;
 };
 
-export type BlueskyCacheChunkWithUri = BlueskyCacheChunk & { uri: string };
-
 export type MastodonCache = MastodonCacheChunk[];
 export type BlueskyCache = BlueskyCacheChunk[];
 

@@ -8,12 +8,18 @@ export type MastodonPost = {
   inReplyToId: string | undefined;
 };
 
+export type BlueskyPostReference = {
+  uri: string;
+  cid: string;
+  value: AppBskyFeedPost.Record;
+};
+
 export type BlueskyPost = {
   tweet: Tweet;
   chunks: string[];
   username: string;
-  quotePost?: { uri: string; cid: string; value: AppBskyFeedPost.Record };
-  replyPost?: { uri: string; cid: string; value: AppBskyFeedPost.Record };
+  quotePost?: BlueskyPostReference;
+  replyPost?: BlueskyPostReference;
 };
 
 export type Post = {
