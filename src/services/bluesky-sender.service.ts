@@ -232,7 +232,7 @@ export const blueskySenderService = async (
       chunkReferences.push({
         cid: createdPost.cid,
         uri: createdPost.uri,
-        rkey: RKEY_REGEX.exec(createdPost.uri)?.groups?.["rkey"] || "",
+        rkey: RKEY_REGEX.exec(createdPost.uri)?.groups?.["rkey"] ?? "",
       });
 
       // If this is the last chunk, save the all chunks ID to the cache.
