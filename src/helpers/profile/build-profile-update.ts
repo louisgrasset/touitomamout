@@ -22,8 +22,8 @@ export const buildProfileUpdate = async (
   let isSyncRequired = false;
   const update = (["avatar", "banner"] as ProfileType[]).reduce(
     (items, type) => {
-      const isImageUpToDate = liveProfile[type] === cachedProfile[type];
-      if (!isImageUpToDate) {
+      const isOutDated = liveProfile[type] !== cachedProfile[type];
+      if (isOutDated) {
         isSyncRequired = true;
       }
       return {
@@ -31,7 +31,7 @@ export const buildProfileUpdate = async (
         [type]: {
           hash: liveProfile[type],
           blob: blobs[type],
-          required: isImageUpToDate,
+          required: isOutDated,
         },
       };
     },
