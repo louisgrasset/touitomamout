@@ -1,4 +1,4 @@
-import fs from "fs";
+import { readFile } from "fs/promises";
 
 import { CACHE_PATH } from "../../constants.js";
 import { Cache } from "../../types/index.js";
@@ -8,7 +8,7 @@ import { Cache } from "../../types/index.js";
  */
 export const getCache = async (): Promise<Cache> => {
   try {
-    const fileContent = await fs.promises.readFile(CACHE_PATH, "utf-8");
+    const fileContent = await readFile(CACHE_PATH, "utf-8");
     return JSON.parse(fileContent);
   } catch {
     return {
