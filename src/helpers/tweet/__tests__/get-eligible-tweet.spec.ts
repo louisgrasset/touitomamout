@@ -6,6 +6,7 @@ import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from "../index.js";
 jest.mock("../../../constants.js", () => {
   return {
     TWITTER_HANDLE: "username",
+    DEBUG: true,
   };
 });
 jest.mock("../index.js", () => {
@@ -17,6 +18,16 @@ jest.mock("../index.js", () => {
 });
 
 describe("getEligibleTweet", () => {
+  const originalConsole = console.log;
+  const consoleMock = jest.fn();
+  beforeEach(() => {
+    console.log = consoleMock;
+  });
+
+  afterAll(() => {
+    console.log = originalConsole;
+  });
+
   it.each`
     isNotRetweet | isSelfReply | isSelfQuote | isRecentTweet | keep
     ${false}     | ${false}    | ${false}    | ${false}      | ${false}
@@ -49,6 +60,10 @@ describe("getEligibleTweet", () => {
             }
           : undefined,
       );
+
+      if (result) {
+        expect(consoleMock).toHaveBeenCalledTimes(1);
+      }
     },
   );
 });
