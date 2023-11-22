@@ -2,7 +2,10 @@ import bsky, { BskyAgent } from "@atproto/api";
 import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
-import { getBlueskyChunkLinkMetadata } from "../helpers/bluesky/index.js";
+import {
+  buildReplyEntry,
+  getBlueskyChunkLinkMetadata,
+} from "../helpers/bluesky/index.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
 import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky.js";
@@ -204,28 +207,13 @@ export const blueskySenderService = async (
 
     if (chunkIndex === 0) {
       if (post.replyPost) {
-        data.reply = {
-          root: {
-            cid: post.replyPost.cid,
-            uri: post.replyPost.uri,
-          },
-          parent: {
-            cid: post.replyPost.cid,
-            uri: post.replyPost.uri,
-          },
-        };
+        data.reply = buildReplyEntry(post.replyPost);
       }
     } else {
-      data.reply = {
-        root: {
-          cid: chunkReferences[0].cid,
-          uri: chunkReferences[0].uri,
-        },
-        parent: {
-          cid: chunkReferences[chunkIndex - 1].cid,
-          uri: chunkReferences[chunkIndex - 1].uri,
-        },
-      };
+      data.reply = buildReplyEntry(
+        chunkReferences[0],
+        chunkReferences[chunkIndex - 1],
+      );
     }
 
     log.text = `☁️ | post sending: ${getPostExcerpt(post.tweet.text ?? VOID)}`;

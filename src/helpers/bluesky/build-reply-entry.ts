@@ -1,15 +1,15 @@
-import { BlueskyCacheChunkWithUri } from "../../types/index.js";
+import { ReplyEntry } from "../../types/reply.js";
 
 export const buildReplyEntry = (
-  parentPost: BlueskyCacheChunkWithUri,
-  rootPost: BlueskyCacheChunkWithUri,
-) => ({
+  rootPost: { cid: string; uri: string },
+  parentPost?: { cid: string; uri: string },
+): ReplyEntry => ({
   root: {
-    cid: parentPost.cid,
-    uri: parentPost.uri,
-  },
-  parent: {
     cid: rootPost.cid,
     uri: rootPost.uri,
+  },
+  parent: {
+    cid: (parentPost ?? rootPost).cid,
+    uri: (parentPost ?? rootPost).uri,
   },
 });
