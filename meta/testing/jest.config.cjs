@@ -13,5 +13,6 @@ module.exports = {
     testTimeout: 10000,
     preset: "ts-jest/presets/default-esm",
     verbose: false,
-    maxWorkers: "50%"
+    maxWorkers: "50%",
+    transformIgnorePatterns: []
 };
