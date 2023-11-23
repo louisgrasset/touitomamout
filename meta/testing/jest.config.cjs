@@ -1,7 +1,8 @@
 module.exports = {
     collectCoverageFrom: ['src/**/*.ts'],
     coveragePathIgnorePatterns : [
-        "<rootDir>/src/constants.ts"
+        "<rootDir>/src/constants.ts",
+        "<rootDir>/src/index.ts"
     ],
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',
