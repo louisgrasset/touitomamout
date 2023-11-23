@@ -15,5 +15,7 @@ module.exports = {
     preset: "ts-jest/presets/default-esm",
     verbose: false,
     maxWorkers: "50%",
-    transformIgnorePatterns: []
+    transform: {
+        "^.+\\.[tj]s$": "ts-jest"
+    },
 };
