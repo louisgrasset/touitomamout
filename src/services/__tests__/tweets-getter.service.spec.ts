@@ -1,5 +1,6 @@
 import { Scraper, Tweet } from "@the-convocation/twitter-scraper";
 
+import { isTweetCached } from "../../helpers/tweet/index.js";
 import { tweetsGetterService } from "../tweets-getter.service.js";
 
 jest.mock("../../constants.js", () => ({}));
@@ -57,12 +58,18 @@ const makeTweetMock = (update: Partial<Tweet>): Tweet => {
 };
 
 class MockTwitterClient {
+  constructor(tweetCount?: number) {
+    this.tweetCount = tweetCount || 200;
+  }
+
+  private readonly tweetCount: number;
+
   public async *getTweets(
     user: string,
     maxTweets?: number,
   ): AsyncGenerator<Tweet> {
     // Mocking the asynchronous generator function
-    for (let i = 0; i < (maxTweets || 200); i++) {
+    for (let i = 0; i < (this.tweetCount ?? maxTweets); i++) {
       yield {
         ...makeTweetMock({ username: user }),
         id: i.toString(),
@@ -71,10 +78,38 @@ class MockTwitterClient {
   }
 }
 
+jest.mock("../../helpers/tweet/index.js", () => {
+  const originalModule = jest.requireActual("../../helpers/tweet/index.js");
+  return {
+    ...originalModule,
+    isTweetCached: jest.fn(),
+  };
+});
+
+const isTweetCachedMock = isTweetCached as jest.Mock;
+
 describe("tweetsGetterService", () => {
-  it("should return a list of tweets", async () => {
-    const client = new MockTwitterClient();
-    const tweets = await tweetsGetterService(client as Scraper);
-    expect(tweets).toHaveLength(200);
+  describe("when tweets are not cached", () => {
+    beforeEach(() => {
+      isTweetCachedMock.mockReturnValue(false);
+    });
+
+    it("should be kept", async () => {
+      const client = new MockTwitterClient(3);
+      const tweets = await tweetsGetterService(client as unknown as Scraper);
+      expect(tweets).toHaveLength(3);
+    });
+  });
+
+  describe("when tweets are cached", () => {
+    beforeEach(() => {
+      isTweetCachedMock.mockReturnValue(true);
+    });
+
+    it("should be skipped", async () => {
+      const client = new MockTwitterClient(3);
+      const tweets = await tweetsGetterService(client as unknown as Scraper);
+      expect(tweets).toHaveLength(0);
+    });
   });
 });
