@@ -1,4 +1,4 @@
-import bsky, { BskyAgent } from "@atproto/api";
+import { BskyAgent, RichText } from "@atproto/api";
 import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
@@ -40,6 +40,7 @@ export const blueskySenderService = async (
     if (!media.url) {
       continue;
     }
+
     if (
       (media.type === "image" &&
         mediaAttachments.length < BLUESKY_MEDIA_IMAGES_MAX_COUNT) ||
@@ -109,7 +110,7 @@ export const blueskySenderService = async (
    * If the tweet is long, each child chunk will reference the previous one as replyId.
    */
   for (const chunk of post.chunks) {
-    const richText = new bsky.RichText({ text: chunk });
+    const richText = new RichText({ text: chunk });
     await richText.detectFacets(client);
 
     const data: {
