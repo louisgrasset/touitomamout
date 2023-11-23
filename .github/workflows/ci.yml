@@ -37,9 +37,9 @@ jobs:
             -Dsonar.projectKey=louisgrasset_touitomamout
             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
             -Dsonar.sources=src
-            -Dsonar.exclusions=src/**/__tests__/**
             -Dsonar.tests=src
-            -Dsonar.test.inclusions=src/**/__tests__/**
+            -Dsonar.exclusions=**/*.spec.ts,**/__tests__/**
+            -Dsonar.test.inclusions=**/*.spec.ts
 
   commitlint:
     name: "Commitlint Validation"
