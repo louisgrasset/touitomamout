@@ -16,6 +16,7 @@ Pipelines:
 [![CD](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/cd.yml?label=cd)](https://github.com/louisgrasset/touitomamout/actions/workflows/cd.yml)
 [![CodeQL](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/codeql.yml?label=codeql)](https://github.com/louisgrasset/touitomamout/actions/workflows/codeql.yml)
 [![Release](https://img.shields.io/github/actions/workflow/status/louisgrasset/touitomamout/release.yml?label=release)](https://github.com/louisgrasset/touitomamout/actions/workflows/release.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=louisgrasset_touitomamout&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=louisgrasset_touitomamout)
 
 Tools:
 
