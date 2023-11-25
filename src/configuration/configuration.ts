@@ -19,7 +19,7 @@ import {
   TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
 } from "../constants.js";
-import { handleTwitterAuth } from "../helpers/auth/index.js";
+import { handleTwitterAuth } from "../helpers/auth/handle-twitter-auth.js";
 import { createCacheFile } from "../helpers/cache/create-cache.js";
 import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
 import { runMigrations } from "../helpers/cache/run-migrations.js";
