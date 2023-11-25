@@ -83,6 +83,7 @@ describe("blueskySenderService", () => {
     await blueskySenderService(client, post, [], log);
 
     expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(uploadBlobSpy).toHaveBeenCalledTimes(0);
   });
 
   describe("when the post has some media", () => {
