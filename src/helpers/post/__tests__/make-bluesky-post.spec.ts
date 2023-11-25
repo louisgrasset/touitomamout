@@ -1,7 +1,6 @@
 import { AppBskyFeedPost, BskyAgent } from "@atproto/api";
 
 import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock.js";
-import { getCachedPostChunk } from "../../cache/get-cached-post-chunk.js";
 import { makeBlueskyPost } from "../make-bluesky-post.js";
 
 jest.mock("../../../constants.js", () => ({
