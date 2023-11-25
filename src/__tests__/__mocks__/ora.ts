@@ -6,6 +6,7 @@ module.exports = {
       .mockImplementation(() => ({ text: "", succeed: jest.fn() })),
     succeed: jest.fn(),
     fail: jest.fn(),
+    info: jest.fn(),
     warn: jest.fn(),
   })),
   __esModule: true,
