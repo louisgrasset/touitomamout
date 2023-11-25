@@ -10,8 +10,8 @@ import { oraPrefixer } from "../helpers/logs/index.js";
 import { makePost } from "../helpers/post/make-post.js";
 import { Media, Metrics, SynchronizerResponse } from "../types/index.js";
 import { blueskySenderService } from "./bluesky-sender.service.js";
-import { tweetsGetterService } from "./index.js";
 import { mastodonSenderService } from "./mastodon-sender.service.js";
+import { tweetsGetterService } from "./tweets-getter.service.js";
 
 /**
  * An async method in charge of dispatching posts synchronization tasks for each received tweets.
