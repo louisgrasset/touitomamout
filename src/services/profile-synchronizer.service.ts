@@ -20,7 +20,7 @@ import {
   ProfileCache,
   SynchronizerResponse,
 } from "../types/index.js";
-import { mediaDownloaderService } from "./index.js";
+import { mediaDownloaderService } from "./media-downloader.service.js";
 
 /**
  * An async method in charge of dispatching profile synchronization tasks.
@@ -155,12 +155,10 @@ export const profileSynchronizerService = async (
 
   // Post bluesky updates if any
   if (Object.keys(params.bluesky).length && blueskyClient) {
-    await blueskyClient.upsertProfile((old) => {
-      return {
-        ...old,
-        ...params.bluesky,
-      };
-    });
+    await blueskyClient.upsertProfile((old) => ({
+      ...old,
+      ...params.bluesky,
+    }));
   }
 
   // Update profile images hash
