@@ -9,7 +9,7 @@ Let's discover Touitomamout in less than ⏲️ **5** minutes!
 
 First, what is Touitomamout? It is a self-hosted cross-poster from **Twitter** to **Mastodon** and / or **Bluesky**. It is a tool that allows you to sync tweets to Mastodon & Bluesky. But it also allows you to synchronize the profile picture, the name, the banner & profile description if you’d like to.
 
-![touitomamout](/img/touitomamout-small.svg)
+![touitomamout](/img/touitomamout.svg)
 
 ## Features
 
