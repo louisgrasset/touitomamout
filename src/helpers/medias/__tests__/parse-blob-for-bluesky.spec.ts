@@ -4,6 +4,8 @@ import {
   makeUint8ArrayFromFile,
 } from "./helpers/make-blob-from-file.js";
 
+jest.mock("../../../constants.js", () => ({ DEBUG: false }));
+
 let imageBlob: Blob;
 let bskyBlobData: Uint8Array;
 const initBlobsForMime = async (mimeType: string) => {

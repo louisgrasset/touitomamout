@@ -38,7 +38,7 @@ describe("makeBlueskyPost", () => {
     ${"quote"} | ${"quotedStatus"}    | ${{ uri: "uri", cid: "cid", value: {} }} | ${undefined}
     ${"reply"} | ${"inReplyToStatus"} | ${undefined}                             | ${{ uri: "uri", cid: "cid", value: {} }}
   `(
-    "when the tweet is a '$postType')",
+    "when the tweet is a '$postType'",
     ({ tweetProperty, quotePost, replyPost }) => {
       it("should build a post", async () => {
         const client = {

@@ -3,7 +3,7 @@ import { BskyAgent } from "@atproto/api";
 import { uploadBlueskyMedia } from "../upload-bluesky-media.js";
 import { makeBlobFromFile } from "./helpers/make-blob-from-file.js";
 
-jest.mock("../../../constants.js", () => ({}));
+jest.mock("../../../constants.js", () => ({ DEBUG: false }));
 
 const uploadBlobResponseMock = {
   success: true,
