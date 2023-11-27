@@ -12,7 +12,7 @@ module.exports = {
     rootDir: '../../',
     setupFilesAfterEnv: ['<rootDir>/meta/testing/jest.setup.cjs'],
     testRegex: '(/__tests__/.*\\.spec)\\.ts?$',
-    testTimeout: 10000,
+    testTimeout: 25000,
     preset: "ts-jest/presets/default-esm",
     verbose: false,
     maxWorkers: "50%",

@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { BskyAgent, ComAtprotoRepoUploadBlob } from "@atproto/api";
 
 import { DEBUG } from "../../constants.js";
 import { parseBlobForBluesky } from "./parse-blob-for-bluesky.js";
@@ -10,10 +10,11 @@ import { parseBlobForBluesky } from "./parse-blob-for-bluesky.js";
 export const uploadBlueskyMedia = async (
   mediaBlob: Blob,
   blueskyClient: BskyAgent | null,
-) => {
+): Promise<ComAtprotoRepoUploadBlob.Response | null> => {
   if (!blueskyClient) {
     return null;
   }
+
   return await parseBlobForBluesky(mediaBlob)
     .then(
       ({ blobData, mimeType }) =>
