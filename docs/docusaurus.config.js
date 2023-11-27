@@ -66,12 +66,12 @@ const config = {
         respectPrefersColorScheme: false,
       },
       // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/touitomamout-social-card.jpg",
       navbar: {
         title: "Touitomamout Docs",
         logo: {
           alt: "Touitomamout Logo",
-          src: "img/logo.svg",
+          src: "img/touitomamout.svg",
         },
         items: [
           ...[
