@@ -1,3 +1,6 @@
+import { BLUESKY_MEDIA_MAX_SIZE_BYTES } from "../../constants.js";
+import { compressMedia } from "./compress-media.js";
+
 interface BlueskyBlob {
   mimeType: string;
   blobData: Uint8Array;
@@ -7,7 +10,14 @@ interface BlueskyBlob {
  * An async method to convert a Blob to an upload-compatible Bluesky Blob.
  * @returns BlueskyBlob
  */
-export const parseBlobForBluesky = async (blob: Blob): Promise<BlueskyBlob> => {
+export const parseBlobForBluesky = async (
+  inputBlob: Blob,
+): Promise<BlueskyBlob> => {
+  const blob = await compressMedia(
+    inputBlob,
+    BLUESKY_MEDIA_MAX_SIZE_BYTES,
+  ).catch(() => inputBlob);
+
   return new Promise<BlueskyBlob>((resolve, reject) => {
     const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png"];
     const mimeType = blob.type;
