@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import bsky, { BskyAgent } from "@atproto/api";
 import { Tweet } from "@the-convocation/twitter-scraper";
 
 import { BLUESKY_IDENTIFIER } from "../../constants.js";
@@ -53,7 +53,7 @@ export const makeBlueskyPost = async (
       : undefined;
   }
 
-  const post = new RichText({ text: tweet.text! });
+  const post = new bsky.RichText({ text: tweet.text! });
   await post.detectFacets(client); // automatically detects mentions and links
 
   return {

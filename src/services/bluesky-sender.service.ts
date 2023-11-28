@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import bsky, { BskyAgent } from "@atproto/api";
 import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
@@ -110,7 +110,7 @@ export const blueskySenderService = async (
    * If the tweet is long, each child chunk will reference the previous one as replyId.
    */
   for (const chunk of post.chunks) {
-    const richText = new RichText({ text: chunk });
+    const richText = new bsky.RichText({ text: chunk });
     await richText.detectFacets(client);
 
     const data: {
