@@ -1,7 +1,4 @@
-FROM node:lts
-
-RUN groupadd --system bot \
-    &&  useradd --system bot -g bot
+FROM node:lts-alpine
 
 WORKDIR /app
 
@@ -9,11 +6,10 @@ COPY src/ /app/src
 COPY scripts/ /app/scripts
 COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
 
-RUN npm run prebuild
-RUN npm ci --ignore-scripts && npm rebuild --platform=linux --arch=x64 --libc=glibc sharp && npm run build
+RUN npm ci --ignore-scripts && npm rebuild --platform=linux --arch=x64 --libc=musl sharp && npm run build --ignore-scripts
 
 RUN echo "" > .env
 
-USER bot
+USER node
 
 CMD node /app/dist/index.js "$ENV_FILE"
