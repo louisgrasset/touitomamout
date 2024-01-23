@@ -46,6 +46,7 @@ jobs:
             ${{ github.repository }}:dev
             ghcr.io/${{ github.repository }}:dev
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64,
 
       - name: Update docker hub description
         uses: peter-evans/dockerhub-description@v3
