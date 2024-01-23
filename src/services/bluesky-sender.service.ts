@@ -155,7 +155,7 @@ export const blueskySenderService = async (
             uri: card.url,
             title: card.title,
             description: card.description,
-            thumb: card.image.data.blob.original,
+            thumb: card.image?.data.blob.original,
             $type: "app.bsky.embed.external",
           },
         }
