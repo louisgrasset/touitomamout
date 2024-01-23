@@ -10,5 +10,5 @@ export type LinkMetadata = {
 };
 
 export type BlueskyLinkMetadata = Omit<LinkMetadata, "image"> & {
-  image: bsky.ComAtprotoRepoUploadBlob.Response;
+  image: bsky.ComAtprotoRepoUploadBlob.Response | undefined;
 };

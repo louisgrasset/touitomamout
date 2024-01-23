@@ -17,8 +17,18 @@ export const getBlueskyLinkMetadata = async (
   client: bsky.BskyAgent,
 ): Promise<BlueskyLinkMetadata | null> => {
   const data = await fetchLinkMetadata(url);
+
+  // Without metadata, stop
   if (!data) {
     return null;
+  }
+
+  // Metadata without image
+  if (!data.image) {
+    return {
+      ...data,
+      image: undefined,
+    };
   }
 
   const mediaBlob = await mediaDownloaderService(data.image);
@@ -29,11 +39,8 @@ export const getBlueskyLinkMetadata = async (
     encoding: blueskyBlob.mimeType,
   });
 
-  if (blueskyBlob) {
-    return {
-      ...data,
-      image: media,
-    };
-  }
-  return null;
+  return {
+    ...data,
+    image: blueskyBlob ? media : undefined,
+  };
 };

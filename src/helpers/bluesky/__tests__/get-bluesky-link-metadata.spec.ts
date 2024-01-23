@@ -53,7 +53,24 @@ describe("getBlueskyLinkMetadata", () => {
     });
   });
 
-  it("should return the metadata if data is found", async () => {
+  describe("when no image if found", () => {
+    it("should return the metadata without image property", async () => {
+      const result = await getBlueskyLinkMetadata("https://google.com", {
+        uploadBlob: uploadBlobMock,
+      } as unknown as BskyAgent);
+
+      expect(result).toStrictEqual({
+        ...METADATA_MOCK,
+        image: undefined,
+        title: "Google",
+        url: "https://google.com",
+        description:
+          "Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.",
+      });
+    });
+  });
+
+  it("should return null if not data is found", async () => {
     const result = await getBlueskyLinkMetadata(
       "https://thisturldoesnotexist.example.com",
       {
