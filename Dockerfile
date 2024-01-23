@@ -6,7 +6,7 @@ COPY src/ /app/src
 COPY scripts/ /app/scripts
 COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
 
-RUN npm ci --ignore-scripts && npm rebuild --platform=linux --arch=x64 --libc=musl sharp && npm run build --ignore-scripts
+RUN npm ci --ignore-scripts && npm rebuild --platform=linux --libc=musl sharp && npm run build --ignore-scripts
 
 RUN echo "" > .env
 
