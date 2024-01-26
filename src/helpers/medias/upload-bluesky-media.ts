@@ -16,11 +16,10 @@ export const uploadBlueskyMedia = async (
   }
 
   return await parseBlobForBluesky(mediaBlob)
-    .then(
-      ({ blobData, mimeType }) =>
-        blueskyClient?.uploadBlob(blobData, {
-          encoding: mimeType,
-        }),
+    .then(({ blobData, mimeType }) =>
+      blueskyClient?.uploadBlob(blobData, {
+        encoding: mimeType,
+      }),
     )
     .catch((err) => {
       if (DEBUG) {
