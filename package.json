@@ -11,8 +11,8 @@
     "predeploy": "npm ci && npm run build",
     "pm2": "bash deployment/pm2.sh",
     "pm2:update": "bash deployment/pm2.sh --update",
-    "postinstall": "husky install .husky",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "prepare": "husky"
   },
   "engines": {
     "node": ">=18.0.0"
