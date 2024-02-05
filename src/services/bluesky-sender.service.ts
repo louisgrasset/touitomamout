@@ -110,6 +110,10 @@ export const blueskySenderService = async (
    * If the tweet is long, each child chunk will reference the previous one as replyId.
    */
   for (const chunk of post.chunks) {
+    if (DEBUG) {
+      console.log("bluesky post chunk: ", chunk);
+    }
+
     const richText = new bsky.RichText({ text: chunk });
     await richText.detectFacets(client);
 
@@ -220,43 +224,46 @@ export const blueskySenderService = async (
     log.text = `☁️ | post sending: ${getPostExcerpt(post.tweet.text ?? VOID)}`;
 
     // Post
-    await client.post({ ...data }).then(async (createdPost) => {
-      oraProgress(
-        log,
-        { before: "☁️ | post sending: " },
-        chunkIndex,
-        post.chunks.length,
-      );
-
-      // Save post ID to be able to reference it while posting the next chunk.
-      const RKEY_REGEX = /\/(?<rkey>\w+)$/;
-      chunkReferences.push({
-        cid: createdPost.cid,
-        uri: createdPost.uri,
-        rkey: RKEY_REGEX.exec(createdPost.uri)?.groups?.["rkey"] ?? "",
-      });
-
-      // If this is the last chunk, save the all chunks ID to the cache.
-      if (chunkIndex === post.chunks.length - 1) {
-        log.succeed(
-          `☁️ | post sent: ${getPostExcerpt(post.tweet.text ?? VOID)}${
-            chunkReferences.length > 1
-              ? ` (${chunkReferences.length} chunks)`
-              : ""
-          }`,
+    await client
+      .post({ ...data })
+      .then(async (createdPost) => {
+        oraProgress(
+          log,
+          { before: "☁️ | post sending: " },
+          chunkIndex,
+          post.chunks.length,
         );
 
-        await savePostToCache({
-          tweetId: post.tweet.id,
-          data: chunkReferences.map((ref) => ({
-            rkey: ref.rkey,
-            cid: ref.cid,
-          })),
-          platform: Platform.BLUESKY,
+        // Save post ID to be able to reference it while posting the next chunk.
+        const RKEY_REGEX = /\/(?<rkey>\w+)$/;
+        chunkReferences.push({
+          cid: createdPost.cid,
+          uri: createdPost.uri,
+          rkey: RKEY_REGEX.exec(createdPost.uri)?.groups?.["rkey"] ?? "",
         });
-      }
 
-      chunkIndex++;
-    });
+        // If this is the last chunk, save the all chunks ID to the cache.
+        if (chunkIndex === post.chunks.length - 1) {
+          log.succeed(
+            `☁️ | post sent: ${getPostExcerpt(post.tweet.text ?? VOID)}${
+              chunkReferences.length > 1
+                ? ` (${chunkReferences.length} chunks)`
+                : ""
+            }`,
+          );
+
+          await savePostToCache({
+            tweetId: post.tweet.id,
+            data: chunkReferences.map((ref) => ({
+              rkey: ref.rkey,
+              cid: ref.cid,
+            })),
+            platform: Platform.BLUESKY,
+          });
+        }
+
+        chunkIndex++;
+      })
+      .catch((err) => log.fail(err));
   }
 };
