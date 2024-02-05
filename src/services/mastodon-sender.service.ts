@@ -1,7 +1,7 @@
 import { mastodon } from "masto";
 import { Ora } from "ora";
 
-import { VOID } from "../constants.js";
+import { DEBUG, VOID } from "../constants.js";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
 import { oraProgress } from "../helpers/logs/index.js";
 import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
@@ -92,6 +92,10 @@ export const mastodonSenderService = async (
    * If the tweet is long, each child chunk will reference the previous one as replyId.
    */
   for (const chunk of post.chunks) {
+    if (DEBUG) {
+      console.log("mastodon post chunk: ", chunk);
+    }
+
     await client.v1.statuses
       .create({
         status: chunk,
