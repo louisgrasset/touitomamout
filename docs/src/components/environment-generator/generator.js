@@ -157,6 +157,13 @@ const Generator = ({ setConfiguration }) => {
           value: 30,
           env: "SYNC_FREQUENCY_MIN",
         },
+        {
+          name: "timestamps",
+          label: "Synchronize timestamps to original tweet",
+          type: "boolean",
+          value: true,
+          env: "SYNC_TIMESTAMPS",
+        },
       ],
     },
     profile: {
@@ -206,7 +213,7 @@ const Generator = ({ setConfiguration }) => {
           category.fields
             // Keep booleans and non-empty strings)
             .filter((field) =>
-              typeof field.value === "boolean" ? true : !!field.value,
+              typeof field.value === "boolean" ? true : !!field.value
             )
             .filter((field) => {
               if (field.validationHandler) {
@@ -225,7 +232,7 @@ const Generator = ({ setConfiguration }) => {
     setConfiguration(
       env.length
         ? env
-        : "Touitomamout Configurator\nConfiguration will appear here 👀...",
+        : "Touitomamout Configurator\nConfiguration will appear here 👀..."
     );
   };
 
@@ -352,7 +359,7 @@ const Generator = ({ setConfiguration }) => {
                           />
                         ) : null}
                       </div>
-                    ) : null,
+                    ) : null
                   )
                 : null}
 
@@ -360,7 +367,7 @@ const Generator = ({ setConfiguration }) => {
                 <Separator my="3" size="4" />
               ) : null}
             </Flex>
-          ),
+          )
         )}
       </Flex>
     </Card>
