@@ -128,7 +128,7 @@ export const blueskySenderService = async (
       $type: "app.bsky.feed.post",
       text: richText.text,
       facets: richText.facets,
-      createdat: createdAt,
+      createdAt: createdAt,
     };
 
     /**
