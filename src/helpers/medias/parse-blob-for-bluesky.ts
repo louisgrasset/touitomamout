@@ -19,7 +19,7 @@ export const parseBlobForBluesky = async (
   ).catch(() => inputBlob);
 
   return new Promise<BlueskyBlob>((resolve, reject) => {
-    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const allowedMimeTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
     const mimeType = blob.type;
 
     blob.arrayBuffer().then((ab) => {
