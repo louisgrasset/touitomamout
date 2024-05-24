@@ -16,11 +16,11 @@ Here are an overview of the Touitomamout features.
 | Sync eligible   | Text | Images | Videos | Gifs | Profile      |
 |-----------------|------|--------|--------|------|--------------|
 | **Mastodon 🦣** | ✅    | ✅      | ✅      | ✅    | ✅ (optional) |
-| **Bluesky ☁️**  | ✅    | ✅      | ⛔      | ⛔    | ✅ (optional) |
+| **Bluesky ☁️**  | ✅    | ✅      | ⛔      | ✅    | ✅ (optional) |
 
 :::note
 
-Gifs & Videos are not supported on Bluesky yet. But it will be soon 🤞! Until then, tweets containing gifs or videos will
+Videos are not supported on Bluesky yet. But it will be soon 🤞! Until then, tweets containing videos will
 be synced without the media. If no text and no compatible media is found, the post will be skipped during sync.
 :::
 
