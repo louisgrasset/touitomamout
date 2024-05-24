@@ -20,8 +20,7 @@ describe("parseBlobForBluesky", () => {
   describe("when the mime type is not supported", () => {
     it.each`
       mimeType
-      ${"video/mp4"}
-      ${"image/webp"}
+      ${"image/tiff"}
     `("should reject for $mimeType", async ({ mimeType }) => {
       await initBlobsForMime(mimeType);
 
@@ -34,9 +33,11 @@ describe("parseBlobForBluesky", () => {
   describe("when the mime type is supported", () => {
     it.each`
       mimeType
-      ${"image/jpeg"}
-      ${"image/jpg"}
+      ${"image/gif"}
       ${"image/png"}
+      ${"image/jpg"}
+      ${"image/jpeg"}
+      ${"image/webp"}
     `(
       "should resolve bluesky compatible blob for $mimeType",
       async ({ mimeType }) => {
