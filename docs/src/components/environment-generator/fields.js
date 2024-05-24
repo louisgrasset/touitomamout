@@ -14,7 +14,7 @@ const TextComponent = ({
   return (
     <>
       <Text size="2">{label}</Text>
-      <TextField.Input
+      <TextField.Root
         radius="large"
         variant="surface"
         type={type}
