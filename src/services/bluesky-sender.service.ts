@@ -1,4 +1,4 @@
-import bsky, { BskyAgent } from "@atproto/api";
+import { BskyAgent, RichText } from "@atproto/api";
 import { Ora } from "ora";
 
 import { DEBUG, VOID } from "../constants.js";
@@ -114,7 +114,7 @@ export const blueskySenderService = async (
       console.log("bluesky post chunk: ", chunk);
     }
 
-    const richText = new bsky.RichText({ text: chunk });
+    const richText = new RichText({ text: chunk });
     await richText.detectFacets(client);
 
     const data: {

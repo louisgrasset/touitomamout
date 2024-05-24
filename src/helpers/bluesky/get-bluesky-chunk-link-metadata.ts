@@ -1,4 +1,4 @@
-import bsky from "@atproto/api";
+import { BskyAgent, RichText } from "@atproto/api";
 
 import { BlueskyLinkMetadata } from "../../types/link-metadata.js";
 import { getBlueskyLinkMetadata } from "./get-bluesky-link-metadata.js";
@@ -6,13 +6,13 @@ import { getBlueskyLinkMetadata } from "./get-bluesky-link-metadata.js";
 /**
  * Retrieves the metadata of the first link found in the given richtext.
  *
- * @param {bsky.RichText} richText - The richtext to search for links.
- * @param {bsky.BskyAgent} client - The BskyAgent client for making API calls.
+ * @param {RichText} richText - The richtext to search for links.
+ * @param {BskyAgent} client - The BskyAgent client for making API calls.
  * @returns {Promise<BlueskyLinkMetadata | null>} A promise that resolves to the metadata of the first link found, or null if no link is found.
  */
 export const getBlueskyChunkLinkMetadata = async (
-  richText: bsky.RichText,
-  client: bsky.BskyAgent,
+  richText: RichText,
+  client: BskyAgent,
 ): Promise<BlueskyLinkMetadata | null> => {
   let card = null;
   for (const seg of richText.segments()) {

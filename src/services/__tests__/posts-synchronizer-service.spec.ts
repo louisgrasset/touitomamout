@@ -1,5 +1,5 @@
 import { BskyAgent } from "@atproto/api";
-import Counter from "@pm2/io/build/main/utils/metrics/counter.js";
+import * as Counter from "@pm2/io/build/main/utils/metrics/counter.js";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
