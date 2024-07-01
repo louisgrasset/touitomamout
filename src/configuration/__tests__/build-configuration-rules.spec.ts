@@ -8,6 +8,7 @@ jest.mock("../../constants.js", () => ({
   MASTODON_INSTANCE: "mastodon.social",
   SYNC_BLUESKY: true,
   SYNC_MASTODON: true,
+  SYNC_TIMESTAMPS: true,
   TWITTER_HANDLE: "username",
 }));
 
