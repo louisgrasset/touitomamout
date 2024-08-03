@@ -1,8 +1,8 @@
 import { Ora } from "ora";
 
-import { ProfileType, ProfileUpdate } from "../../types/profile.js";
-import { getCachedProfile } from "../cache/get-cached-profile.js";
-import { computeBlobHash } from "../medias/compute-blob-hash.js";
+import { ProfileType, ProfileUpdate } from "../../types/profile";
+import { getCachedProfile } from "../cache/get-cached-profile";
+import { computeBlobHash } from "../medias/compute-blob-hash";
 
 const getBlobHashOrNull = async (blob: Blob | null): Promise<string | null> => {
   return blob ? computeBlobHash(blob) : null;

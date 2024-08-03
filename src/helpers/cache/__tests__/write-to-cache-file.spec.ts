@@ -1,20 +1,20 @@
 import { writeFileSync } from "node:fs";
 
-import { Cache } from "../../../types/index.js";
-import { writeToCacheFile } from "../write-to-cache-file.js";
+import { Cache } from "../../../types";
+import { writeToCacheFile } from "../write-to-cache-file";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     CACHE_PATH: "./cache.json",
   };
 });
 
-jest.mock("node:fs");
+vi.mock("node:fs");
 
 describe("writeToCacheFile", () => {
   beforeEach(() => {
     // Reset mocks
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should write to the cache file", () => {

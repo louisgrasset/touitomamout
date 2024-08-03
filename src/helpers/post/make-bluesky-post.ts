@@ -1,11 +1,11 @@
 import { BskyAgent, RichText } from "@atproto/api";
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { BLUESKY_IDENTIFIER } from "../../constants.js";
-import { BlueskyCacheChunk, Platform } from "../../types/index.js";
-import { BlueskyPost } from "../../types/post.js";
-import { getCachedPostChunk } from "../cache/get-cached-post-chunk.js";
-import { splitTextForBluesky } from "../tweet/split-tweet-text/index.js";
+import { BLUESKY_IDENTIFIER } from "../../constants";
+import { BlueskyCacheChunk, Platform } from "../../types";
+import { BlueskyPost } from "../../types/post";
+import { getCachedPostChunk } from "../cache/get-cached-post-chunk";
+import { splitTextForBluesky } from "../tweet/split-tweet-text";
 
 export const makeBlueskyPost = async (
   client: BskyAgent,

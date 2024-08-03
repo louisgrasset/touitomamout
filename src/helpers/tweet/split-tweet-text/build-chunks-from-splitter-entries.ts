@@ -1,5 +1,5 @@
-import { Platform } from "../../../types/index.js";
-import { SplitterEntry } from "../../../types/splitter.js";
+import { Platform } from "../../../types";
+import { SplitterEntry } from "../../../types/splitter";
 
 const addWordToChunk = (chunk: string, word: SplitterEntry) =>
   chunk + word.str + word.sep;

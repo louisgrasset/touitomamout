@@ -1,6 +1,6 @@
 import { AppBskyFeedPost } from "@atproto/api";
 
-import { buildReplyEntry } from "../build-reply-entry.js";
+import { buildReplyEntry } from "../build-reply-entry";
 
 const rootPost = {
   cid: "rootPost-cid",

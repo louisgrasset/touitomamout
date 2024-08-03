@@ -1,6 +1,6 @@
-import { Cache } from "../../types/index.js";
-import { getCache } from "./get-cache.js";
-import { writeToCacheFile } from "./write-to-cache-file.js";
+import { Cache } from "../../types";
+import { getCache } from "./get-cache";
+import { writeToCacheFile } from "./write-to-cache-file";
 
 export const updateCacheEntry = async <T extends keyof Cache>(
   key: T,

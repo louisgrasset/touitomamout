@@ -1,6 +1,6 @@
-import { migration } from "../cache-migration-0.2.js";
+import { migration } from "../cache-migration-0.2";
 
-jest.mock("../../../../constants.js", () => {
+vi.mock("../../../../constants", () => {
   return {
     INSTANCE_ID: "username",
   };

@@ -1,7 +1,7 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
 
-import { getCookies } from "../cookies/get-cookies.js";
-import { TouitomamoutError } from "../error.js";
+import { getCookies } from "../cookies/get-cookies";
+import { TouitomamoutError } from "../error";
 
 export const restorePreviousSession = async (
   client: Scraper,

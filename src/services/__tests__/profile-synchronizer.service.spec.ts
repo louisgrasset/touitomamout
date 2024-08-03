@@ -2,15 +2,15 @@ import { BskyAgent } from "@atproto/api";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
-import { updateCacheEntry } from "../../helpers/cache/update-cache-entry.js";
-import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file.js";
-import { profileSynchronizerService } from "../profile-synchronizer.service.js";
+import { updateCacheEntry } from "../../helpers/cache/update-cache-entry";
+import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file";
+import { profileSynchronizerService } from "../profile-synchronizer.service";
 
-const constantsMock = jest.requireMock("../../constants.js");
-jest.mock("../../constants.js", () => ({}));
+const constantsMock = vi.requireMock("../../constants");
+vi.mock("../../constants", () => ({}));
 
-jest.mock("../media-downloader.service.js", () => ({
-  mediaDownloaderService: jest
+vi.mock("../media-downloader.service", () => ({
+  mediaDownloaderService: vi
     .fn()
     .mockResolvedValue(makeBlobFromFile("image-png.png", "image/png")),
 }));
@@ -24,15 +24,15 @@ const profileMock = {
   name: "name",
 } as Profile;
 
-jest.mock("../../helpers/cache/update-cache-entry.js", () => ({
-  updateCacheEntry: jest.fn(),
+vi.mock("../../helpers/cache/update-cache-entry", () => ({
+  updateCacheEntry: vi.fn(),
 }));
 
-const updateCacheEntryMock = updateCacheEntry as jest.Mock;
+const updateCacheEntryMock = updateCacheEntry as vi.Mock;
 
-jest.mock("../../helpers/medias/upload-bluesky-media.js", () => {
+vi.mock("../../helpers/medias/upload-bluesky-media", () => {
   return {
-    uploadBlueskyMedia: jest.fn().mockResolvedValue({
+    uploadBlueskyMedia: vi.fn().mockResolvedValue({
       success: true,
       data: {
         blob: {
@@ -46,11 +46,11 @@ jest.mock("../../helpers/medias/upload-bluesky-media.js", () => {
 describe("profileSynchronizerService", () => {
   // Twitter client
   const twitterClient = new Scraper();
-  const getProfileSpy = jest.fn().mockResolvedValue(profileMock);
+  const getProfileSpy = vi.fn().mockResolvedValue(profileMock);
   twitterClient.getProfile = getProfileSpy;
 
   // Mastodon client
-  const updateMastodonProfileSpy = jest.fn();
+  const updateMastodonProfileSpy = vi.fn();
   const mastodonClient = {
     v1: {
       accounts: {
@@ -60,7 +60,7 @@ describe("profileSynchronizerService", () => {
   } as unknown as mastodon.rest.Client;
 
   // Bluesky client
-  const updateBlueskyProfileSpy = jest.fn();
+  const updateBlueskyProfileSpy = vi.fn();
   const blueskyClient = {
     upsertProfile: updateBlueskyProfileSpy,
   } as unknown as BskyAgent;
@@ -86,7 +86,7 @@ describe("profileSynchronizerService", () => {
         "when the profile sync will update $label",
         ({ description, name, picture, header }) => {
           beforeEach(async () => {
-            jest.clearAllMocks();
+            vi.clearAllMocks();
 
             constantsMock.SYNC_PROFILE_DESCRIPTION = description;
             constantsMock.SYNC_PROFILE_PICTURE = name;

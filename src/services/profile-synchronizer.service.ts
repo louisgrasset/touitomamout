@@ -9,18 +9,14 @@ import {
   SYNC_PROFILE_NAME,
   SYNC_PROFILE_PICTURE,
   TWITTER_HANDLE,
-} from "../constants.js";
-import { updateCacheEntry } from "../helpers/cache/update-cache-entry.js";
-import { oraPrefixer } from "../helpers/logs/index.js";
-import { uploadBlueskyMedia } from "../helpers/medias/upload-bluesky-media.js";
-import { buildProfileUpdate } from "../helpers/profile/build-profile-update.js";
-import { shortenedUrlsReplacer } from "../helpers/url/shortened-urls-replacer.js";
-import {
-  Platform,
-  ProfileCache,
-  SynchronizerResponse,
-} from "../types/index.js";
-import { mediaDownloaderService } from "./media-downloader.service.js";
+} from "../constants";
+import { updateCacheEntry } from "../helpers/cache/update-cache-entry";
+import { oraPrefixer } from "../helpers/logs";
+import { uploadBlueskyMedia } from "../helpers/medias/upload-bluesky-media";
+import { buildProfileUpdate } from "../helpers/profile/build-profile-update";
+import { shortenedUrlsReplacer } from "../helpers/url/shortened-urls-replacer";
+import { Platform, ProfileCache, SynchronizerResponse } from "../types";
+import { mediaDownloaderService } from "./media-downloader.service";
 
 /**
  * An async method in charge of dispatching profile synchronization tasks.

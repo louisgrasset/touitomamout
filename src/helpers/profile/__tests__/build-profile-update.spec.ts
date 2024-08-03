@@ -1,27 +1,27 @@
 import { Ora } from "ora";
 
-import { getCachedProfile } from "../../cache/get-cached-profile.js";
-import { buildProfileUpdate } from "../build-profile-update.js";
+import { getCachedProfile } from "../../cache/get-cached-profile";
+import { buildProfileUpdate } from "../build-profile-update";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     DEBUG: false,
   };
 });
 
-const getCachedProfileMock = getCachedProfile as jest.Mock;
+const getCachedProfileMock = getCachedProfile as vi.Mock;
 
 const mockBlobs = {
   upToDate: "up-to-date",
   outdated: "outdated",
 };
 
-jest.mock("../../medias/compute-blob-hash.js", () => ({
-  computeBlobHash: jest.fn().mockImplementation(() => mockBlobs.upToDate),
+vi.mock("../../medias/compute-blob-hash", () => ({
+  computeBlobHash: vi.fn().mockImplementation(() => mockBlobs.upToDate),
 }));
 
-jest.mock("../../cache/get-cached-profile.js", () => ({
-  getCachedProfile: jest.fn(),
+vi.mock("../../cache/get-cached-profile", () => ({
+  getCachedProfile: vi.fn(),
 }));
 
 describe("buildProfileUpdate", () => {

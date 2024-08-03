@@ -9,6 +9,7 @@ const envPath = process.argv[2] ?? join(process.cwd(), ".env");
 if (envPath.endsWith("example")) {
   throw new Error("You should not use the example configuration file.");
 }
+console.log({ envPath });
 try {
   accessSync(envPath, constants.F_OK);
 } catch (err) {

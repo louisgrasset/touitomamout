@@ -1,4 +1,4 @@
-import { Platform } from "./platform.js";
+import { Platform } from "./platform";
 
 export type MastodonCacheChunk = string;
 export type BlueskyCacheChunk = {

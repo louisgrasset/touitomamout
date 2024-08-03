@@ -18,14 +18,14 @@ import {
   SYNC_MASTODON,
   TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
-} from "../constants.js";
-import { handleTwitterAuth } from "../helpers/auth/handle-twitter-auth.js";
-import { createCacheFile } from "../helpers/cache/create-cache.js";
-import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
-import { runMigrations } from "../helpers/cache/run-migrations.js";
-import { TouitomamoutError } from "../helpers/error.js";
-import { oraPrefixer } from "../helpers/logs/index.js";
-import { buildConfigurationRules } from "./build-configuration-rules.js";
+} from "../constants";
+import { handleTwitterAuth } from "../helpers/auth/handle-twitter-auth";
+import { createCacheFile } from "../helpers/cache/create-cache";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts";
+import { runMigrations } from "../helpers/cache/run-migrations";
+import { TouitomamoutError } from "../helpers/error";
+import { oraPrefixer } from "../helpers/logs";
+import { buildConfigurationRules } from "./build-configuration-rules";
 
 export const configuration = async (): Promise<{
   synchronizedPostsCountAllTime: Gauge;

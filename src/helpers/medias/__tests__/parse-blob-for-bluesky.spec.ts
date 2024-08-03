@@ -1,10 +1,10 @@
-import { parseBlobForBluesky } from "../parse-blob-for-bluesky.js";
+import { parseBlobForBluesky } from "../parse-blob-for-bluesky";
 import {
   makeBlobFromFile,
   makeUint8ArrayFromFile,
-} from "./helpers/make-blob-from-file.js";
+} from "./helpers/make-blob-from-file";
 
-jest.mock("../../../constants.js", () => ({ DEBUG: false }));
+vi.mock("../../../constants.ts", () => ({ DEBUG: false }));
 
 let imageBlob: Blob;
 let bskyBlobData: Uint8Array;

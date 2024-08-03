@@ -1,6 +1,6 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { keepRecentTweets } from "../keep-recent-tweets.js";
+import { keepRecentTweets } from "../keep-recent-tweets";
 
 describe("keepRecentTweets", () => {
   describe("when the tweet is recent", () => {

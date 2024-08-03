@@ -1,4 +1,4 @@
-import { preventMigrationOnWrongVersion } from "./helpers/prevent-migration-on-wrong-version.js";
+import { preventMigrationOnWrongVersion } from "./helpers/prevent-migration-on-wrong-version";
 
 export const migration = async (outdatedCache: {
   [key: string]:

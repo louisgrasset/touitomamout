@@ -1,4 +1,4 @@
-import { getPostExcerpt } from "../get-post-excerpt.js";
+import { getPostExcerpt } from "../get-post-excerpt";
 
 describe("getPostExcerpt", () => {
   it("should return the 25 first characters and remove break lines", () => {

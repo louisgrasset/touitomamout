@@ -1,11 +1,11 @@
 import { Scraper, Tweet } from "@the-convocation/twitter-scraper";
 import ora from "ora";
 
-import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants.js";
-import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
-import { oraPrefixer, oraProgress } from "../helpers/logs/index.js";
-import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet.js";
-import { isTweetCached, tweetFormatter } from "../helpers/tweet/index.js";
+import { API_RATE_LIMIT, TWITTER_HANDLE } from "../constants";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts";
+import { oraPrefixer, oraProgress } from "../helpers/logs";
+import { isTweetCached, tweetFormatter } from "../helpers/tweet";
+import { getEligibleTweet } from "../helpers/tweet/get-eligible-tweet";
 
 const pullContentStats = (tweets: Tweet[], title: string) => {
   const stats = {

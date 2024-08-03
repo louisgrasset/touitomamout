@@ -1,32 +1,32 @@
 import { access } from "node:fs/promises";
 
-import { INSTANCE_ID } from "../../../constants.js";
-import { createCacheFile } from "../create-cache.js";
-import { writeToCacheFile } from "../write-to-cache-file.js";
+import { INSTANCE_ID } from "../../../constants";
+import { createCacheFile } from "../create-cache";
+import { writeToCacheFile } from "../write-to-cache-file";
 
-jest.mock("node:fs/promises", () => ({
-  access: jest.fn(),
+vi.mock("node:fs/promises", () => ({
+  access: vi.fn(),
   constants: {
     F_OK: "F_OK",
   },
 }));
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     INSTANCE_ID: "username",
     CACHE_PATH: "./cache.json",
   };
 });
 
-jest.mock("../write-to-cache-file.js", () => ({
-  writeToCacheFile: jest.fn(),
+vi.mock("../write-to-cache-file", () => ({
+  writeToCacheFile: vi.fn(),
 }));
 
-const promiseAccessMock = access as jest.Mock;
+const promiseAccessMock = access as vi.Mock;
 
 describe("createCache", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when the file is accessible", () => {

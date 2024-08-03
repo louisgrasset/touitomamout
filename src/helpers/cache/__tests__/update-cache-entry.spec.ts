@@ -1,16 +1,16 @@
-import { Platform } from "../../../types/index.js";
-import { updateCacheEntry } from "../update-cache-entry.js";
-import { writeToCacheFile } from "../write-to-cache-file.js";
+import { Platform } from "../../../types";
+import { updateCacheEntry } from "../update-cache-entry";
+import { writeToCacheFile } from "../write-to-cache-file";
 
-jest.mock("../write-to-cache-file.js", () => {
+vi.mock("../write-to-cache-file", () => {
   return {
-    writeToCacheFile: jest.fn(),
+    writeToCacheFile: vi.fn(),
   };
 });
 
-jest.mock("../get-cache.js", () => {
+vi.mock("../get-cache", () => {
   return {
-    getCache: jest.fn().mockResolvedValue({
+    getCache: vi.fn().mockResolvedValue({
       version: "0.2",
       instance: {
         id: "",
@@ -27,7 +27,7 @@ jest.mock("../get-cache.js", () => {
 describe("updateCacheEntry", () => {
   beforeEach(() => {
     // Reset mocks
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should update the cache entry: profile", async () => {

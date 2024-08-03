@@ -2,17 +2,17 @@ import { BskyAgent } from "@atproto/api";
 import { mastodon } from "masto";
 import ora from "ora";
 
-import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock.js";
-import { makeBlueskyPost } from "../make-bluesky-post.js";
-import { makeMastodonPost } from "../make-mastodon-post.js";
-import { makePost } from "../make-post.js";
+import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock";
+import { makeBlueskyPost } from "../make-bluesky-post";
+import { makeMastodonPost } from "../make-mastodon-post";
+import { makePost } from "../make-post";
 
-jest.mock("../../../constants.js", () => ({}));
-jest.mock("../make-mastodon-post.js", () => ({
-  makeMastodonPost: jest.fn(),
+vi.mock("../../../constants", () => ({}));
+vi.mock("../make-mastodon-post", () => ({
+  makeMastodonPost: vi.fn(),
 }));
-jest.mock("../make-bluesky-post.js", () => ({
-  makeBlueskyPost: jest.fn(),
+vi.mock("../make-bluesky-post", () => ({
+  makeBlueskyPost: vi.fn(),
 }));
 
 const mastodonClient = {} as unknown as mastodon.rest.Client;
@@ -25,8 +25,8 @@ const madePostMock = {
   username: "username",
 };
 
-(makeMastodonPost as jest.Mock).mockResolvedValue(madePostMock);
-(makeBlueskyPost as jest.Mock).mockResolvedValue(madePostMock);
+(makeMastodonPost as vi.Mock).mockResolvedValue(madePostMock);
+(makeBlueskyPost as vi.Mock).mockResolvedValue(madePostMock);
 
 describe("makePost", () => {
   it("should make a post", async () => {

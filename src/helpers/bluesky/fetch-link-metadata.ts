@@ -1,4 +1,4 @@
-import { LinkMetadata } from "../../types/link-metadata.js";
+import { LinkMetadata } from "../../types/link-metadata";
 
 /**
  * Fetches metadata for a given URL.

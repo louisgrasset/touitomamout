@@ -1,10 +1,10 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { tweetFormatter } from "../tweet-formatter.js";
+import { tweetFormatter } from "../tweet-formatter";
 
-jest.mock("../format-tweet-text.js", () => {
+vi.mock("../format-tweet-text", () => {
   return {
-    formatTweetText: jest
+    formatTweetText: vi
       .fn()
       .mockImplementation((t: Tweet) => `formatted:${t.text}`),
   };
