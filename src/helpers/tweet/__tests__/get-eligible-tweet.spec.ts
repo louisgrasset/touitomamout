@@ -1,25 +1,25 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { getEligibleTweet } from "../get-eligible-tweet.js";
-import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from "../index.js";
+import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from "../";
+import { getEligibleTweet } from "../get-eligible-tweet";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     TWITTER_HANDLE: "username",
     DEBUG: true,
   };
 });
-jest.mock("../index.js", () => {
+vi.mock("../index", () => {
   return {
-    keepSelfReplies: jest.fn(),
-    keepSelfQuotes: jest.fn(),
-    keepRecentTweets: jest.fn(),
+    keepSelfReplies: vi.fn(),
+    keepSelfQuotes: vi.fn(),
+    keepRecentTweets: vi.fn(),
   };
 });
 
 describe("getEligibleTweet", () => {
   const originalConsole = console.log;
-  const consoleMock = jest.fn();
+  const consoleMock = vi.fn();
   beforeEach(() => {
     console.log = consoleMock;
   });
@@ -39,9 +39,9 @@ describe("getEligibleTweet", () => {
     "should only return keep tweet when all conditions are met",
     async ({ isNotRetweet, isSelfReply, isSelfQuote, isRecentTweet, keep }) => {
       // Set mocks values
-      (keepSelfReplies as jest.Mock).mockReturnValue(isSelfReply);
-      (keepSelfQuotes as jest.Mock).mockReturnValue(isSelfQuote);
-      (keepRecentTweets as jest.Mock).mockReturnValue(isRecentTweet);
+      (keepSelfReplies as vi.Mock).mockReturnValue(isSelfReply);
+      (keepSelfQuotes as vi.Mock).mockReturnValue(isSelfQuote);
+      (keepRecentTweets as vi.Mock).mockReturnValue(isRecentTweet);
 
       // Run test
       const result = await getEligibleTweet({

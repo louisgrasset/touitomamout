@@ -3,11 +3,11 @@ import { Tweet } from "@the-convocation/twitter-scraper";
 import {
   BLUESKY_MAX_POST_LENGTH,
   MASTODON_MAX_POST_LENGTH,
-} from "../../../constants.js";
-import { Platform } from "../../../types/index.js";
-import { buildChunksFromSplitterEntries } from "./build-chunks-from-splitter-entries.js";
-import { extractWordsAndSpacers } from "./extract-words-and-spacers.js";
-import { getMastodonQuoteLinkSection } from "./get-mastodon-quote-link-section.js";
+} from "../../../constants";
+import { Platform } from "../../../types";
+import { buildChunksFromSplitterEntries } from "./build-chunks-from-splitter-entries";
+import { extractWordsAndSpacers } from "./extract-words-and-spacers";
+import { getMastodonQuoteLinkSection } from "./get-mastodon-quote-link-section";
 
 const splitTweetText = async (
   { text, quotedStatusId, urls }: Tweet,

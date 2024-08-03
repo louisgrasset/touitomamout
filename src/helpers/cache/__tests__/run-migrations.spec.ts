@@ -1,20 +1,20 @@
-import { runMigrations } from "../run-migrations.js";
-import { writeToCacheFile } from "../write-to-cache-file.js";
+import { runMigrations } from "../run-migrations";
+import { writeToCacheFile } from "../write-to-cache-file";
 
-jest.mock("../write-to-cache-file.js", () => ({
-  writeToCacheFile: jest.fn(),
+vi.mock("../write-to-cache-file", () => ({
+  writeToCacheFile: vi.fn(),
 }));
 
-jest.mock("../migrations/index.js", () => ({
+vi.mock("../migrations/index", () => ({
   __esModule: true,
   default: [
-    jest.fn().mockImplementation(() => Promise.resolve()),
-    jest.fn().mockImplementation(() => Promise.resolve()),
+    vi.fn().mockImplementation(() => Promise.resolve()),
+    vi.fn().mockImplementation(() => Promise.resolve()),
   ],
 }));
 
-jest.mock("../get-cache.js", () => ({
-  getCache: jest.fn().mockResolvedValue({
+vi.mock("../get-cache", () => ({
+  getCache: vi.fn().mockResolvedValue({
     posts: {},
     profile: {},
     instance: {},
@@ -29,7 +29,7 @@ describe("runMigrations", () => {
 
   describe("when a migration fails", () => {
     it("should throw an error", async () => {
-      (writeToCacheFile as jest.Mock).mockRejectedValueOnce(new Error("test"));
+      (writeToCacheFile as vi.Mock).mockRejectedValueOnce(new Error("test"));
       await expect(runMigrations()).rejects.toThrow();
     });
   });

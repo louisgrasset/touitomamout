@@ -1,8 +1,8 @@
-import { shortenedUrlsReplacer } from "../shortened-urls-replacer.js";
+import { shortenedUrlsReplacer } from "../shortened-urls-replacer";
 
-jest.mock("../get-redirection.js", () => {
+vi.mock("../get-redirection", () => {
   return {
-    getRedirectedUrl: jest.fn((url: string) => {
+    getRedirectedUrl: vi.fn((url: string) => {
       const number = url.match(/\/(\d+)/)?.[1];
       return Promise.resolve(number ? `https://example.com/${number}` : null);
     }),

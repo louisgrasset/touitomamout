@@ -1,8 +1,8 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { keepSelfReplies } from "../keep-self-replies.js";
+import { keepSelfReplies } from "../keep-self-replies";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     TWITTER_HANDLE: "username",
   };

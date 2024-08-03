@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 
 import { Cookie } from "tough-cookie";
 
-import { COOKIES_PATH } from "../../constants.js";
+import { COOKIES_PATH } from "../../constants";
 
 export const getCookies = async (): Promise<Cookie[] | null> => {
   try {

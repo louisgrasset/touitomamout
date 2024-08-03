@@ -1,5 +1,5 @@
-import { Cache } from "../../types/index.js";
-import { getCache } from "./get-cache.js";
+import { Cache } from "../../types";
+import { getCache } from "./get-cache";
 
 /**
  * A method to get the cached posts.

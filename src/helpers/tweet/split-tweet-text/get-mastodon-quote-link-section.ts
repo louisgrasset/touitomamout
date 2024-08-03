@@ -1,6 +1,6 @@
-import { MASTODON_INSTANCE } from "../../../constants.js";
-import { MastodonCacheChunk, Platform } from "../../../types/index.js";
-import { getCachedPostChunk } from "../../cache/get-cached-post-chunk.js";
+import { MASTODON_INSTANCE } from "../../../constants";
+import { MastodonCacheChunk, Platform } from "../../../types";
+import { getCachedPostChunk } from "../../cache/get-cached-post-chunk";
 
 export const getMastodonQuoteLinkSection = async (
   quotedTweetId?: string,

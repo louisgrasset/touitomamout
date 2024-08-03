@@ -1,4 +1,4 @@
-import { migration } from "../cache-migration-0.0.js";
+import { migration } from "../cache-migration-0.0";
 
 describe("cache-migration-0.0", () => {
   it("should migration initial cache", async () => {

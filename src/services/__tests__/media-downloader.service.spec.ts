@@ -1,4 +1,4 @@
-import { mediaDownloaderService } from "../media-downloader.service.js";
+import { mediaDownloaderService } from "../media-downloader.service";
 
 describe("mediaDownloaderService", () => {
   it("should download media", async () => {

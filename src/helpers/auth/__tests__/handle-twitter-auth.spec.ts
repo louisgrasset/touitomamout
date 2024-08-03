@@ -1,19 +1,19 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
 
-import { handleTwitterAuth } from "../handle-twitter-auth.js";
-import { restorePreviousSession } from "../restore-previous-session.js";
+import { handleTwitterAuth } from "../handle-twitter-auth";
+import { restorePreviousSession } from "../restore-previous-session";
 
-const constantsMock = jest.requireMock("../../../constants.js");
-jest.mock("../../../constants.js", () => ({}));
-jest.mock("../restore-previous-session.js", () => ({
-  restorePreviousSession: jest.fn(),
+const constantsMock = vi.requireMock("../../../constants");
+vi.mock("../../../constants", () => ({}));
+vi.mock("../restore-previous-session", () => ({
+  restorePreviousSession: vi.fn(),
 }));
 
-const restorePreviousSessionSpy = restorePreviousSession as jest.Mock;
+const restorePreviousSessionSpy = restorePreviousSession as vi.Mock;
 
-const isLoggedInSpy = jest.fn();
-const loginSpy = jest.fn();
-const getCookiesSpy = jest.fn();
+const isLoggedInSpy = vi.fn();
+const loginSpy = vi.fn();
+const getCookiesSpy = vi.fn();
 
 const twitterClient = {
   isLoggedIn: isLoggedInSpy,
@@ -23,7 +23,7 @@ const twitterClient = {
 
 describe("handleTwitterAuth", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when constants are not set", () => {

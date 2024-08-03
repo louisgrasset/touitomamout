@@ -1,7 +1,7 @@
-import { getCachedProfile } from "../get-cached-profile.js";
+import { getCachedProfile } from "../get-cached-profile";
 
-jest.mock("../get-cache.js", () => ({
-  getCache: jest.fn().mockResolvedValue({
+vi.mock("../get-cache", () => ({
+  getCache: vi.fn().mockResolvedValue({
     profile: {
       avatar: "avatar",
       banner: "banner",

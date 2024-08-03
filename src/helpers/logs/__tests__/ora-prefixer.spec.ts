@@ -1,4 +1,4 @@
-import { oraPrefixer } from "../ora-prefixer.js";
+import { oraPrefixer } from "../ora-prefixer";
 
 describe("ora-prefixer", () => {
   it("should return the given prefix with end pad", () => {

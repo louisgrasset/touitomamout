@@ -1,2 +1,2 @@
-export * from "./ora-prefixer.js";
-export * from "./ora-progress.js";
+export * from "./ora-prefixer";
+export * from "./ora-progress";

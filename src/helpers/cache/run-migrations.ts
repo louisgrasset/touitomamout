@@ -1,10 +1,10 @@
 import ora from "ora";
 
-import { Cache } from "../../types/index.js";
-import { oraPrefixer, oraProgress } from "../logs/index.js";
-import { getCache } from "./get-cache.js";
-import migrations from "./migrations/index.js";
-import { writeToCacheFile } from "./write-to-cache-file.js";
+import { Cache } from "../../types";
+import { oraPrefixer, oraProgress } from "../logs";
+import { getCache } from "./get-cache";
+import migrations from "./migrations";
+import { writeToCacheFile } from "./write-to-cache-file";
 
 export const runMigrations = async () => {
   const log = ora({

@@ -1,6 +1,6 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { isTweetCached } from "../is-tweet-cached.js";
+import { isTweetCached } from "../is-tweet-cached";
 
 describe("isTweetCached", () => {
   describe("when the tweet is cached", () => {

@@ -1,5 +1,5 @@
-import { BLUESKY_MEDIA_MAX_SIZE_BYTES } from "../../constants.js";
-import { compressMedia } from "./compress-media.js";
+import { BLUESKY_MEDIA_MAX_SIZE_BYTES } from "../../constants";
+import { compressMedia } from "./compress-media";
 
 interface BlueskyBlob {
   mimeType: string;

@@ -1,36 +1,36 @@
 import { BskyAgent } from "@atproto/api";
 import ora from "ora";
 
-import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file.js";
-import { Media } from "../../types/index.js";
-import { BlueskyPost } from "../../types/post.js";
-import { blueskySenderService } from "../bluesky-sender.service.js";
-import { mediaDownloaderService } from "../media-downloader.service.js";
-import { makeTweetMock } from "./helpers/make-tweet-mock.js";
+import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file";
+import { Media } from "../../types";
+import { BlueskyPost } from "../../types/post";
+import { blueskySenderService } from "../bluesky-sender.service";
+import { mediaDownloaderService } from "../media-downloader.service";
+import { makeTweetMock } from "./helpers/make-tweet-mock";
 
-jest.mock("ora");
-jest.mock("../../constants.js", () => {
+vi.mock("ora");
+vi.mock("../../constants", () => {
   return {};
 });
-jest.mock("../../helpers/cache/save-post-to-cache.js", () => ({
-  savePostToCache: jest.fn().mockImplementation(() => Promise.resolve()),
+vi.mock("../../helpers/cache/save-post-to-cache", () => ({
+  savePostToCache: vi.fn().mockImplementation(() => Promise.resolve()),
 }));
-jest.mock("../../helpers/tweet/is-tweet-cached.js");
+vi.mock("../../helpers/tweet/is-tweet-cached");
 
-jest.mock("../media-downloader.service.js", () => ({
-  mediaDownloaderService: jest.fn(),
+vi.mock("../media-downloader.service", () => ({
+  mediaDownloaderService: vi.fn(),
 }));
-const mediaDownloaderServiceMock = mediaDownloaderService as jest.Mock;
+const mediaDownloaderServiceMock = mediaDownloaderService as vi.Mock;
 const client = new BskyAgent({
   service: `https://bsky.social`,
 });
 
-const postSpy = jest
+const postSpy = vi
   .fn()
   .mockImplementation(() => Promise.resolve({ uri: "uri", cid: "cid" }));
 client.post = postSpy;
 
-const uploadBlobSpy = jest.fn().mockImplementation(() =>
+const uploadBlobSpy = vi.fn().mockImplementation(() =>
   Promise.resolve({
     data: {
       blob: {

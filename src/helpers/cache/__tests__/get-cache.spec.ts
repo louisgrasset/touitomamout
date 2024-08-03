@@ -1,10 +1,10 @@
 import promises from "node:fs/promises";
 
-import { getCache } from "../get-cache.js";
+import { getCache } from "../get-cache";
 
-const promiseReadFileMock = jest.spyOn(promises, "readFile");
+const promiseReadFileMock = vi.spyOn(promises, "readFile");
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     INSTANCE_ID: "id",
   };
@@ -26,7 +26,7 @@ const cacheMock = {
 
 describe("getCache", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when the file is accessible", () => {
