@@ -1,4 +1,5 @@
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
+
 import { Cookie } from "tough-cookie";
 
 import { COOKIES_PATH } from "../../constants.js";
