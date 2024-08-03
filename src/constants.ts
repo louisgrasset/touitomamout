@@ -1,6 +1,7 @@
+import { accessSync, constants } from "node:fs";
+import { join } from "node:path";
+
 import dotenv from "dotenv";
-import { accessSync, constants } from "fs";
-import { join } from "path";
 
 import buildInfo from "./buildInfo.json" assert { type: "json" };
 

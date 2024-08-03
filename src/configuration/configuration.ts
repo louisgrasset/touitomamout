@@ -1,8 +1,8 @@
-import bsky, { BskyAgent } from "@atproto/api";
+import { BskyAgent } from "@atproto/api";
 import { ResponseType, ResponseTypeNames } from "@atproto/xrpc";
 import pm2 from "@pm2/io";
-import Counter from "@pm2/io/build/main/utils/metrics/counter.js";
-import Gauge from "@pm2/io/build/main/utils/metrics/gauge.js";
+import type Counter from "@pm2/io/build/main/utils/metrics/counter";
+import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { createRestAPIClient, mastodon } from "masto";
 import ora from "ora";
@@ -28,8 +28,8 @@ import { oraPrefixer } from "../helpers/logs/index.js";
 import { buildConfigurationRules } from "./build-configuration-rules.js";
 
 export const configuration = async (): Promise<{
-  synchronizedPostsCountAllTime: Gauge.default;
-  synchronizedPostsCountThisRun: Counter.default;
+  synchronizedPostsCountAllTime: Gauge;
+  synchronizedPostsCountThisRun: Counter;
   twitterClient: Scraper;
   mastodonClient: null | mastodon.rest.Client;
   blueskyClient: null | BskyAgent;
@@ -116,7 +116,7 @@ export const configuration = async (): Promise<{
       prefixText: oraPrefixer("☁️ client"),
     }).start("connecting to bluesky...");
 
-    blueskyClient = new bsky.BskyAgent({
+    blueskyClient = new BskyAgent({
       service: `https://${BLUESKY_INSTANCE}`,
     });
     await blueskyClient

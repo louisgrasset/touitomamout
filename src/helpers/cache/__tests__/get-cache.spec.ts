@@ -1,4 +1,4 @@
-import promises from "fs/promises";
+import promises from "node:fs/promises";
 
 import { getCache } from "../get-cache.js";
 

@@ -1,4 +1,5 @@
-import promises from "fs/promises";
+import promises from "node:fs/promises";
+
 import { Cookie } from "tough-cookie";
 
 import { getCookies } from "../get-cookies.js";

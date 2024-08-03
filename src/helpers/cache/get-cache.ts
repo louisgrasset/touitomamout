@@ -1,4 +1,4 @@
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 
 import { CACHE_PATH } from "../../constants.js";
 import { Cache } from "../../types/index.js";

@@ -1,10 +1,10 @@
-import { access } from "fs/promises";
+import { access } from "node:fs/promises";
 
 import { INSTANCE_ID } from "../../../constants.js";
 import { createCacheFile } from "../create-cache.js";
 import { writeToCacheFile } from "../write-to-cache-file.js";
 
-jest.mock("fs/promises", () => ({
+jest.mock("node:fs/promises", () => ({
   access: jest.fn(),
   constants: {
     F_OK: "F_OK",

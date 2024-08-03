@@ -1,4 +1,4 @@
-import { access, constants } from "fs/promises";
+import { access, constants } from "node:fs/promises";
 
 import { CACHE_PATH, INSTANCE_ID } from "../../constants.js";
 import { writeToCacheFile } from "./write-to-cache-file.js";

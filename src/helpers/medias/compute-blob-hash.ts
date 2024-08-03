@@ -1,4 +1,4 @@
-import { subtle } from "crypto";
+import { subtle } from "node:crypto";
 
 import { DEBUG } from "../../constants.js";
 
