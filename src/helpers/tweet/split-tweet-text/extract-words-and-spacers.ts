@@ -11,31 +11,44 @@ export const extractWordsAndSpacers = (
   inputString: string,
   urls: string[],
 ): SplitterEntry[] => {
-  function extractUrlChunks() {
-    const entries: SplitterEntry[] = [];
-    let remainingText = inputString;
+function extractUrlChunks() {
+  const entries = [];
+  let remainingText = inputString;
 
-    // Split text by urls
-    urls.forEach((url) => {
-      const [prefixChunk, suffixChunk] = remainingText.split(url);
-      const chunksSplitByUrl = [prefixChunk, url, suffixChunk];
+  urls.forEach((url) => {
+    const index = remainingText.indexOf(url);
+    if (index === -1) {
+      // URL not found; skip to the next URL
+      return;
+    }
 
-      for (const currentChunk of chunksSplitByUrl) {
-        entries.push({
-          str: currentChunk,
-          sep: getSeparator(remainingText, currentChunk),
-        });
-      }
+    const prefixChunk = remainingText.slice(0, index);
+    const suffixChunk = remainingText.slice(index + url.length);
 
-      const processedString = chunksSplitByUrl.join("");
-      remainingText = inputString.slice(
-        processedString.length,
-        inputString.length,
-      );
+    if (prefixChunk) {
+      entries.push({
+        str: prefixChunk,
+        sep: getSeparator(remainingText, prefixChunk),
+      });
+    }
+
+    entries.push({
+      str: url,
+      sep: getSeparator(remainingText, url),
     });
-    return entries;
+
+    remainingText = suffixChunk;
+  });
+
+  if (remainingText.length > 0) {
+    entries.push({
+      str: remainingText,
+      sep: '',
+    });
   }
 
+  return entries;
+}
   // Split text by urls (if any)
   let entries: SplitterEntry[] = extractUrlChunks();
   // Or start with the original string.
