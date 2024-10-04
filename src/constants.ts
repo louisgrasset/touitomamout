@@ -46,6 +46,8 @@ export const CACHE_PATH = `${STORAGE_DIR}/cache.${INSTANCE_ID}.json`;
 export const COOKIES_PATH = `${STORAGE_DIR}/cookies.${INSTANCE_ID}.json`;
 export const SYNC_MASTODON = (process.env.SYNC_MASTODON ?? "false") === "true";
 export const SYNC_BLUESKY = (process.env.SYNC_BLUESKY ?? "false") === "true";
+export const BACKDATE_BLUESKY_POSTS =
+  (process.env.BACKDATE_BLUESKY_POSTS ?? "true") === "true";
 export const SYNC_FREQUENCY_MIN = parseInt(
   process.env.SYNC_FREQUENCY_MIN ?? "30",
 );
