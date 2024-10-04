@@ -9,6 +9,7 @@ vi.mock("../../constants", () => ({
   SYNC_BLUESKY: true,
   SYNC_MASTODON: true,
   TWITTER_HANDLE: "username",
+  BACKDATE_BLUESKY_POSTS: true,
 }));
 
 describe("buildConfigurationRules", () => {
