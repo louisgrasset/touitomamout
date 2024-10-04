@@ -1,9 +1,5 @@
-import {
-  BlueskyCacheChunk,
-  MastodonCacheChunk,
-  Platform,
-} from "../../types/index.js";
-import { getCachedPosts } from "./get-cached-posts.js";
+import { BlueskyCacheChunk, MastodonCacheChunk, Platform } from "../../types";
+import { getCachedPosts } from "./get-cached-posts";
 
 export const getCachedPostChunk = async <
   T extends BlueskyCacheChunk | MastodonCacheChunk,

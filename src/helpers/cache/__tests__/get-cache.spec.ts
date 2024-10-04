@@ -1,14 +1,18 @@
-import promises from "fs/promises";
+import { readFile } from "node:fs/promises";
 
-import { getCache } from "../get-cache.js";
+import { vi } from "vitest";
 
-const promiseReadFileMock = jest.spyOn(promises, "readFile");
+import { getCache } from "../get-cache";
 
-jest.mock("../../../constants.js", () => {
-  return {
-    INSTANCE_ID: "id",
-  };
-});
+vi.mock("node:fs/promises", () => ({
+  readFile: vi.fn(),
+}));
+
+const promiseReadFileMock = readFile as vi.Mock;
+
+vi.mock("../../../constants", () => ({
+  CACHE_PATH: "./cache.instance.json",
+}));
 
 const defaultCacheMock = {
   instance: { id: "" },
@@ -26,7 +30,7 @@ const cacheMock = {
 
 describe("getCache", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when the file is accessible", () => {

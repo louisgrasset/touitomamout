@@ -1,19 +1,32 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
+import { beforeEach, Mock, vi } from "vitest";
 
-import { handleTwitterAuth } from "../handle-twitter-auth.js";
-import { restorePreviousSession } from "../restore-previous-session.js";
+import { handleTwitterAuth } from "../handle-twitter-auth";
+import { restorePreviousSession } from "../restore-previous-session";
 
-const constantsMock = jest.requireMock("../../../constants.js");
-jest.mock("../../../constants.js", () => ({}));
-jest.mock("../restore-previous-session.js", () => ({
-  restorePreviousSession: jest.fn(),
+vi.mock("../restore-previous-session", () => ({
+  restorePreviousSession: vi.fn(),
 }));
 
-const restorePreviousSessionSpy = restorePreviousSession as jest.Mock;
+const { mockedConstants } = vi.hoisted(() => ({
+  mockedConstants: {
+    TWITTER_USERNAME: "",
+    TWITTER_PASSWORD: "",
+  },
+}));
 
-const isLoggedInSpy = jest.fn();
-const loginSpy = jest.fn();
-const getCookiesSpy = jest.fn();
+vi.mock("../../../constants", () => mockedConstants);
+
+vi.doMock("../../../constants", () => ({
+  TWITTER_USERNAME: mockedConstants.TWITTER_USERNAME,
+  TWITTER_PASSWORD: mockedConstants.TWITTER_PASSWORD,
+}));
+
+const restorePreviousSessionSpy = restorePreviousSession as Mock;
+
+const isLoggedInSpy = vi.fn();
+const loginSpy = vi.fn();
+const getCookiesSpy = vi.fn();
 
 const twitterClient = {
   isLoggedIn: isLoggedInSpy,
@@ -23,13 +36,13 @@ const twitterClient = {
 
 describe("handleTwitterAuth", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when constants are not set", () => {
     beforeEach(() => {
-      constantsMock.TWITTER_USERNAME = undefined;
-      constantsMock.TWITTER_PASSWORD = undefined;
+      mockedConstants.TWITTER_USERNAME = "";
+      mockedConstants.TWITTER_PASSWORD = "";
     });
 
     it("should not log in", async () => {
@@ -43,8 +56,8 @@ describe("handleTwitterAuth", () => {
 
   describe("when constants are set", () => {
     beforeEach(() => {
-      constantsMock.TWITTER_USERNAME = "username";
-      constantsMock.TWITTER_PASSWORD = "password";
+      mockedConstants.TWITTER_USERNAME = "username";
+      mockedConstants.TWITTER_PASSWORD = "password";
     });
 
     describe("when cookies are set", () => {

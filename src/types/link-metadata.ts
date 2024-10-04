@@ -1,4 +1,4 @@
-import bsky from "@atproto/api";
+import { ComAtprotoRepoUploadBlob } from "@atproto/api";
 
 export type LinkMetadata = {
   error: string;
@@ -10,5 +10,5 @@ export type LinkMetadata = {
 };
 
 export type BlueskyLinkMetadata = Omit<LinkMetadata, "image"> & {
-  image: bsky.ComAtprotoRepoUploadBlob.Response | undefined;
+  image: ComAtprotoRepoUploadBlob.Response | undefined;
 };

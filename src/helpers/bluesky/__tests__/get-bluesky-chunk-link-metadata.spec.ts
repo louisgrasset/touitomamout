@@ -1,15 +1,15 @@
 import { BskyAgent, RichText } from "@atproto/api";
 
-import { getBlueskyChunkLinkMetadata } from "../get-bluesky-chunk-link-metadata.js";
-import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata.js";
+import { getBlueskyChunkLinkMetadata } from "../get-bluesky-chunk-link-metadata";
+import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata";
 
-jest.mock("../../../constants.js", () => ({}));
+vi.mock("../../../constants", () => ({}));
 
-jest.mock("../get-bluesky-link-metadata.js", () => ({
-  getBlueskyLinkMetadata: jest.fn(),
+vi.mock("../get-bluesky-link-metadata", () => ({
+  getBlueskyLinkMetadata: vi.fn(),
 }));
 
-const getBlueskyLinkMetadataMock = getBlueskyLinkMetadata as jest.Mock;
+const getBlueskyLinkMetadataMock = getBlueskyLinkMetadata as vi.Mock;
 const cardMock = {
   title: "Example Domain",
   description:

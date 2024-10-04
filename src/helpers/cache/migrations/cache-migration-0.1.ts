@@ -1,6 +1,6 @@
-import { INSTANCE_ID } from "../../../constants.js";
-import { Platform } from "../../../types/index.js";
-import { preventMigrationOnWrongVersion } from "./helpers/prevent-migration-on-wrong-version.js";
+import { INSTANCE_ID } from "../../../constants";
+import { Platform } from "../../../types";
+import { preventMigrationOnWrongVersion } from "./helpers/prevent-migration-on-wrong-version";
 
 export const migration = async (
   outdatedCache: NonNullable<{

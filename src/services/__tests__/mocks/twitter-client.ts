@@ -1,6 +1,6 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { makeTweetMock } from "../helpers/make-tweet-mock.js";
+import { makeTweetMock } from "../helpers/make-tweet-mock";
 
 export class MockTwitterClient {
   constructor(tweetCount?: number) {

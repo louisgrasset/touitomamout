@@ -1,9 +1,9 @@
 import { mastodon } from "masto";
 
-import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock.js";
-import { makeMastodonPost } from "../make-mastodon-post.js";
+import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock";
+import { makeMastodonPost } from "../make-mastodon-post";
 
-jest.mock("../../../constants.js", () => ({
+vi.mock("../../../constants", () => ({
   MASTODON_MAX_POST_LENGTH: 500,
   BLUESKY_MAX_POST_LENGTH: 300,
 }));

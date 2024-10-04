@@ -1,9 +1,7 @@
 import { BskyAgent } from "@atproto/api";
 
-import { uploadBlueskyMedia } from "../upload-bluesky-media.js";
-import { makeBlobFromFile } from "./helpers/make-blob-from-file.js";
-
-jest.mock("../../../constants.js", () => ({ DEBUG: false }));
+import { uploadBlueskyMedia } from "../upload-bluesky-media";
+import { makeBlobFromFile } from "./helpers/make-blob-from-file";
 
 const uploadBlobResponseMock = {
   success: true,
@@ -13,7 +11,7 @@ const uploadBlobResponseMock = {
     },
   },
 };
-const uploadBlobMock = jest.fn(() => uploadBlobResponseMock);
+const uploadBlobMock = vi.fn(() => uploadBlobResponseMock);
 
 describe("uploadBlueskyMedia", () => {
   it("should return the bluesky media reference", async () => {

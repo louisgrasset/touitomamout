@@ -1,4 +1,4 @@
-import { SplitterEntry } from "../../../types/splitter.js";
+import { SplitterEntry } from "../../../types/splitter";
 
 /**
  * Splits the given string into chunks based on a list of URLs and whitespace detection.

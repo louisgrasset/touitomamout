@@ -1,4 +1,4 @@
-import { getRedirectedUrl } from "../get-redirection.js";
+import { getRedirectedUrl } from "../get-redirection";
 
 describe("getRedirectedUrl", () => {
   describe("when the url is redirected", () => {

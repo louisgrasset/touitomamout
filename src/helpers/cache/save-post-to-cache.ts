@@ -1,6 +1,6 @@
-import { BlueskyCache, MastodonCache, Platform } from "../../types/index.js";
-import { getCachedPosts } from "./get-cached-posts.js";
-import { updateCacheEntry } from "./update-cache-entry.js";
+import { BlueskyCache, MastodonCache, Platform } from "../../types";
+import { getCachedPosts } from "./get-cached-posts";
+import { updateCacheEntry } from "./update-cache-entry";
 
 interface PostToCache {
   data: MastodonCache | BlueskyCache;

@@ -1,7 +1,7 @@
 import { BskyAgent, ComAtprotoRepoUploadBlob } from "@atproto/api";
 
-import { DEBUG } from "../../constants.js";
-import { parseBlobForBluesky } from "./parse-blob-for-bluesky.js";
+import { DEBUG } from "../../constants";
+import { parseBlobForBluesky } from "./parse-blob-for-bluesky";
 
 /**
  * An async method to upload a media to Bluesky.

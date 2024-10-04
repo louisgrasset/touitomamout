@@ -1,8 +1,8 @@
 import { writeFileSync } from "node:fs";
 
-import { CACHE_PATH } from "../../constants.js";
-import { Cache } from "../../types/index.js";
-import { TouitomamoutError } from "../error.js";
+import { CACHE_PATH } from "../../constants";
+import { Cache } from "../../types";
+import { TouitomamoutError } from "../error";
 
 export const writeToCacheFile = (cache: Cache) => {
   try {

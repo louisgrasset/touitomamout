@@ -3,12 +3,12 @@ import { Tweet } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 import { Ora } from "ora";
 
-import { VOID } from "../../constants.js";
-import { BlueskyPost, MastodonPost, Post } from "../../types/post.js";
-import { oraProgress } from "../logs/index.js";
-import { getPostExcerpt } from "./get-post-excerpt.js";
-import { makeBlueskyPost } from "./make-bluesky-post.js";
-import { makeMastodonPost } from "./make-mastodon-post.js";
+import { VOID } from "../../constants";
+import { BlueskyPost, MastodonPost, Post } from "../../types/post";
+import { oraProgress } from "../logs";
+import { getPostExcerpt } from "./get-post-excerpt";
+import { makeBlueskyPost } from "./make-bluesky-post";
+import { makeMastodonPost } from "./make-mastodon-post";
 
 const format = (count: number, word: string) =>
   `${count} ${count === 1 ? word : word + "s"}`;

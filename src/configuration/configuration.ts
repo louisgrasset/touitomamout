@@ -1,8 +1,8 @@
-import bsky, { BskyAgent } from "@atproto/api";
+import { BskyAgent } from "@atproto/api";
 import { ResponseType, ResponseTypeNames } from "@atproto/xrpc";
 import pm2 from "@pm2/io";
-import Counter from "@pm2/io/build/main/utils/metrics/counter.js";
-import Gauge from "@pm2/io/build/main/utils/metrics/gauge.js";
+import type Counter from "@pm2/io/build/main/utils/metrics/counter";
+import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { createRestAPIClient, mastodon } from "masto";
 import ora from "ora";
@@ -18,18 +18,18 @@ import {
   SYNC_MASTODON,
   TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
-} from "../constants.js";
-import { handleTwitterAuth } from "../helpers/auth/handle-twitter-auth.js";
-import { createCacheFile } from "../helpers/cache/create-cache.js";
-import { getCachedPosts } from "../helpers/cache/get-cached-posts.js";
-import { runMigrations } from "../helpers/cache/run-migrations.js";
-import { TouitomamoutError } from "../helpers/error.js";
-import { oraPrefixer } from "../helpers/logs/index.js";
-import { buildConfigurationRules } from "./build-configuration-rules.js";
+} from "../constants";
+import { handleTwitterAuth } from "../helpers/auth/handle-twitter-auth";
+import { createCacheFile } from "../helpers/cache/create-cache";
+import { getCachedPosts } from "../helpers/cache/get-cached-posts";
+import { runMigrations } from "../helpers/cache/run-migrations";
+import { TouitomamoutError } from "../helpers/error";
+import { oraPrefixer } from "../helpers/logs";
+import { buildConfigurationRules } from "./build-configuration-rules";
 
 export const configuration = async (): Promise<{
-  synchronizedPostsCountAllTime: Gauge.default;
-  synchronizedPostsCountThisRun: Counter.default;
+  synchronizedPostsCountAllTime: Gauge;
+  synchronizedPostsCountThisRun: Counter;
   twitterClient: Scraper;
   mastodonClient: null | mastodon.rest.Client;
   blueskyClient: null | BskyAgent;
@@ -116,7 +116,7 @@ export const configuration = async (): Promise<{
       prefixText: oraPrefixer("☁️ client"),
     }).start("connecting to bluesky...");
 
-    blueskyClient = new bsky.BskyAgent({
+    blueskyClient = new BskyAgent({
       service: `https://${BLUESKY_INSTANCE}`,
     });
     await blueskyClient
