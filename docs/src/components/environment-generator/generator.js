@@ -215,7 +215,7 @@ const Generator = ({ setConfiguration }) => {
               return true;
             })
             .map((field) => {
-              return `${field.env}=${field.value.toString()}`;
+              return `${field.env}="${field.value.toString()}"`;
             })
             .join("\n"),
         ].join("\n");
