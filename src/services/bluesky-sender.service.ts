@@ -1,7 +1,7 @@
 import { BskyAgent, RichText } from "@atproto/api";
 import { Ora } from "ora";
 
-import { DEBUG, VOID } from "../constants";
+import { BACKDATE_BLUESKY_POSTS, DEBUG, VOID } from "../constants";
 import {
   buildReplyEntry,
   getBlueskyChunkLinkMetadata,
@@ -117,13 +117,20 @@ export const blueskySenderService = async (
     const richText = new RichText({ text: chunk });
     await richText.detectFacets(client);
 
+    let createdAt;
+    if (BACKDATE_BLUESKY_POSTS) {
+      createdAt = new Date(post.tweet.timestamp || Date.now()).toISOString();
+    } else {
+      createdAt = new Date(Date.now()).toISOString();
+    }
+
     const data: {
       [x: string]: unknown;
     } = {
       $type: "app.bsky.feed.post",
       text: richText.text,
       facets: richText.facets,
-      createdAt: new Date(post.tweet.timestamp || Date.now()).toISOString(),
+      createdAt,
     };
 
     /**
