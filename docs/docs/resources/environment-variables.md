@@ -42,14 +42,15 @@ Even if `TWITTER_USERNAME` & `TWITTER_PASSWORD` are optional, these variables ar
 
 Configure here how the sync will be done.
 
-| Variable                   | Default | Category                                                                 | Description                                 |
-|----------------------------|:-------:|--------------------------------------------------------------------------|---------------------------------------------|
-| 📌 `SYNC_MASTODON`         |  false  | ![**Sync**::platform](https://img.shields.io/badge/Sync-Platform-e8e8e8) | Whether run the sync to Mastodon.           |
-| 📌 `SYNC_BLUESKY`          |  false  | ![**Sync**::platform](https://img.shields.io/badge/Sync-Platform-e8e8e8) | Whether run the sync to Bluesky.            |                                            |
-| `SYNC_PROFILE_NAME`        |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile name.              |
-| `SYNC_PROFILE_DESCRIPTION` |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile description.       |
-| `SYNC_PROFILE_PICTURE`     |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile picture.           |
-| `SYNC_PROFILE_HEADER`      |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile header (= banner). |
+| Variable                  | Default | Category                                                                 | Description                                |
+|---------------------------|:-------:|--------------------------------------------------------------------------|--------------------------------------------|
+| 📌 `SYNC_MASTODON`        |  false  | ![**Sync**::platform](https://img.shields.io/badge/Sync-Platform-e8e8e8) | Whether run the sync to Mastodon.          |
+| 📌 `SYNC_BLUESKY`         |  false  | ![**Sync**::platform](https://img.shields.io/badge/Sync-Platform-e8e8e8) | Whether run the sync to Bluesky.           |                                            |
+| `SYNC_PROFILE_NAME`       |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile name.             |
+| `SYNC_PROFILE_DESCRIPTION` |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile description.      |
+| `SYNC_PROFILE_PICTURE`    |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile picture.          |
+| `SYNC_PROFILE_HEADER`     |  false  | ![**Sync**::profile](https://img.shields.io/badge/Sync-Profile-yellow)   | Whether sync the profile header (= banner). |
+| `BACKDATE_BLUESKY_POSTS`  |  true   | ![**Sync**::posts](https://img.shields.io/badge/Sync-Posts-green)        | Whether backdate the posts on Bluesky.     |
 
 ## Configuration with Docker 🐳
 
