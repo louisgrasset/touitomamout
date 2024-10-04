@@ -157,6 +157,13 @@ const Generator = ({ setConfiguration }) => {
           value: 30,
           env: "SYNC_FREQUENCY_MIN",
         },
+        {
+          name: "timestamps",
+          label: "Synchronize bluesky timestamps to original tweet",
+          type: "boolean",
+          value: true,
+          env: "BACKDATE_BLUESKY_POSTS",
+        },
       ],
     },
     profile: {
