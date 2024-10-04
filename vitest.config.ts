@@ -17,6 +17,11 @@ export default mergeConfig(
       watch: false,
       cache: false,
       setupFiles: ["vitest.setup.ts"],
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "lcov"],
+        include: ["src/**/*.ts", "!**/__tests__/**/*"],
+      },
     },
   }),
 );
