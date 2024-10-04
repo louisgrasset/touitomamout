@@ -8,10 +8,10 @@ import { blueskySenderService } from "../bluesky-sender.service";
 import { mediaDownloaderService } from "../media-downloader.service";
 import { makeTweetMock } from "./helpers/make-tweet-mock";
 
-vi.mock("ora");
-vi.mock("../../constants", () => {
-  return {};
-});
+vi.mock("../../constants", () => ({
+  DEBUG: false,
+  BLUESKY_MEDIA_MAX_SIZE_BYTES: 976560,
+}));
 vi.mock("../../helpers/cache/save-post-to-cache", () => ({
   savePostToCache: vi.fn().mockImplementation(() => Promise.resolve()),
 }));
@@ -59,7 +59,7 @@ const post = {
 const media: Media = {
   type: "image",
   id: "id",
-  url: "https://sample-videos.com/img/Sample-png-image-100kb.png",
+  url: "https://placehold.co/10x10.png",
   alt_text: "alt text",
 };
 

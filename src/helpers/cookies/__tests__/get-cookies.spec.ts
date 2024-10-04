@@ -1,13 +1,21 @@
-import promises from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 
 import { Cookie } from "tough-cookie";
 
 import { getCookies } from "../get-cookies";
 import { cookiesMock } from "./mocks/cookie";
 
-vi.mock("../../../constants", () => ({}));
+vi.mock("node:fs/promises", () => ({
+  readFile: vi.fn(),
+}));
 
-const promiseReadFileMock = vi.spyOn(promises, "readFile");
+vi.mock("../../../constants", () => {
+  return {
+    COOKIES_PATH: "./cookies.instance.json",
+  };
+});
+
+const promiseReadFileMock = readFile as vi.Mock;
 
 describe("getCookies", () => {
   beforeEach(() => {

@@ -13,7 +13,7 @@ export const fetchLinkMetadata = (
   })
     .then((res) => res.json())
     .then((data) => {
-      if (data.error) {
+      if (data.error || data.Error) {
         return null;
       }
       return data as LinkMetadata;

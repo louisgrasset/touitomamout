@@ -8,10 +8,9 @@ import { mastodonSenderService } from "../mastodon-sender.service";
 import { mediaDownloaderService } from "../media-downloader.service";
 import { makeTweetMock } from "./helpers/make-tweet-mock";
 
-vi.mock("ora");
-vi.mock("../../constants", () => {
-  return {};
-});
+vi.mock("../../constants", () => ({
+  DEBUG: false,
+}));
 vi.mock("../../helpers/cache/save-post-to-cache", () => ({
   savePostToCache: vi.fn().mockImplementation(() => Promise.resolve()),
 }));

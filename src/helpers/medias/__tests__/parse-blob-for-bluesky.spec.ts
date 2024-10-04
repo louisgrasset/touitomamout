@@ -4,8 +4,6 @@ import {
   makeUint8ArrayFromFile,
 } from "./helpers/make-blob-from-file";
 
-vi.mock("../../../constants.ts", () => ({ DEBUG: false }));
-
 let imageBlob: Blob;
 let bskyBlobData: Uint8Array;
 const initBlobsForMime = async (mimeType: string) => {

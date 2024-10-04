@@ -1,14 +1,18 @@
-import promises from "node:fs/promises";
+import { readFile } from "node:fs/promises";
+
+import { vi } from "vitest";
 
 import { getCache } from "../get-cache";
 
-const promiseReadFileMock = vi.spyOn(promises, "readFile");
+vi.mock("node:fs/promises", () => ({
+  readFile: vi.fn(),
+}));
 
-vi.mock("../../../constants", () => {
-  return {
-    INSTANCE_ID: "id",
-  };
-});
+const promiseReadFileMock = readFile as vi.Mock;
+
+vi.mock("../../../constants", () => ({
+  CACHE_PATH: "./cache.instance.json",
+}));
 
 const defaultCacheMock = {
   instance: { id: "" },

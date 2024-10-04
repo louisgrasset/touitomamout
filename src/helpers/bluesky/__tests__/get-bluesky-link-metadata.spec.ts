@@ -55,17 +55,24 @@ describe("getBlueskyLinkMetadata", () => {
 
   describe("when no image if found", () => {
     it("should return the metadata without image property", async () => {
-      const result = await getBlueskyLinkMetadata("https://google.com", {
+      const result = await getBlueskyLinkMetadata("https://github.com", {
         uploadBlob: uploadBlobMock,
       } as unknown as BskyAgent);
 
       expect(result).toStrictEqual({
         ...METADATA_MOCK,
-        image: undefined,
-        title: "Google",
-        url: "https://google.com",
+        image: {
+          data: {
+            blob: {
+              original: "123456789",
+            },
+          },
+          success: true,
+        },
+        title: "GitHub: Let’s build from here",
+        url: "https://github.com/",
         description:
-          "Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.",
+          "GitHub is where over 100 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and fea...",
       });
     });
   });

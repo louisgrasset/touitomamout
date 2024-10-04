@@ -1,13 +1,32 @@
 import { BskyAgent } from "@atproto/api";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
+import { vi } from "vitest";
 
 import { updateCacheEntry } from "../../helpers/cache/update-cache-entry";
 import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file";
 import { profileSynchronizerService } from "../profile-synchronizer.service";
 
-const constantsMock = vi.requireMock("../../constants");
-vi.mock("../../constants", () => ({}));
+const { mockedConstants } = vi.hoisted(() => ({
+  mockedConstants: {
+    SYNC_PROFILE_DESCRIPTION: "",
+    SYNC_PROFILE_PICTURE: "",
+    SYNC_PROFILE_NAME: "",
+    SYNC_PROFILE_HEADER: "",
+    TWITTER_HANDLE: "",
+    DEBUG: false,
+  },
+}));
+
+vi.mock("../../constants", () => mockedConstants);
+vi.doMock("../../constants", () => ({
+  DEBUG: mockedConstants.DEBUG,
+  SYNC_PROFILE_DESCRIPTION: mockedConstants.SYNC_PROFILE_DESCRIPTION,
+  SYNC_PROFILE_PICTURE: mockedConstants.SYNC_PROFILE_PICTURE,
+  SYNC_PROFILE_NAME: mockedConstants.SYNC_PROFILE_NAME,
+  SYNC_PROFILE_HEADER: mockedConstants.SYNC_PROFILE_HEADER,
+  TWITTER_HANDLE: mockedConstants.TWITTER_HANDLE,
+}));
 
 vi.mock("../media-downloader.service", () => ({
   mediaDownloaderService: vi
@@ -88,11 +107,11 @@ describe("profileSynchronizerService", () => {
           beforeEach(async () => {
             vi.clearAllMocks();
 
-            constantsMock.SYNC_PROFILE_DESCRIPTION = description;
-            constantsMock.SYNC_PROFILE_PICTURE = name;
-            constantsMock.SYNC_PROFILE_NAME = picture;
-            constantsMock.SYNC_PROFILE_HEADER = header;
-            constantsMock.TWITTER_HANDLE = "username";
+            mockedConstants.SYNC_PROFILE_DESCRIPTION = description;
+            mockedConstants.SYNC_PROFILE_PICTURE = name;
+            mockedConstants.SYNC_PROFILE_NAME = picture;
+            mockedConstants.SYNC_PROFILE_HEADER = header;
+            mockedConstants.TWITTER_HANDLE = "username";
           });
 
           it("should properly sync the profile", async () => {
