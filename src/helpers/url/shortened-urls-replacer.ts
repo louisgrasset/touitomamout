@@ -1,5 +1,4 @@
 import { getRedirectedUrl } from "./get-redirection";
-
 /**
  * A utility method to replace t.co urls with the original url.
  */

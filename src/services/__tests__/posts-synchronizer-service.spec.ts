@@ -8,7 +8,12 @@ import { mastodonSenderService } from "../mastodon-sender.service";
 import { postsSynchronizerService } from "../posts-synchronizer.service";
 import { MockTwitterClient } from "./mocks/twitter-client";
 
-vi.mock("../../constants", () => ({}));
+vi.mock("../../constants", () => ({
+  TWITTER_HANDLE: "username",
+  DEBUG: false,
+  API_RATE_LIMIT: 1,
+  SYNC_DRY_RUN: false,
+}));
 
 vi.mock("../../helpers/cache/get-cached-posts", () => {
   return {

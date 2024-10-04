@@ -1,15 +1,28 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
+import { beforeEach, Mock, vi } from "vitest";
 
 import { handleTwitterAuth } from "../handle-twitter-auth";
 import { restorePreviousSession } from "../restore-previous-session";
 
-const constantsMock = vi.requireMock("../../../constants");
-vi.mock("../../../constants", () => ({}));
 vi.mock("../restore-previous-session", () => ({
   restorePreviousSession: vi.fn(),
 }));
 
-const restorePreviousSessionSpy = restorePreviousSession as vi.Mock;
+const { mockedConstants } = vi.hoisted(() => ({
+  mockedConstants: {
+    TWITTER_USERNAME: "",
+    TWITTER_PASSWORD: "",
+  },
+}));
+
+vi.mock("../../../constants", () => mockedConstants);
+
+vi.doMock("../../../constants", () => ({
+  TWITTER_USERNAME: mockedConstants.TWITTER_USERNAME,
+  TWITTER_PASSWORD: mockedConstants.TWITTER_PASSWORD,
+}));
+
+const restorePreviousSessionSpy = restorePreviousSession as Mock;
 
 const isLoggedInSpy = vi.fn();
 const loginSpy = vi.fn();
@@ -28,8 +41,8 @@ describe("handleTwitterAuth", () => {
 
   describe("when constants are not set", () => {
     beforeEach(() => {
-      constantsMock.TWITTER_USERNAME = undefined;
-      constantsMock.TWITTER_PASSWORD = undefined;
+      mockedConstants.TWITTER_USERNAME = "";
+      mockedConstants.TWITTER_PASSWORD = "";
     });
 
     it("should not log in", async () => {
@@ -43,8 +56,8 @@ describe("handleTwitterAuth", () => {
 
   describe("when constants are set", () => {
     beforeEach(() => {
-      constantsMock.TWITTER_USERNAME = "username";
-      constantsMock.TWITTER_PASSWORD = "password";
+      mockedConstants.TWITTER_USERNAME = "username";
+      mockedConstants.TWITTER_PASSWORD = "password";
     });
 
     describe("when cookies are set", () => {

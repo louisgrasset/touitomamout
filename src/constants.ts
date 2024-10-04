@@ -5,22 +5,23 @@ import dotenv from "dotenv";
 
 import buildInfo from "./buildInfo.json" assert { type: "json" };
 
-const envPath = process.argv[2] ?? join(process.cwd(), ".env");
-if (envPath.endsWith("example")) {
-  throw new Error("You should not use the example configuration file.");
-}
-console.log({ envPath });
-try {
-  accessSync(envPath, constants.F_OK);
-} catch (err) {
-  throw new Error("No suitable .env file found.");
+if (process.env.NODE_ENV !== "test") {
+  const envPath = process.argv[2] ?? join(process.cwd(), ".env");
+  if (envPath.endsWith("example")) {
+    throw new Error("You should not use the example configuration file.");
+  }
+
+  try {
+    accessSync(envPath, constants.F_OK);
+  } catch (err) {
+    throw new Error("No suitable .env file found.");
+  }
+  dotenv.config({ path: envPath });
 }
 
 const trimTwitterHandle = (handle: string) => {
   return handle.toLowerCase().trim().replaceAll("@", "");
 };
-
-dotenv.config({ path: envPath });
 
 export const TWITTER_HANDLE = trimTwitterHandle(
   process.env.TWITTER_HANDLE ?? "",

@@ -3,10 +3,8 @@ import { AppBskyFeedPost, BskyAgent } from "@atproto/api";
 import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock";
 import { makeBlueskyPost } from "../make-bluesky-post";
 
-vi.mock("../../../constants", () => ({
-  MASTODON_MAX_POST_LENGTH: 500,
-  BLUESKY_MAX_POST_LENGTH: 300,
-}));
+vi.stubEnv("MASTODON_MAX_POST_LENGTH", "500");
+vi.stubEnv("BLUESKY_MAX_POST_LENGTH", "300");
 
 vi.mock("../../cache/get-cached-post-chunk", () => ({
   getCachedPostChunk: vi.fn().mockReturnValue({

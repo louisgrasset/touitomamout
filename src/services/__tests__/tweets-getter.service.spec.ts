@@ -4,8 +4,11 @@ import { isTweetCached } from "../../helpers/tweet";
 import { tweetsGetterService } from "../tweets-getter.service";
 import { MockTwitterClient } from "./mocks/twitter-client";
 
-vi.mock("ora");
-vi.mock("../../constants", () => ({}));
+vi.mock("../../constants", () => ({
+  TWITTER_HANDLE: "username",
+  DEBUG: false,
+  API_RATE_LIMIT: 10,
+}));
 vi.mock("../../helpers/tweet/is-tweet-cached");
 
 const isTweetCachedMock = isTweetCached as vi.Mock;

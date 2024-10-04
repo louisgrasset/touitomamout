@@ -3,8 +3,6 @@ import { BskyAgent } from "@atproto/api";
 import { uploadBlueskyMedia } from "../upload-bluesky-media";
 import { makeBlobFromFile } from "./helpers/make-blob-from-file";
 
-vi.mock("../../../constants", () => ({ DEBUG: false }));
-
 const uploadBlobResponseMock = {
   success: true,
   data: {
