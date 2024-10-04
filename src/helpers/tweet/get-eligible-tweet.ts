@@ -1,8 +1,8 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { DEBUG } from "../../constants.js";
-import { getPostExcerpt } from "../post/get-post-excerpt.js";
-import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from "./index.js";
+import { DEBUG } from "../../constants";
+import { getPostExcerpt } from "../post/get-post-excerpt";
+import { keepRecentTweets, keepSelfQuotes, keepSelfReplies } from "./";
 
 export const getEligibleTweet = async (
   tweet: Tweet,

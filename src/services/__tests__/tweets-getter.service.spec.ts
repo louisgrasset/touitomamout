@@ -1,14 +1,17 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
 
-import { isTweetCached } from "../../helpers/tweet/index.js";
-import { tweetsGetterService } from "../tweets-getter.service.js";
-import { MockTwitterClient } from "./mocks/twitter-client.js";
+import { isTweetCached } from "../../helpers/tweet";
+import { tweetsGetterService } from "../tweets-getter.service";
+import { MockTwitterClient } from "./mocks/twitter-client";
 
-jest.mock("ora");
-jest.mock("../../constants.js", () => ({}));
-jest.mock("../../helpers/tweet/is-tweet-cached.js");
+vi.mock("../../constants", () => ({
+  TWITTER_HANDLE: "username",
+  DEBUG: false,
+  API_RATE_LIMIT: 10,
+}));
+vi.mock("../../helpers/tweet/is-tweet-cached");
 
-const isTweetCachedMock = isTweetCached as jest.Mock;
+const isTweetCachedMock = isTweetCached as vi.Mock;
 
 describe("tweetsGetterService", () => {
   describe("when tweets are not cached", () => {

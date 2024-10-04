@@ -1,9 +1,9 @@
 import { BskyAgent } from "@atproto/api";
 
-import { mediaDownloaderService } from "../../services/index.js";
-import { BlueskyLinkMetadata } from "../../types/link-metadata.js";
-import { parseBlobForBluesky } from "../medias/parse-blob-for-bluesky.js";
-import { fetchLinkMetadata } from "./fetch-link-metadata.js";
+import { mediaDownloaderService } from "../../services";
+import { BlueskyLinkMetadata } from "../../types/link-metadata";
+import { parseBlobForBluesky } from "../medias/parse-blob-for-bluesky";
+import { fetchLinkMetadata } from "./fetch-link-metadata";
 
 /**
  * Retrieves Bluesky Link metadata asynchronously.

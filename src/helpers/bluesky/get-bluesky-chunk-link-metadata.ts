@@ -1,7 +1,7 @@
 import { BskyAgent, RichText } from "@atproto/api";
 
-import { BlueskyLinkMetadata } from "../../types/link-metadata.js";
-import { getBlueskyLinkMetadata } from "./get-bluesky-link-metadata.js";
+import { BlueskyLinkMetadata } from "../../types/link-metadata";
+import { getBlueskyLinkMetadata } from "./get-bluesky-link-metadata";
 
 /**
  * Retrieves the metadata of the first link found in the given richtext.

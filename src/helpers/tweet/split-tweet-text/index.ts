@@ -1,1 +1,1 @@
-export * from "./split-tweet-text.js";
+export * from "./split-tweet-text";

@@ -1,18 +1,23 @@
 import { BskyAgent } from "@atproto/api";
-import * as Counter from "@pm2/io/build/main/utils/metrics/counter.js";
+import * as Counter from "@pm2/io/build/main/utils/metrics/counter";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
-import { blueskySenderService } from "../bluesky-sender.service.js";
-import { mastodonSenderService } from "../mastodon-sender.service.js";
-import { postsSynchronizerService } from "../posts-synchronizer.service.js";
-import { MockTwitterClient } from "./mocks/twitter-client.js";
+import { blueskySenderService } from "../bluesky-sender.service";
+import { mastodonSenderService } from "../mastodon-sender.service";
+import { postsSynchronizerService } from "../posts-synchronizer.service";
+import { MockTwitterClient } from "./mocks/twitter-client";
 
-jest.mock("../../constants.js", () => ({}));
+vi.mock("../../constants", () => ({
+  TWITTER_HANDLE: "username",
+  DEBUG: false,
+  API_RATE_LIMIT: 1,
+  SYNC_DRY_RUN: false,
+}));
 
-jest.mock("../../helpers/cache/get-cached-posts.js", () => {
+vi.mock("../../helpers/cache/get-cached-posts", () => {
   return {
-    getCachedPosts: jest.fn().mockResolvedValue({
+    getCachedPosts: vi.fn().mockResolvedValue({
       "1234567891234567891": {},
       "1234567891234567892": {},
       "1234567891234567893": {},
@@ -20,8 +25,8 @@ jest.mock("../../helpers/cache/get-cached-posts.js", () => {
   };
 });
 
-jest.mock("../../helpers/post/make-post.js", () => ({
-  makePost: jest.fn().mockImplementation((tweet) => ({
+vi.mock("../../helpers/post/make-post", () => ({
+  makePost: vi.fn().mockImplementation((tweet) => ({
     mastodon: {
       tweet,
       chunks: [tweet.text],
@@ -35,18 +40,18 @@ jest.mock("../../helpers/post/make-post.js", () => ({
   })),
 }));
 
-jest.mock("../bluesky-sender.service.js", () => ({
-  blueskySenderService: jest.fn(),
+vi.mock("../bluesky-sender.service", () => ({
+  blueskySenderService: vi.fn(),
 }));
-jest.mock("../mastodon-sender.service.js", () => ({
-  mastodonSenderService: jest.fn(),
+vi.mock("../mastodon-sender.service", () => ({
+  mastodonSenderService: vi.fn(),
 }));
 
 const mastodonSenderServiceMock = (
-  mastodonSenderService as jest.Mock
+  mastodonSenderService as vi.Mock
 ).mockImplementation(() => Promise.resolve());
 const blueskySenderServiceMock = (
-  blueskySenderService as jest.Mock
+  blueskySenderService as vi.Mock
 ).mockImplementation(() => Promise.resolve());
 
 describe("postsSynchronizerService", () => {
@@ -55,7 +60,7 @@ describe("postsSynchronizerService", () => {
     const mastodonClient = {} as mastodon.rest.Client;
     const blueskyClient = {} as BskyAgent;
     const synchronizedPostsCountThisRun = {
-      inc: jest.fn(),
+      inc: vi.fn(),
     } as unknown as Counter.default;
 
     const response = await postsSynchronizerService(

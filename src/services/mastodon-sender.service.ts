@@ -1,13 +1,13 @@
 import { mastodon } from "masto";
 import { Ora } from "ora";
 
-import { DEBUG, VOID } from "../constants.js";
-import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
-import { oraProgress } from "../helpers/logs/index.js";
-import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
-import { MastodonCacheChunk, Media, Platform } from "../types/index.js";
-import { MastodonPost } from "../types/post.js";
-import { mediaDownloaderService } from "./index.js";
+import { DEBUG, VOID } from "../constants";
+import { savePostToCache } from "../helpers/cache/save-post-to-cache";
+import { oraProgress } from "../helpers/logs";
+import { getPostExcerpt } from "../helpers/post/get-post-excerpt";
+import { MastodonCacheChunk, Media, Platform } from "../types";
+import { MastodonPost } from "../types/post";
+import { mediaDownloaderService } from "./";
 
 const MASTODON_MEDIA_IMAGES_MAX_COUNT = 4;
 

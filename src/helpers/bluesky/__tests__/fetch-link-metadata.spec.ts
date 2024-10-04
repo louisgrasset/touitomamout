@@ -1,7 +1,7 @@
-import { fetchLinkMetadata } from "../fetch-link-metadata.js";
-import { METADATA_MOCK } from "./mocks/metadata.js";
+import { fetchLinkMetadata } from "../fetch-link-metadata";
+import { METADATA_MOCK } from "./mocks/metadata";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     TWITTER_HANDLE: "username",
     MASTODON_INSTANCE: "mastodon.social",

@@ -1,23 +1,23 @@
 import { BskyAgent } from "@atproto/api";
 
-import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata.js";
-import { METADATA_MOCK } from "./mocks/metadata.js";
+import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata";
+import { METADATA_MOCK } from "./mocks/metadata";
 
-jest.mock("../../../services/index.js", () => ({
-  mediaDownloaderService: jest.fn(() => ({
+vi.mock("../../../services/index", () => ({
+  mediaDownloaderService: vi.fn(() => ({
     blobData: "blobData",
     mimeType: "mimeType",
   })),
 }));
 
-jest.mock("../../medias/parse-blob-for-bluesky.js", () => ({
-  parseBlobForBluesky: jest.fn(() => ({
+vi.mock("../../medias/parse-blob-for-bluesky", () => ({
+  parseBlobForBluesky: vi.fn(() => ({
     blobData: "blobData",
     mimeType: "mimeType",
   })),
 }));
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     TWITTER_HANDLE: "username",
     MASTODON_INSTANCE: "mastodon.social",
@@ -26,7 +26,7 @@ jest.mock("../../../constants.js", () => {
   };
 });
 
-const uploadBlobMock = jest.fn(() => ({
+const uploadBlobMock = vi.fn(() => ({
   success: true,
   data: {
     blob: {
@@ -55,17 +55,24 @@ describe("getBlueskyLinkMetadata", () => {
 
   describe("when no image if found", () => {
     it("should return the metadata without image property", async () => {
-      const result = await getBlueskyLinkMetadata("https://google.com", {
+      const result = await getBlueskyLinkMetadata("https://github.com", {
         uploadBlob: uploadBlobMock,
       } as unknown as BskyAgent);
 
       expect(result).toStrictEqual({
         ...METADATA_MOCK,
-        image: undefined,
-        title: "Google",
-        url: "https://google.com",
+        image: {
+          data: {
+            blob: {
+              original: "123456789",
+            },
+          },
+          success: true,
+        },
+        title: "GitHub: Let’s build from here",
+        url: "https://github.com/",
         description:
-          "Search the world's information, including webpages, images, videos and more. Google has many special features to help you find exactly what you're looking for.",
+          "GitHub is where over 100 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and fea...",
       });
     });
   });

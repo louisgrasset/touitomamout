@@ -1,12 +1,12 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { MASTODON_INSTANCE } from "../../../constants.js";
+import { MASTODON_INSTANCE } from "../../../constants";
 import {
   splitTextForBluesky,
   splitTextForMastodon,
-} from "../split-tweet-text/split-tweet-text.js";
+} from "../split-tweet-text/split-tweet-text";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     TWITTER_HANDLE: "username",
     MASTODON_INSTANCE: "mastodon.social",
@@ -15,9 +15,9 @@ jest.mock("../../../constants.js", () => {
   };
 });
 
-jest.mock("../../cache/get-cached-posts.js", () => {
+vi.mock("../../cache/get-cached-posts", () => {
   return {
-    getCachedPosts: jest.fn().mockResolvedValue({
+    getCachedPosts: vi.fn().mockResolvedValue({
       "1234567891234567891": {
         mastodon: ["1234567891234567891"],
       },

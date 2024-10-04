@@ -1,6 +1,6 @@
-import { buildConfigurationRules } from "../build-configuration-rules.js";
+import { buildConfigurationRules } from "../build-configuration-rules";
 
-jest.mock("../../constants.js", () => ({
+vi.mock("../../constants", () => ({
   BLUESKY_IDENTIFIER: "username",
   BLUESKY_INSTANCE: "bsky.social",
   BLUESKY_PASSWORD: "app-password",

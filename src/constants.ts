@@ -1,24 +1,27 @@
+import { accessSync, constants } from "node:fs";
+import { join } from "node:path";
+
 import dotenv from "dotenv";
-import { accessSync, constants } from "fs";
-import { join } from "path";
 
 import buildInfo from "./buildInfo.json" assert { type: "json" };
 
-const envPath = process.argv[2] ?? join(process.cwd(), ".env");
-if (envPath.endsWith("example")) {
-  throw new Error("You should not use the example configuration file.");
-}
-try {
-  accessSync(envPath, constants.F_OK);
-} catch (err) {
-  throw new Error("No suitable .env file found.");
+if (process.env.NODE_ENV !== "test") {
+  const envPath = process.argv[2] ?? join(process.cwd(), ".env");
+  if (envPath.endsWith("example")) {
+    throw new Error("You should not use the example configuration file.");
+  }
+
+  try {
+    accessSync(envPath, constants.F_OK);
+  } catch (err) {
+    throw new Error("No suitable .env file found.");
+  }
+  dotenv.config({ path: envPath });
 }
 
 const trimTwitterHandle = (handle: string) => {
   return handle.toLowerCase().trim().replaceAll("@", "");
 };
-
-dotenv.config({ path: envPath });
 
 export const TWITTER_HANDLE = trimTwitterHandle(
   process.env.TWITTER_HANDLE ?? "",

@@ -1,6 +1,6 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 
-import { formatTweetText } from "../format-tweet-text.js";
+import { formatTweetText } from "../format-tweet-text";
 
 describe("formatTweetText", () => {
   it("should decode html entities from the text", () => {

@@ -1,10 +1,10 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
-import { Platform } from "../../types/index.js";
-import { MastodonPost } from "../../types/post.js";
-import { getCachedPosts } from "../cache/get-cached-posts.js";
-import { splitTextForMastodon } from "../tweet/split-tweet-text/index.js";
+import { Platform } from "../../types";
+import { MastodonPost } from "../../types/post";
+import { getCachedPosts } from "../cache/get-cached-posts";
+import { splitTextForMastodon } from "../tweet/split-tweet-text";
 
 export const makeMastodonPost = async (
   client: mastodon.rest.Client,

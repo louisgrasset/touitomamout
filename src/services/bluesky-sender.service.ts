@@ -1,23 +1,23 @@
 import { BskyAgent, RichText } from "@atproto/api";
 import { Ora } from "ora";
 
-import { DEBUG, VOID } from "../constants.js";
+import { DEBUG, VOID } from "../constants";
 import {
   buildReplyEntry,
   getBlueskyChunkLinkMetadata,
-} from "../helpers/bluesky/index.js";
-import { savePostToCache } from "../helpers/cache/save-post-to-cache.js";
-import { oraProgress } from "../helpers/logs/index.js";
-import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky.js";
-import { getPostExcerpt } from "../helpers/post/get-post-excerpt.js";
+} from "../helpers/bluesky";
+import { savePostToCache } from "../helpers/cache/save-post-to-cache";
+import { oraProgress } from "../helpers/logs";
+import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky";
+import { getPostExcerpt } from "../helpers/post/get-post-excerpt";
 import {
   BlueskyCacheChunk,
   BlueskyMediaAttachment,
   Media,
   Platform,
-} from "../types/index.js";
-import { BlueskyPost } from "../types/post.js";
-import { mediaDownloaderService } from "./index.js";
+} from "../types";
+import { BlueskyPost } from "../types/post";
+import { mediaDownloaderService } from "./";
 
 const BLUESKY_MEDIA_IMAGES_MAX_COUNT = 4;
 

@@ -1,10 +1,10 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
 import ora from "ora";
 
-import { TWITTER_PASSWORD, TWITTER_USERNAME } from "../../constants.js";
-import { saveCookies } from "../cookies/save-cookies.js";
-import { oraPrefixer } from "../logs/index.js";
-import { restorePreviousSession } from "./restore-previous-session.js";
+import { TWITTER_PASSWORD, TWITTER_USERNAME } from "../../constants";
+import { saveCookies } from "../cookies/save-cookies";
+import { oraPrefixer } from "../logs";
+import { restorePreviousSession } from "./restore-previous-session";
 
 export const handleTwitterAuth = async (client: Scraper) => {
   const log = ora({

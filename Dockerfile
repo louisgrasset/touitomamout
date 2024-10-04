@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY src/ /app/src
 COPY scripts/ /app/scripts
-COPY package.json package-lock.json tsconfig.json .eslintrc.json /app/
+COPY package.json package-lock.json tsconfig.json .eslintrc.json vite.config.ts /app/
 
 RUN npm ci --ignore-scripts && npm rebuild --platform=linux --libc=musl sharp && npm run build --ignore-scripts
 

@@ -1,13 +1,13 @@
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { Cookie } from "tough-cookie";
 
-import * as cookies from "../../cookies/get-cookies.js";
-import { restorePreviousSession } from "../restore-previous-session.js";
+import * as cookies from "../../cookies/get-cookies";
+import { restorePreviousSession } from "../restore-previous-session";
 
-const getCookiesMock = jest.spyOn(cookies, "getCookies");
-const setCookiesMock = jest.fn();
+const getCookiesMock = vi.spyOn(cookies, "getCookies");
+const setCookiesMock = vi.fn();
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {};
 });
 
@@ -27,7 +27,7 @@ const cookieMock = {
 
 describe("restorePreviousSession", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when cookies are available", () => {
@@ -47,7 +47,7 @@ describe("restorePreviousSession", () => {
 
   describe("when cookies are not available", () => {
     const originalConsole = console.log;
-    const consoleMock = jest.fn();
+    const consoleMock = vi.fn();
     beforeEach(() => {
       getCookiesMock.mockResolvedValueOnce(null);
       console.log = consoleMock;

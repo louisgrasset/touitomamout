@@ -7,7 +7,7 @@ import {
   SYNC_BLUESKY,
   SYNC_MASTODON,
   TWITTER_HANDLE,
-} from "../constants.js";
+} from "../constants";
 
 export const buildConfigurationRules = () => {
   return [

@@ -1,16 +1,25 @@
-import promises from "fs/promises";
+import { readFile } from "node:fs/promises";
+
 import { Cookie } from "tough-cookie";
 
-import { getCookies } from "../get-cookies.js";
-import { cookiesMock } from "./mocks/cookie.js";
+import { getCookies } from "../get-cookies";
+import { cookiesMock } from "./mocks/cookie";
 
-jest.mock("../../../constants.js", () => ({}));
+vi.mock("node:fs/promises", () => ({
+  readFile: vi.fn(),
+}));
 
-const promiseReadFileMock = jest.spyOn(promises, "readFile");
+vi.mock("../../../constants", () => {
+  return {
+    COOKIES_PATH: "./cookies.instance.json",
+  };
+});
+
+const promiseReadFileMock = readFile as vi.Mock;
 
 describe("getCookies", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when the file is accessible", () => {

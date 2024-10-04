@@ -2,12 +2,12 @@ import {
   BlueskyCacheChunk,
   MastodonCacheChunk,
   Platform,
-} from "../../../types/index.js";
-import { getCachedPostChunk } from "../get-cached-post-chunk.js";
+} from "../../../types";
+import { getCachedPostChunk } from "../get-cached-post-chunk";
 
-jest.mock("../get-cached-posts.js", () => {
+vi.mock("../get-cached-posts", () => {
   return {
-    getCachedPosts: jest.fn().mockResolvedValue({
+    getCachedPosts: vi.fn().mockResolvedValue({
       "1234567891234567891": {
         mastodon: ["first", "last"],
         bluesky: [

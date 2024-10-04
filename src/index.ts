@@ -1,4 +1,4 @@
-import { configuration } from "./configuration/configuration.js";
+import { configuration } from "./configuration/configuration";
 import {
   DAEMON,
   SYNC_BLUESKY,
@@ -6,11 +6,11 @@ import {
   SYNC_MASTODON,
   TOUITOMAMOUT_VERSION,
   TWITTER_HANDLE,
-} from "./constants.js";
+} from "./constants";
 import {
   postsSynchronizerService,
   profileSynchronizerService,
-} from "./services/index.js";
+} from "./services";
 
 const {
   twitterClient,

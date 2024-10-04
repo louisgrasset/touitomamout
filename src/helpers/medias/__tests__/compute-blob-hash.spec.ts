@@ -1,6 +1,6 @@
-import { computeBlobHash } from "../compute-blob-hash.js";
+import { computeBlobHash } from "../compute-blob-hash";
 
-jest.mock("../../../constants.js", () => {
+vi.mock("../../../constants", () => {
   return {
     DEBUG: false,
   };

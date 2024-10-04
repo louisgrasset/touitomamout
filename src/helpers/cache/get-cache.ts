@@ -1,7 +1,7 @@
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 
-import { CACHE_PATH } from "../../constants.js";
-import { Cache } from "../../types/index.js";
+import { CACHE_PATH } from "../../constants";
+import { Cache } from "../../types";
 
 /**
  * A method to get the cache.

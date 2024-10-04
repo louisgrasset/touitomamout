@@ -1,10 +1,10 @@
-import { compressMedia } from "../compress-media.js";
-import { areBlobsEqual } from "./helpers/are-blobs-equals.js";
-import { getBlobSize } from "./helpers/get-blob-size.js";
-import { makeBlobFromFile } from "./helpers/make-blob-from-file.js";
+import { compressMedia } from "../compress-media";
+import { areBlobsEqual } from "./helpers/are-blobs-equals";
+import { getBlobSize } from "./helpers/get-blob-size";
+import { makeBlobFromFile } from "./helpers/make-blob-from-file";
 
 const MEDIA_MAX_SIZE_BYTES = 200000;
-jest.mock("../../../constants.js", () => ({
+vi.mock("../../../constants", () => ({
   DEBUG: false,
 }));
 

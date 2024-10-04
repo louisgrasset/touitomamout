@@ -1,7 +1,7 @@
-import { getCachedPosts } from "../get-cached-posts.js";
+import { getCachedPosts } from "../get-cached-posts";
 
-jest.mock("../get-cache.js", () => ({
-  getCache: jest.fn().mockResolvedValue({
+vi.mock("../get-cache", () => ({
+  getCache: vi.fn().mockResolvedValue({
     posts: {
       "1": {
         mastodon: ["1"],
