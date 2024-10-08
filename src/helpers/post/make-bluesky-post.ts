@@ -35,11 +35,11 @@ export const makeBlueskyPost = async (
 
   // Get in reply post references
   let replyPost = undefined;
-  if (tweet.inReplyToStatus) {
+  if (tweet.inReplyToStatusId) {
     const replyData = await getCachedPostChunk<BlueskyCacheChunk>(
       Platform.BLUESKY,
       "last",
-      tweet.inReplyToStatus.id,
+      tweet.inReplyToStatusId,
     );
     replyPost = replyData
       ? await client

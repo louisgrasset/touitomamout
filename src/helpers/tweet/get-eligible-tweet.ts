@@ -20,7 +20,9 @@ export const getEligibleTweet = async (
   const eligibleTweet = {
     ...tweet,
     inReplyToStatus: isSelfReply ? tweet.inReplyToStatus : undefined,
-    inReplyToStatusId: isSelfReply ? tweet.inReplyToStatusId : undefined,
+    inReplyToStatusId: isSelfReply
+      ? (tweet.inReplyToStatusId ?? tweet.inReplyToStatus?.id)
+      : undefined,
     quotedStatus: isSelfQuote ? tweet.quotedStatus : undefined,
     quotedStatusId: isSelfQuote ? tweet.quotedStatusId : undefined,
   };
