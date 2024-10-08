@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 
 import { uploadBlueskyMedia } from "../upload-bluesky-media";
 import { makeBlobFromFile } from "./helpers/make-blob-from-file";
@@ -18,7 +18,7 @@ describe("uploadBlueskyMedia", () => {
     const mediaBlob = await makeBlobFromFile("image-png.png", "image/png");
     const blueskyClient = {
       uploadBlob: uploadBlobMock,
-    } as unknown as BskyAgent;
+    } as unknown as AtpAgent;
 
     const result = await uploadBlueskyMedia(mediaBlob, blueskyClient);
 
@@ -41,7 +41,7 @@ describe("uploadBlueskyMedia", () => {
       const mediaBlob = new Blob();
       const blueskyClient = {
         uploadBlob: uploadBlobMock,
-      } as unknown as BskyAgent;
+      } as unknown as AtpAgent;
 
       const result = await uploadBlueskyMedia(mediaBlob, blueskyClient);
 

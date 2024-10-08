@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 
 import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata";
 import { METADATA_MOCK } from "./mocks/metadata";
@@ -39,7 +39,7 @@ describe("getBlueskyLinkMetadata", () => {
   it("should return the metadata if data is found", async () => {
     const result = await getBlueskyLinkMetadata("https://bsky.app", {
       uploadBlob: uploadBlobMock,
-    } as unknown as BskyAgent);
+    } as unknown as AtpAgent);
     expect(result).toStrictEqual({
       ...METADATA_MOCK,
       image: {
@@ -57,7 +57,7 @@ describe("getBlueskyLinkMetadata", () => {
     it("should return the metadata without image property", async () => {
       const result = await getBlueskyLinkMetadata("https://github.com", {
         uploadBlob: uploadBlobMock,
-      } as unknown as BskyAgent);
+      } as unknown as AtpAgent);
 
       expect(result).toStrictEqual({
         ...METADATA_MOCK,
@@ -82,7 +82,7 @@ describe("getBlueskyLinkMetadata", () => {
       "https://thisturldoesnotexist.example.com",
       {
         uploadBlob: uploadBlobMock,
-      } as unknown as BskyAgent,
+      } as unknown as AtpAgent,
     );
     expect(result).toBeNull();
   });

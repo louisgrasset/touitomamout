@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import { ResponseType, ResponseTypeNames } from "@atproto/xrpc";
 import pm2 from "@pm2/io";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
@@ -32,7 +32,7 @@ export const configuration = async (): Promise<{
   synchronizedPostsCountThisRun: Counter;
   twitterClient: Scraper;
   mastodonClient: null | mastodon.rest.Client;
-  blueskyClient: null | BskyAgent;
+  blueskyClient: null | AtpAgent;
 }> => {
   // Error handling
   const rules = buildConfigurationRules();
@@ -116,7 +116,7 @@ export const configuration = async (): Promise<{
       prefixText: oraPrefixer("☁️ client"),
     }).start("connecting to bluesky...");
 
-    blueskyClient = new BskyAgent({
+    blueskyClient = new AtpAgent({
       service: `https://${BLUESKY_INSTANCE}`,
     });
     await blueskyClient

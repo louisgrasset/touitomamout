@@ -1,4 +1,4 @@
-import { BskyAgent, ComAtprotoRepoUploadBlob } from "@atproto/api";
+import { AtpAgent, ComAtprotoRepoUploadBlob } from "@atproto/api";
 
 import { DEBUG } from "../../constants";
 import { parseBlobForBluesky } from "./parse-blob-for-bluesky";
@@ -9,7 +9,7 @@ import { parseBlobForBluesky } from "./parse-blob-for-bluesky";
  */
 export const uploadBlueskyMedia = async (
   mediaBlob: Blob,
-  blueskyClient: BskyAgent | null,
+  blueskyClient: AtpAgent | null,
 ): Promise<ComAtprotoRepoUploadBlob.Response | null> => {
   if (!blueskyClient) {
     return null;

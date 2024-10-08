@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import ora from "ora";
 
 import { makeBlobFromFile } from "../../helpers/medias/__tests__/helpers/make-blob-from-file";
@@ -22,7 +22,7 @@ vi.mock("../media-downloader.service", () => ({
   mediaDownloaderService: vi.fn(),
 }));
 const mediaDownloaderServiceMock = mediaDownloaderService as vi.Mock;
-const client = new BskyAgent({
+const client = new AtpAgent({
   service: `https://bsky.social`,
 });
 

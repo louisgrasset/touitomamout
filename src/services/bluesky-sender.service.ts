@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import { AtpAgent, RichText } from "@atproto/api";
 import { Ora } from "ora";
 
 import { BACKDATE_BLUESKY_POSTS, DEBUG, VOID } from "../constants";
@@ -25,7 +25,7 @@ const BLUESKY_MEDIA_IMAGES_MAX_COUNT = 4;
  * An async method in charge of handling Bluesky posts computation & uploading.
  */
 export const blueskySenderService = async (
-  client: BskyAgent | null,
+  client: AtpAgent | null,
   post: BlueskyPost | null,
   medias: Media[],
   log: Ora,

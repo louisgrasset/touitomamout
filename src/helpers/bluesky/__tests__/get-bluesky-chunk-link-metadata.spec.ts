@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import { AtpAgent, RichText } from "@atproto/api";
 
 import { getBlueskyChunkLinkMetadata } from "../get-bluesky-chunk-link-metadata";
 import { getBlueskyLinkMetadata } from "../get-bluesky-link-metadata";
@@ -28,7 +28,7 @@ describe("getBlueskyChunkLinkMetadata", () => {
       const richText = new RichText({
         text: "The potato is king. Learn more here: https://example.com/potato",
       });
-      const client = new BskyAgent({
+      const client = new AtpAgent({
         service: `https://bsky.social`,
       });
       await richText.detectFacets(client);
@@ -47,7 +47,7 @@ describe("getBlueskyChunkLinkMetadata", () => {
       const richText = new RichText({
         text: "The potato is king. Learn more here.",
       });
-      const client = new BskyAgent({
+      const client = new AtpAgent({
         service: `https://bsky.social`,
       });
       await richText.detectFacets(client);
