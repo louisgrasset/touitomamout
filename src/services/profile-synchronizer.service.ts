@@ -160,15 +160,12 @@ export const profileSynchronizerService = async (
   // Update profile images hash
   await updateCacheEntry(
     "profile",
-    Object.entries(profileUpdate).reduce(
-      (updated, [type, { hash, ..._rest }]) => {
-        return {
-          ...updated,
-          [type]: hash,
-        };
-      },
-      {} as ProfileCache,
-    ),
+    Object.entries(profileUpdate).reduce((updated, [type, { hash }]) => {
+      return {
+        ...updated,
+        [type]: hash,
+      };
+    }, {} as ProfileCache),
   );
 
   log.succeed("task finished");
