@@ -1,4 +1,4 @@
-import { AppBskyFeedPost, BskyAgent } from "@atproto/api";
+import { AppBskyFeedPost, AtpAgent } from "@atproto/api";
 
 import { makeTweetMock } from "../../../services/__tests__/helpers/make-tweet-mock";
 import { makeBlueskyPost } from "../make-bluesky-post";
@@ -17,7 +17,7 @@ describe("makeBlueskyPost", () => {
   it("should build a post", async () => {
     const client = {
       getProfile: async () => ({ data: { handle: "username" } }),
-    } as unknown as BskyAgent;
+    } as unknown as AtpAgent;
     const tweet = makeTweetMock({ id: "tweetId" });
     const result = await makeBlueskyPost(client, tweet);
 
@@ -46,7 +46,7 @@ describe("makeBlueskyPost", () => {
             cid: "cid",
             value: {} as AppBskyFeedPost.Record,
           }),
-        } as unknown as BskyAgent;
+        } as unknown as AtpAgent;
 
         const tweet = makeTweetMock({
           [tweetProperty + "Id"]: "quotedId",

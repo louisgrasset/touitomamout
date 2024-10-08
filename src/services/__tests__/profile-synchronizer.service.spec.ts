@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import { Profile, Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 import { vi } from "vitest";
@@ -82,7 +82,7 @@ describe("profileSynchronizerService", () => {
   const updateBlueskyProfileSpy = vi.fn();
   const blueskyClient = {
     upsertProfile: updateBlueskyProfileSpy,
-  } as unknown as BskyAgent;
+  } as unknown as AtpAgent;
 
   // Actual tests
   describe.each`

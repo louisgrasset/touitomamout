@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import * as Counter from "@pm2/io/build/main/utils/metrics/counter";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
@@ -58,7 +58,7 @@ describe("postsSynchronizerService", () => {
   it("should return a response with the expected shape", async () => {
     const twitterClient = new MockTwitterClient(3) as unknown as Scraper;
     const mastodonClient = {} as mastodon.rest.Client;
-    const blueskyClient = {} as BskyAgent;
+    const blueskyClient = {} as AtpAgent;
     const synchronizedPostsCountThisRun = {
       inc: vi.fn(),
     } as unknown as Counter.default;

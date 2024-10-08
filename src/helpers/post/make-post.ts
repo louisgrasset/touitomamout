@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import { Tweet } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 import { Ora } from "ora";
@@ -36,7 +36,7 @@ const chunkLogger = (
 export const makePost = async (
   tweet: Tweet,
   mastodonClient: mastodon.rest.Client | null,
-  blueskyClient: BskyAgent | null,
+  blueskyClient: AtpAgent | null,
   log: Ora,
   counters: { current: number; total: number },
 ): Promise<Post> => {

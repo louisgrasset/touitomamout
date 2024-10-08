@@ -1,4 +1,4 @@
-import { BskyAgent, RichText } from "@atproto/api";
+import { AtpAgent, RichText } from "@atproto/api";
 import { Tweet } from "@the-convocation/twitter-scraper";
 
 import { BLUESKY_IDENTIFIER } from "../../constants";
@@ -8,7 +8,7 @@ import { getCachedPostChunk } from "../cache/get-cached-post-chunk";
 import { splitTextForBluesky } from "../tweet/split-tweet-text";
 
 export const makeBlueskyPost = async (
-  client: BskyAgent,
+  client: AtpAgent,
   tweet: Tweet,
 ): Promise<BlueskyPost> => {
   const username = await client

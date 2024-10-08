@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import { mastodon } from "masto";
 import ora from "ora";
 
@@ -16,7 +16,7 @@ vi.mock("../make-bluesky-post", () => ({
 }));
 
 const mastodonClient = {} as unknown as mastodon.rest.Client;
-const blueskyClient = {} as unknown as BskyAgent;
+const blueskyClient = {} as unknown as AtpAgent;
 
 const tweet = makeTweetMock();
 const madePostMock = {

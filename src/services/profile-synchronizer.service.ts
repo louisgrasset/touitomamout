@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 import ora from "ora";
@@ -24,7 +24,7 @@ import { mediaDownloaderService } from "./media-downloader.service";
 export const profileSynchronizerService = async (
   twitterClient: Scraper,
   mastodonClient: mastodon.rest.Client | null,
-  blueskyClient: BskyAgent | null,
+  blueskyClient: AtpAgent | null,
 ): Promise<SynchronizerResponse> => {
   const log = ora({
     color: "cyan",

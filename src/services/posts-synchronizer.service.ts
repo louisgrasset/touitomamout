@@ -1,4 +1,4 @@
-import { BskyAgent } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 import * as Counter from "@pm2/io/build/main/utils/metrics/counter";
 import { Scraper } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
@@ -19,7 +19,7 @@ import { tweetsGetterService } from "./tweets-getter.service";
 export const postsSynchronizerService = async (
   twitterClient: Scraper,
   mastodonClient: mastodon.rest.Client | null,
-  blueskyClient: BskyAgent | null,
+  blueskyClient: AtpAgent | null,
   synchronizedPostsCountThisRun: Counter.default,
 ): Promise<SynchronizerResponse & { metrics: Metrics }> => {
   const tweets = await tweetsGetterService(twitterClient);
