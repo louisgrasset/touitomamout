@@ -21,6 +21,9 @@ export const extractWordsAndSpacers = (
       const chunksSplitByUrl = [prefixChunk, url, suffixChunk];
 
       for (const currentChunk of chunksSplitByUrl) {
+        if (!currentChunk) {
+          continue; // Skip empty chunks
+        }
         entries.push({
           str: currentChunk,
           sep: getSeparator(remainingText, currentChunk),
