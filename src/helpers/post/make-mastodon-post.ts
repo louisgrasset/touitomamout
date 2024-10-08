@@ -21,10 +21,10 @@ export const makeMastodonPost = async (
 
   // Get in reply post references
   let inReplyToId = undefined;
-  if (tweet.inReplyToStatus) {
+  if (tweet.inReplyToStatusId) {
     // Retrieve the potentially already synced post references
     const existingPost =
-      cachedPosts[tweet.inReplyToStatus.id!]?.[Platform.MASTODON];
+      cachedPosts[tweet.inReplyToStatusId]?.[Platform.MASTODON];
     // Set inReplyToId to the last chunk reference of the existing post
     inReplyToId = existingPost
       ? existingPost[existingPost.length - 1]
