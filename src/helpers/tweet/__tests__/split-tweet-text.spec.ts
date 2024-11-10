@@ -1,6 +1,8 @@
 import { Tweet } from "@the-convocation/twitter-scraper";
+import { describe, expect, it, vi } from "vitest";
 
 import { MASTODON_INSTANCE } from "../../../constants";
+import { MentionMapping } from "../../../types/mentionMapping";
 import {
   splitTextForBluesky,
   splitTextForMastodon,
@@ -63,9 +65,10 @@ describe("splitTweetText", () => {
         } as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
@@ -85,9 +88,10 @@ describe("splitTweetText", () => {
         } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([POST_99_CHARS]);
@@ -103,9 +107,10 @@ describe("splitTweetText", () => {
         } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
@@ -124,9 +129,10 @@ describe("splitTweetText", () => {
         } as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([POST_299_CHARS]);
@@ -142,9 +148,10 @@ describe("splitTweetText", () => {
         } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
@@ -164,9 +171,10 @@ describe("splitTweetText", () => {
         } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toStrictEqual([
@@ -191,9 +199,10 @@ describe("splitTweetText", () => {
         } as unknown as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
 
@@ -223,9 +232,10 @@ describe("splitTweetText", () => {
         } as Tweet;
         const mastodonStatuses = await splitTextForMastodon(
           tweet,
+          [],
           MASTODON_USERNAME,
         );
-        const blueskyStatuses = await splitTextForBluesky(tweet);
+        const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
         checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
         expect(mastodonStatuses).toEqual([
@@ -244,9 +254,10 @@ describe("splitTweetText", () => {
       } as Tweet;
       const mastodonStatuses = await splitTextForMastodon(
         tweet,
+        [],
         MASTODON_USERNAME,
       );
-      const blueskyStatuses = await splitTextForBluesky(tweet);
+      const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
       checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
       expect(mastodonStatuses).toEqual([
@@ -271,9 +282,10 @@ describe("splitTweetText", () => {
       } as Tweet;
       const mastodonStatuses = await splitTextForMastodon(
         tweet,
+        [],
         MASTODON_USERNAME,
       );
-      const blueskyStatuses = await splitTextForBluesky(tweet);
+      const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
       checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
       expect(mastodonStatuses).toEqual([
@@ -294,9 +306,10 @@ describe("splitTweetText", () => {
       } as Tweet;
       const mastodonStatuses = await splitTextForMastodon(
         tweet,
+        [],
         MASTODON_USERNAME,
       );
-      const blueskyStatuses = await splitTextForBluesky(tweet);
+      const blueskyStatuses = await splitTextForBluesky(tweet, []);
 
       checkChunksLengthExpectations(mastodonStatuses, blueskyStatuses);
       expect(mastodonStatuses).toEqual([
@@ -306,6 +319,34 @@ describe("splitTweetText", () => {
         `${POST_LONG_LINK}`,
         `${POST_LONG_LINK}${POST_99_CHARS}`,
       ]);
+    });
+  });
+
+  describe("when mention user with existing mention mapping", () => {
+    it("should return text with the replaced mention", async () => {
+      const tweet = {
+        text: "Hello @ralmn45 how are you?",
+        mentions: [{ id: "12345", username: "ralmn45", name: "ralmn" }],
+      } as Tweet;
+      const mentionsMapping: MentionMapping[] = [
+        {
+          twitter: "ralmn45",
+          mastodon: "ralmn@mastodon.xyz",
+          bluesky: "ralmn.fr",
+        },
+      ];
+
+      const mastodonStatuses = await splitTextForMastodon(
+        tweet,
+        mentionsMapping,
+        MASTODON_USERNAME,
+      );
+      const blueskyStatuses = await splitTextForBluesky(tweet, mentionsMapping);
+
+      expect(mastodonStatuses).toEqual([
+        `Hello @ralmn@mastodon.xyz how are you?`,
+      ]);
+      expect(blueskyStatuses).toEqual([`Hello @ralmn.fr how are you?`]);
     });
   });
 });

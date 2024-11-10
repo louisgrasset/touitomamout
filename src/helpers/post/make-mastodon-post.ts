@@ -2,6 +2,7 @@ import { Tweet } from "@the-convocation/twitter-scraper";
 import { mastodon } from "masto";
 
 import { Platform } from "../../types";
+import { MentionMapping } from "../../types/mentionMapping";
 import { MastodonPost } from "../../types/post";
 import { getCachedPosts } from "../cache/get-cached-posts";
 import { splitTextForMastodon } from "../tweet/split-tweet-text";
@@ -9,6 +10,7 @@ import { splitTextForMastodon } from "../tweet/split-tweet-text";
 export const makeMastodonPost = async (
   client: mastodon.rest.Client,
   tweet: Tweet,
+  mentionsMapping: MentionMapping[],
 ): Promise<MastodonPost> => {
   const cachedPosts = await getCachedPosts();
 
@@ -17,7 +19,7 @@ export const makeMastodonPost = async (
     .then((account) => account.username);
 
   // Get post chunks (including quote in first one when needed)
-  const chunks = await splitTextForMastodon(tweet, username);
+  const chunks = await splitTextForMastodon(tweet, mentionsMapping, username);
 
   // Get in reply post references
   let inReplyToId = undefined;

@@ -14,3 +14,4 @@ coverage/
 # Temporary files
 cache*.json
 cookies*.json
+mention-mapping*.json

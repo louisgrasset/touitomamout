@@ -18,6 +18,7 @@ const {
   synchronizedPostsCountAllTime,
   synchronizedPostsCountThisRun,
   blueskyClient,
+  mentionsMapping,
 } = await configuration();
 
 /**
@@ -47,6 +48,7 @@ const touitomamout = async () => {
     mastodonClient,
     blueskyClient,
     synchronizedPostsCountThisRun,
+    mentionsMapping,
   );
   synchronizedPostsCountAllTime.set(postsSyncResponse.metrics.totalSynced);
 
