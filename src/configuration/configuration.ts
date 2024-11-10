@@ -1,10 +1,11 @@
+import { readFile } from "node:fs/promises";
+
 import { AtpAgent } from "@atproto/api";
 import { ResponseType, ResponseTypeNames } from "@atproto/xrpc";
 import pm2 from "@pm2/io";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { Scraper } from "@the-convocation/twitter-scraper";
-import { readFile } from "fs/promises";
 import { createRestAPIClient, mastodon } from "masto";
 import ora from "ora";
 
