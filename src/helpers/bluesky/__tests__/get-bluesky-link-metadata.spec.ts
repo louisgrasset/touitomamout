@@ -69,10 +69,11 @@ describe("getBlueskyLinkMetadata", () => {
           },
           success: true,
         },
-        title: "GitHub: Let’s build from here",
+        title:
+          "GitHub · Build and ship software on a single, collaborative platform",
         url: "https://github.com/",
         description:
-          "GitHub is where over 100 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and fea...",
+          "Join the world's most widely adopted, AI-powered developer platform where millions of developers, businesses, and the largest open source community build software that advances humanity.",
       });
     });
   });
