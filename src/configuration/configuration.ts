@@ -4,7 +4,7 @@ import pm2 from "@pm2/io";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { Scraper } from "@the-convocation/twitter-scraper";
-import * as fs from "fs/promises";
+import { readFile } from "fs/promises";
 import { createRestAPIClient, mastodon } from "masto";
 import ora from "ora";
 
@@ -165,9 +165,9 @@ export const configuration = async (): Promise<{
   }
 
   let mentionsMapping: MentionMapping[] = [];
-  //accessSync
+
   try {
-    const content = (await fs.readFile(MENTION_MAPPING_PATH)).toString();
+    const content = (await readFile(MENTION_MAPPING_PATH)).toString();
     mentionsMapping = JSON.parse(content) as MentionMapping[];
   } catch (e) {
     const log = ora({
