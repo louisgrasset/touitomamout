@@ -1,6 +1,5 @@
-import { describe } from "node:test";
-
 import { Tweet } from "@the-convocation/twitter-scraper";
+import { describe, expect, it, vi } from "vitest";
 
 import { MASTODON_INSTANCE } from "../../../constants";
 import { MentionMapping } from "../../../types/mentionMapping";
@@ -326,7 +325,7 @@ describe("splitTweetText", () => {
   describe("when mention user with existing mention mapping", () => {
     it("should return text with the replaced mention", async () => {
       const tweet = {
-        text: "Hello @ralmn45 how are you ?",
+        text: "Hello @ralmn45 how are you?",
         mentions: [{ id: "12345", username: "ralmn45", name: "ralmn" }],
       } as Tweet;
       const mentionsMapping: MentionMapping[] = [
@@ -345,9 +344,9 @@ describe("splitTweetText", () => {
       const blueskyStatuses = await splitTextForBluesky(tweet, mentionsMapping);
 
       expect(mastodonStatuses).toEqual([
-        `Hello @ralmn@mastodon.xyz how are you ?`,
+        `Hello @ralmn@mastodon.xyz how are you?`,
       ]);
-      expect(blueskyStatuses).toEqual([`Hello @ralmn.fr how are you ?`]);
+      expect(blueskyStatuses).toEqual([`Hello @ralmn.fr how are you?`]);
     });
   });
 });
