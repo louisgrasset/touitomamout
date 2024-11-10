@@ -4,6 +4,7 @@ import { mastodon } from "masto";
 import { Ora } from "ora";
 
 import { VOID } from "../../constants";
+import { MentionMapping } from "../../types/mentionMapping";
 import { BlueskyPost, MastodonPost, Post } from "../../types/post";
 import { oraProgress } from "../logs";
 import { getPostExcerpt } from "./get-post-excerpt";
@@ -39,6 +40,7 @@ export const makePost = async (
   blueskyClient: AtpAgent | null,
   log: Ora,
   counters: { current: number; total: number },
+  mentionsMapping: MentionMapping[],
 ): Promise<Post> => {
   const postExcerpt = getPostExcerpt(tweet.text ?? VOID).padEnd(32, " ");
   log.color = "magenta";
@@ -52,13 +54,17 @@ export const makePost = async (
   // Mastodon post
   let mastodonPost = null;
   if (mastodonClient) {
-    mastodonPost = await makeMastodonPost(mastodonClient, tweet);
+    mastodonPost = await makeMastodonPost(
+      mastodonClient,
+      tweet,
+      mentionsMapping,
+    );
   }
 
   // Bluesky post
   let blueskyPost = null;
   if (blueskyClient) {
-    blueskyPost = await makeBlueskyPost(blueskyClient, tweet);
+    blueskyPost = await makeBlueskyPost(blueskyClient, tweet, mentionsMapping);
   }
 
   const chunksByPlatform = {

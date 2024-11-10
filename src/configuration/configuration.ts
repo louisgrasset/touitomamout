@@ -4,6 +4,7 @@ import pm2 from "@pm2/io";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { Scraper } from "@the-convocation/twitter-scraper";
+import * as fs from "fs/promises";
 import { createRestAPIClient, mastodon } from "masto";
 import ora from "ora";
 
@@ -13,6 +14,7 @@ import {
   BLUESKY_PASSWORD,
   MASTODON_ACCESS_TOKEN,
   MASTODON_INSTANCE,
+  MENTION_MAPPING_PATH,
   SYNC_BLUESKY,
   SYNC_DRY_RUN,
   SYNC_MASTODON,
@@ -25,6 +27,7 @@ import { getCachedPosts } from "../helpers/cache/get-cached-posts";
 import { runMigrations } from "../helpers/cache/run-migrations";
 import { TouitomamoutError } from "../helpers/error";
 import { oraPrefixer } from "../helpers/logs";
+import { MentionMapping } from "../types/mentionMapping";
 import { buildConfigurationRules } from "./build-configuration-rules";
 
 export const configuration = async (): Promise<{
@@ -33,6 +36,7 @@ export const configuration = async (): Promise<{
   twitterClient: Scraper;
   mastodonClient: null | mastodon.rest.Client;
   blueskyClient: null | AtpAgent;
+  mentionsMapping: MentionMapping[];
 }> => {
   // Error handling
   const rules = buildConfigurationRules();
@@ -160,11 +164,30 @@ export const configuration = async (): Promise<{
       });
   }
 
+  let mentionsMapping: MentionMapping[] = [];
+  //accessSync
+  try {
+    const content = (await fs.readFile(MENTION_MAPPING_PATH)).toString();
+    mentionsMapping = JSON.parse(content) as MentionMapping[];
+  } catch (e) {
+    const log = ora({
+      color: "gray",
+      prefixText: oraPrefixer("mention-mapping"),
+    });
+    if (e instanceof Error && "code" in e && e.code == "ENOENT") {
+      log.warn(`No mention mapping file found (${MENTION_MAPPING_PATH})`);
+    } else {
+      log.fail(`Error when read ${MENTION_MAPPING_PATH}`);
+      console.error(e);
+    }
+  }
+
   return {
     mastodonClient,
     twitterClient,
     blueskyClient,
     synchronizedPostsCountAllTime,
     synchronizedPostsCountThisRun,
+    mentionsMapping,
   };
 };

@@ -9,6 +9,7 @@ import { getCachedPosts } from "../helpers/cache/get-cached-posts";
 import { oraPrefixer } from "../helpers/logs";
 import { makePost } from "../helpers/post/make-post";
 import { Media, Metrics, SynchronizerResponse } from "../types";
+import { MentionMapping } from "../types/mentionMapping";
 import { blueskySenderService } from "./bluesky-sender.service";
 import { mastodonSenderService } from "./mastodon-sender.service";
 import { tweetsGetterService } from "./tweets-getter.service";
@@ -21,6 +22,7 @@ export const postsSynchronizerService = async (
   mastodonClient: mastodon.rest.Client | null,
   blueskyClient: AtpAgent | null,
   synchronizedPostsCountThisRun: Counter.default,
+  mentionsMapping: MentionMapping[],
 ): Promise<SynchronizerResponse & { metrics: Metrics }> => {
   const tweets = await tweetsGetterService(twitterClient);
 
@@ -44,6 +46,7 @@ export const postsSynchronizerService = async (
         blueskyClient,
         log,
         { current: tweetIndex, total: tweets.length },
+        mentionsMapping,
       );
 
       if (!SYNC_DRY_RUN) {

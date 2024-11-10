@@ -3,6 +3,7 @@ import { Tweet } from "@the-convocation/twitter-scraper";
 
 import { BLUESKY_IDENTIFIER } from "../../constants";
 import { BlueskyCacheChunk, Platform } from "../../types";
+import { MentionMapping } from "../../types/mentionMapping";
 import { BlueskyPost } from "../../types/post";
 import { getCachedPostChunk } from "../cache/get-cached-post-chunk";
 import { splitTextForBluesky } from "../tweet/split-tweet-text";
@@ -10,6 +11,7 @@ import { splitTextForBluesky } from "../tweet/split-tweet-text";
 export const makeBlueskyPost = async (
   client: AtpAgent,
   tweet: Tweet,
+  mentionsMapping: MentionMapping[],
 ): Promise<BlueskyPost> => {
   const username = await client
     .getProfile({ actor: BLUESKY_IDENTIFIER })
@@ -57,7 +59,7 @@ export const makeBlueskyPost = async (
   await post.detectFacets(client); // automatically detects mentions and links
 
   return {
-    chunks: await splitTextForBluesky(tweet),
+    chunks: await splitTextForBluesky(tweet, mentionsMapping),
     username,
     replyPost,
     quotePost,

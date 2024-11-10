@@ -3,3 +3,8 @@ node_modules/
 deployment/
 docs/
 Dockerfile
+
+# Temporary files
+cache*.json
+cookies*.json
+mention-mapping*.json
