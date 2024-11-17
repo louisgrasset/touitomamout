@@ -219,7 +219,14 @@ export const blueskySenderService = async (
 
     if (chunkIndex === 0) {
       if (post.replyPost) {
-        data.reply = buildReplyEntry(post.replyPost);
+        if (post.replyPost.value.reply) {
+          data.reply = buildReplyEntry(
+            post.replyPost.value.reply.root,
+            post.replyPost,
+          );
+        } else {
+          data.reply = buildReplyEntry(post.replyPost);
+        }
       }
     } else {
       data.reply = buildReplyEntry(
