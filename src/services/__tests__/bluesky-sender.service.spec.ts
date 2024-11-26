@@ -74,6 +74,13 @@ const embedMedia = {
   },
 };
 
+const embedVideo = {
+  $type: "blob",
+  mimeType: "video/mp4",
+  ref: "blobRef",
+  size: "1024",
+};
+
 describe("blueskySenderService", () => {
   beforeEach(() => {
     postSpy.mockClear();
@@ -141,14 +148,26 @@ describe("blueskySenderService", () => {
     });
   });
 
-  describe("when the tweet as a video", () => {
+  describe("when the tweet is a video", () => {
     beforeAll(() => {
       mediaDownloaderServiceMock.mockResolvedValue(
         makeBlobFromFile("video-mp4.mp4", "video/mp4"),
       );
+      uploadBlobSpy.mockResolvedValue({
+        data: {
+          blob: {
+            original: {
+              $type: "blob",
+              ref: "blobRef",
+              mimeType: "video/mp4",
+              size: "1024",
+            },
+          },
+        },
+      });
     });
 
-    it("should send the post without media ", async () => {
+    it("should send the post with media ", async () => {
       const mediaVideo: Media = {
         type: "video",
         id: "id",
@@ -157,14 +176,17 @@ describe("blueskySenderService", () => {
       };
       await blueskySenderService(client, post, [mediaVideo], log);
 
-      expect(uploadBlobSpy).toHaveBeenCalledTimes(0);
+      expect(uploadBlobSpy).toHaveBeenCalledTimes(1);
       expect(postSpy).toHaveBeenCalledTimes(1);
       expect(postSpy).toHaveBeenCalledWith({
         $type: "app.bsky.feed.post",
         createdAt: new Date(post.tweet.timestamp!).toISOString(),
         text: "Tweet text",
         facets: undefined,
-        embed: undefined,
+        embed: {
+          $type: "app.bsky.embed.video",
+          video: embedVideo,
+        },
       });
     });
   });

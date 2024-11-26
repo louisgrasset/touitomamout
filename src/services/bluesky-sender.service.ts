@@ -6,6 +6,7 @@ import {
   buildReplyEntry,
   getBlueskyChunkLinkMetadata,
 } from "../helpers/bluesky";
+import { createMediaRecord } from "../helpers/bluesky/create-media-record";
 import { savePostToCache } from "../helpers/cache/save-post-to-cache";
 import { oraProgress } from "../helpers/logs";
 import { parseBlobForBluesky } from "../helpers/medias/parse-blob-for-bluesky";
@@ -147,17 +148,8 @@ export const blueskySenderService = async (
         }
       : {};
 
-    const mediaRecord = mediaAttachments.length
-      ? {
-          media: {
-            $type: "app.bsky.embed.images",
-            images: mediaAttachments.map((i) => ({
-              alt: i.alt_text ?? "",
-              image: i.data.blob.original,
-            })),
-          },
-        }
-      : {};
+    const mediaType = medias[0]?.type;
+    const mediaRecord = createMediaRecord(mediaType, mediaAttachments);
 
     const card = await getBlueskyChunkLinkMetadata(richText, client);
     const externalRecord = card
