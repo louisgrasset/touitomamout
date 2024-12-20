@@ -25,6 +25,7 @@ export const parseBlobForBluesky = async (
       "image/jpg",
       "image/jpeg",
       "image/webp",
+      "video/mp4",
     ];
     const mimeType = blob.type;
 
