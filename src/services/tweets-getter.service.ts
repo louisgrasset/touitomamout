@@ -34,14 +34,16 @@ export const tweetsGetterService = async (
   }).start();
   log.text = "filtering";
 
-  let preventPostsSynchronization = false;
+  let preventPostsSynchronization = true;
   const LATEST_TWEETS_COUNT = 5;
 
   /**
    * Synchronization optimization: prevent excessive API calls & potential rate-limiting
    *
    * Pull the ${LATEST_TWEETS_COUNT}, filter eligible ones.
-   * This optimization prevents the post sync if the latest eligible tweet is cached.
+   * This optimization prevents the post sync if all latest eligible tweets are cached.
+   * The order in which the tweets are retrieved in unpredictable, we therefore cannot
+   * check only the first one and assume it's also the latest one.
    */
   const latestTweets = twitterClient.getTweets(
     TWITTER_HANDLE,
@@ -50,18 +52,16 @@ export const tweetsGetterService = async (
 
   for await (const latestTweet of latestTweets) {
     log.text = "post: → checking for synchronization needs";
-    if (!preventPostsSynchronization) {
+    if (preventPostsSynchronization) {
       // Only consider eligible tweets.
       const tweet = await getEligibleTweet(tweetFormatter(latestTweet));
 
       if (tweet) {
-        // If the latest eligible tweet is cached, mark sync as unneeded.
-        if (isTweetCached(tweet, cachedPosts)) {
-          preventPostsSynchronization = true;
+        // If this tweet is not cached, mark sync as needed
+        if (!isTweetCached(tweet, cachedPosts)) {
+          preventPostsSynchronization = false;
+          break;
         }
-        // If the latest tweet is not cached,
-        // skip the current optimization and go to synchronization step.
-        break;
       }
     }
   }
