@@ -23,7 +23,7 @@ describe("createMediaRecord", () => {
     });
   });
 
-  test('returns a video media record for "video" mediaType', () => {
+  it("should a video media record for "video" mediaType', () => {
     const result = createMediaRecord("video", mockVideoAttachment);
     expect(result).toEqual({
       media: {
