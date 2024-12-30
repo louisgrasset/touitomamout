@@ -38,7 +38,7 @@ describe("createMediaRecord", () => {
     expect(result).toEqual({});
   });
 
-  test("returns an empty object for unhandled mediaType", () => {
+  it("should return an empty object for unhandled mediaType", () => {
     const result = createMediaRecord("audio", []);
     expect(result).toEqual({});
   });
