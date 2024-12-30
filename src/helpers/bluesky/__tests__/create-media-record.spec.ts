@@ -10,7 +10,7 @@ describe("createMediaRecord", () => {
     { alt_text: null, data: { blob: { original: "video.mp4" } } },
   ];
 
-  test('returns an image media record for "image" mediaType', () => {
+  it("should an image media record for 'image' mediaType", () => {
     const result = createMediaRecord("image", mockImageAttachments);
     expect(result).toEqual({
       media: {
@@ -23,7 +23,7 @@ describe("createMediaRecord", () => {
     });
   });
 
-  it("should a video media record for "video" mediaType', () => {
+  it("should a video media record for 'video' mediaType", () => {
     const result = createMediaRecord("video", mockVideoAttachment);
     expect(result).toEqual({
       media: {
