@@ -33,7 +33,7 @@ describe("createMediaRecord", () => {
     });
   });
 
-  test("returns an empty object for undefined mediaType", () => {
+  it("should return an empty object for undefined mediaType", () => {
     const result = createMediaRecord(undefined, []);
     expect(result).toEqual({});
   });
